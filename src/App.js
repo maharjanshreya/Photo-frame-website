@@ -20,7 +20,7 @@ function App() {
         <div className="flex-item"><img src="https://www.ikea.com/us/en/images/products/silverhoejden-frame-gold__0638523_pe698987_s5.jpg" alt="A sample image" style={imageStyle} /></div>
         <div className="flex-item"><img src="https://www.ikea.com/us/en/images/products/silverhoejden-frame-gold__0638523_pe698987_s5.jpg" alt="A sample image" style={imageStyle} /></div>
         <div className="flex-item"><img src="https://www.ikea.com/us/en/images/products/silverhoejden-frame-gold__0638523_pe698987_s5.jpg" alt="A sample image" style={imageStyle} /></div>
-        <p>Checking</p>
+        <p>Checking the updates</p>
       </div>
 
     </div>
