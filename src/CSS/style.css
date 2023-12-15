@@ -1,0 +1,7 @@
+/* Create a flex container */
+.flex-container {
+    display: flex;
+    justify-content: space-between; /* Adjust as needed for spacing */
+  }
+  
+  
