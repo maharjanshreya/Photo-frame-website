@@ -1,12 +1,19 @@
 const dotenv = require("dotenv");
 const mongoose = require('mongoose');
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 dotenv.config({path:'./config.env'});
+const PORT = process.env.PORT;
+
 require('./db/conn');
-const User =  require('./model/userModel');
+//const User =  require('./model/userModel');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+  }));
+app.use(require('./router/auth'));
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -14,7 +21,7 @@ db.once('open', function() {
 });
 
 app.get('/', (req, res) => {
-  res.send("Hellosss world");
+  res.send("Hellosss world from server app.js");
 });
 
 app.listen(PORT, () => {
