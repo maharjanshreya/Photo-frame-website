@@ -13,11 +13,14 @@ function Navbar(){
     const [activeLink, setActiveLink] = useState(location.pathname);
     return(
         <div className='navbar-wrapper'>
-        <Nav className='navbar-nav ml-auto' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'  }}>
-            <Nav.Link as={Link} to='/' active={activeLink === 'logo'} onClick={() => setActiveLink('logo')} className='navbar-nav ms-auto' >
+        <Nav className='d-flex justify-content-between' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'  }}>
+            <div>
+                <Nav.Link as={Link} to='/' active={activeLink === 'logo'} onClick={() => setActiveLink('logo')} className='navbar-nav ms-auto' >
                 <img src={Logo} alt="Wave Billing System" className="my-specific-image" style={{ paddingLeft: '40px', color: '#426751', display: 'inline-block' }} />
             </Nav.Link>
-            <div className='navbar-nav texts'>
+            </div>
+            
+            <div className="d-flex text-center">
                 <Nav.Link as={Link} to='/' active={activeLink === 'home'} onClick={() => setActiveLink('home')} className='' >
                     <p style={{ fontFamily: 'Poppins', fontSize: '16px', paddingLeft: '20px', color: '#426751', fontWeight: '700', display: 'inline-block', verticalAlign: 'middle' }} className="text">Home</p>
                 </Nav.Link>
@@ -35,7 +38,7 @@ function Navbar(){
                 </Nav.Link>
             </div>
 
-            <div className='navbar-nav icons'>
+            <div className='d-flex text-right'>
                 <Nav.Link as={Link} to='/' active={activeLink === 'ContactUs'} onClick={() => setActiveLink('ContactUs')} className='icon' >
                     <RiMessage2Line size={26}/>
                 </Nav.Link>
