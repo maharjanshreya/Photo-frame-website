@@ -3,11 +3,13 @@ const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-
+const cors = require('cors');
 dotenv.config({path:'./config.env'});
 const PORT = process.env.PORT;
 
 require('./db/conn');
+// Enable CORS for all routes
+app.use(cors());
 //const User =  require('./model/userModel');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({

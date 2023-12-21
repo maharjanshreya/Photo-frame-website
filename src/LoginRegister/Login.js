@@ -13,7 +13,7 @@ function Login(){
                 <form>
                 <input type="text" id="username" name="username" placeholder="Username" /><br/>
                 <input type="text" id="password" name="password" placeholder="Password" /><br/>
-                <input type="submit" value="Login  " />
+                <input type="submit" value="Login" />
                 </form>
                 <p>Don't have an account? <u className='register-color'>Register Now </u></p>
             </div>

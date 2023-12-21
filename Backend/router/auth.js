@@ -1,8 +1,10 @@
 const express = require('express');
+
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 require('../db/conn');
+
 const User = require("../model/userModel");
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
@@ -54,6 +56,11 @@ router.post('/signin',async(req,res)=> {
         if(userLogin){
             const isMatch = await bcrypt.compare(password, userLogin.password);
             token = await userLogin.generateAuthToken();
+            res.cookie("jwtoken",token,{
+              
+                httpOnly:true,
+            
+            });
             if(!isMatch){
                 res.status(400).json({error: "invalid credentials passsowrd"});
     
