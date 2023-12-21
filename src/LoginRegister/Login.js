@@ -1,6 +1,7 @@
 import sideImage from '../Images/LoginImage.png';
 import Logo from '../Images/Rectangle 1.png';
 import  '../CSS/style.css';
+import { Link } from 'react-router-dom';
 function Login(){
     return(
         <div className="full-screen-image">
@@ -15,7 +16,7 @@ function Login(){
                 <input type="text" id="password" name="password" placeholder="Password" /><br/>
                 <input type="submit" value="Login" />
                 </form>
-                <p>Don't have an account? <u className='register-color'>Register Now </u></p>
+                <p>Don't have an account?<Link to='/' > <u className='register-color'>Register Now </u></Link></p>
             </div>
             
         

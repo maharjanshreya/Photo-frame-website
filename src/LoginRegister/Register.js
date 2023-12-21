@@ -4,6 +4,7 @@ import  '../CSS/style.css';
 import axios from 'axios';
 import React from 'react';
 import {use,useState} from 'react';
+import { Link } from 'react-router-dom';
 function Register(){
     const [user, setUser] = useState({
         firstname:"",lastname:"",username:"",email:"",password:"",cpassword:"",contact:""
@@ -55,7 +56,7 @@ function Register(){
                 <input type="text" id="password" name="contact" placeholder="Contact" required value={user.contact} onChange={handleInputs}/><br/>
                 <input type="submit" value="Register" onClick={handleSubmit} />
                 </form>
-                <p>Already have an account <u className='register-color'>Sign-in Now </u></p>
+                <p>Already have an account<Link to="/login"> <u className='register-color'>Sign-in Now </u></Link></p>
             </div>
             
         

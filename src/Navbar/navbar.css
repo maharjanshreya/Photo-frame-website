@@ -1,0 +1,26 @@
+/* Use ms-auto to push icons to the right */
+.navbar-nav .icons {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Add margin to the icons */
+  .navbar-nav .icon {
+    margin-left: 20px; /* Adjust as needed */
+    
+    font-size: 20px; /* Set the desired font size for icons */
+  }
+  .navbar-nav .texts {
+    display: flex;
+    align-items: center;
+    margin-left: 216px;
+    justify-content: center; /* Center the icons horizontally */
+  }
+  
+  /* Add margin to the icons */
+  .navbar-nav .text {
+    margin-left: 50px; /* Adjust as needed */
+    font-size: 20px; /* Set the desired font size for icons */
+    font-weight: bolder;
+  }

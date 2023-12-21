@@ -1,17 +1,20 @@
 import './App.css';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import HomePage from './Homepage';
+import HomePage from './Homepage/homepage';
 import Login from './LoginRegister/Login';
 import Register from './LoginRegister/Register';
-import myImage from './Images/Rectangle 1.png';
+import Navbar from './Navbar/navbar';
 function App() {
  
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Register/>} />
+        <Route path="/register" element={<Register/>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/navbar" element={<Navbar />} />
       </Routes>
     </BrowserRouter>
   );
