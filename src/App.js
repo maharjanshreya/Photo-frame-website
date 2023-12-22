@@ -6,6 +6,8 @@ import HomePage from './Homepage/homepage';
 import Login from './LoginRegister/Login';
 import Register from './LoginRegister/Register';
 import Navbar from './Navbar/navbar';
+import Account from './Profile/account';
+import AboutUs from './Homepage/aboutus';
 function App() {
  
 
@@ -16,6 +18,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/navbar" element={<Navbar />} />
+        <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/account" element={<Account />} />
       </Routes>
     </BrowserRouter>
   );

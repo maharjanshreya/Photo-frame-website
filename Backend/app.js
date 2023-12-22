@@ -4,12 +4,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
+const cookieParser = require("cookie-parser");
 dotenv.config({path:'./config.env'});
 const PORT = process.env.PORT;
 
 require('./db/conn');
 // Enable CORS for all routes
 app.use(cors());
+
+app.use(cookieParser());
 //const User =  require('./model/userModel');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({

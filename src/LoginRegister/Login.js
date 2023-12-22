@@ -7,7 +7,6 @@ import {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 function Login(){
     const navigate = useNavigate();
-
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const loginUser = async (e) => {
@@ -17,6 +16,8 @@ function Login(){
             headers: {
                 "Content-Type":"application/json"
             },
+            
+            credentials: 'include',
             body: JSON.stringify({
                 email,password
             })
@@ -26,7 +27,8 @@ function Login(){
             window.alert("Invalid Crediaitnlas");
         }
         else{
-            navigate("/");
+            window.alert("Successfully entered: Homepage");
+            navigate("/account");
         }
     }
     

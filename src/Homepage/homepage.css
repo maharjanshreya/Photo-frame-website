@@ -81,3 +81,20 @@
     font-weight: bolder;
   }
   
+
+  .header-aboutus{
+    font-family: 'Abril Fatface', serif;
+    color: #0E4224;
+  }
+  .sub-header-aboutus{
+    color: #9D9797;
+    font-size: 17px;
+  }
+  .image-height{
+    height: 700px;
+  }
+  .vision{
+    margin-top: 57px;
+    margin-left: 40px;
+    padding-left: 20px;
+  }

@@ -2,9 +2,12 @@ const express = require('express');
 
 const jwt = require('jsonwebtoken');
 const router = express.Router();
+const cookieParser = require("cookie-parser");
+
+router.use(cookieParser());
 const bcrypt = require('bcryptjs');
 require('../db/conn');
-
+const authenticate = require("../middleware/authenticate");
 const User = require("../model/userModel");
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
@@ -44,6 +47,7 @@ router.post('/register', async(req, res)=>{
 
    
 });
+
 // login route
 router.post('/signin',async(req,res)=> {
    
@@ -77,6 +81,14 @@ router.post('/signin',async(req,res)=> {
         console.log(err);
 
     }
-})
+});
+
+
+router.get('/account', authenticate, (req,res)=>{
+    console.log("Hello my account");
+    res.send(req.rootUser);
+    
+});
+
 module.exports = router;
   
