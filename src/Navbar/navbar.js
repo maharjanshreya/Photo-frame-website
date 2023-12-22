@@ -51,7 +51,7 @@ function Navbar(){
                     <MdOutlineFavoriteBorder size={26} />
                 </Nav.Link>
 
-                <Nav.Link as={Link} to='/' active={activeLink === 'ContactUs'} onClick={() => setActiveLink('ContactUs')} className='icon' >
+                <Nav.Link as={Link} to='/login' active={activeLink === 'ContactUs'} onClick={() => setActiveLink('ContactUs')} className='icon' >
                     <VscAccount size={26}  style={{marginRight: '30px'}} />
                 </Nav.Link>
             </div>
