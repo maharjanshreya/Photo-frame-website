@@ -1,0 +1,28 @@
+.user-information{
+    height: 250px;
+    margin-right: 80px;
+    margin-left: 80px;
+    background-color: #E9E9E9;
+}
+.profilepic{
+    padding: 40px;
+}
+.profile-text{
+    color: #097D96 ;
+    font-family: Poppins ;
+    font-weight: lighter ;
+    font-size: 18px ;
+}
+.profile-bold-text{
+    color: #097D96 ;
+    font-family: Poppins ;
+    font-weight: bolder;
+    font-size: 18px ;
+}
+.purchase-information{
+    height: 400px;
+    margin-right: 80px;
+    margin-left: 80px;
+    margin-bottom: 40px;
+    background-color: #E9E9E9;
+}

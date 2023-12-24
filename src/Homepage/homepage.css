@@ -81,7 +81,7 @@
     font-weight: bolder;
   }
   
-
+/* about us section */
   .header-aboutus{
     font-family: 'Abril Fatface', serif;
     color: #0E4224;
@@ -91,10 +91,24 @@
     font-size: 17px;
   }
   .image-height{
-    height: 700px;
+    height: 500px;
+    width: 400px;
   }
   .vision{
     margin-top: 57px;
     margin-left: 40px;
-    padding-left: 20px;
+    padding-left: 40px;
+    margin-right: 40px;
+    padding-right: 20px;
+  }
+  .contact{
+    color: #8B8787;
+    font-family: 'Gelasio', serif;
+    font-weight: lighter;
+    margin-top: 30px;
+  }
+  .thankyou{
+    color: #8B8787;
+   
+   
   }

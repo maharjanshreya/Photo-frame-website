@@ -33,13 +33,13 @@ function Navbar(){
                     <p style={{ fontFamily: 'Poppins', fontSize: '16px', paddingLeft: '20px', color: '#426751', fontWeight: '700', display: 'inline-block', verticalAlign: 'middle' }} className="text">Products</p>
                 </Nav.Link>
         
-                <Nav.Link as={Link} to='/' active={activeLink === 'ContactUs'} onClick={() => setActiveLink('ContactUs')} className='' >
+                <Nav.Link as={Link} to='/contact' active={activeLink === 'ContactUs'} onClick={() => setActiveLink('ContactUs')} className='' >
                     <p style={{ fontFamily: 'Poppins', fontSize: '16px', paddingLeft: '20px', color: '#426751', fontWeight: '700', display: 'inline-block', verticalAlign: 'middle' }} className="text">Contact Us</p>
                 </Nav.Link>
             </div>
 
             <div className='d-flex text-right'>
-                <Nav.Link as={Link} to='/' active={activeLink === 'ContactUs'} onClick={() => setActiveLink('ContactUs')} className='icon' >
+                <Nav.Link as={Link} to='/' active={activeLink === 'Message'} onClick={() => setActiveLink('Message')} className='icon' >
                     <RiMessage2Line size={26}/>
                 </Nav.Link>
 

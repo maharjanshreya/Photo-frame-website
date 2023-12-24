@@ -8,6 +8,7 @@ import Register from './LoginRegister/Register';
 import Navbar from './Navbar/navbar';
 import Account from './Profile/account';
 import AboutUs from './Homepage/aboutus';
+import ContactUs from './Homepage/ContactUs';
 function App() {
  
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/navbar" element={<Navbar />} />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/account" element={<Account />} />
+        <Route path="/contact" element={<ContactUs />} />
       </Routes>
     </BrowserRouter>
   );

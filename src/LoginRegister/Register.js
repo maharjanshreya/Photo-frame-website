@@ -1,9 +1,8 @@
 import sideImage from '../Images/LoginImage.png';
 import Logo from '../Images/Rectangle 1.png';
 import  '../CSS/style.css';
-import axios from 'axios';
 import React from 'react';
-import {use,useState} from 'react';
+import {useState} from 'react';
 import { Link } from 'react-router-dom';
 function Register(){
     const [user, setUser] = useState({
