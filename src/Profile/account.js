@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './profile.css';
 import Button from 'react-bootstrap/Button';
 import User from '../Images/user.png';
-
-import { Link } from 'react-router-dom';
+import { RiEditLine } from "react-icons/ri";
 import { TbLogout2 } from "react-icons/tb";
 function Account(){
     const navigate = useNavigate();
@@ -88,7 +87,7 @@ function Account(){
               )}<br/>
               <span className='profile-bold-text'>Email: </span>   {userData && (
                 <span className='text-center profile-text' >{userData.email} </span>
-              )}<br/>
+              )} <Button variant="primary" onClick={handleLogout}  style={{ backgroundColor: '#DB6611', borderColor: '#DB6611'}}> <RiEditLine /> Edit</Button><br/>
               <span className='profile-bold-text'> Contact: </span>   {userData && (
                 <span className='text-center profile-text'>{userData.contact} </span>
               )}<br/>

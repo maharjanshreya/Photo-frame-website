@@ -6,7 +6,7 @@ import {useState} from 'react';
 import { Link } from 'react-router-dom';
 function Register(){
     const [user, setUser] = useState({
-        firstname:"",lastname:"",username:"",email:"",password:"",cpassword:"",contact:""
+        firstname:"",lastname:"",username:"",email:"",password:"",cpassword:"",contact:"",
     });
     let name,value;
     const handleInputs = (e) =>{
@@ -24,7 +24,7 @@ function Register(){
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                firstname,lastname,username,email,password,cpassword,contact
+                firstname,lastname,username,email,password,cpassword,contact,role:"consumer"
             })
         });
         const data = await res.json();
@@ -35,6 +35,7 @@ function Register(){
         }else{
             window.alert("valid registration");
             console.log("valid registration");
+
         }
     }
     return(
@@ -56,6 +57,7 @@ function Register(){
                 <input type="submit" value="Register" onClick={handleSubmit} />
                 </form>
                 <p>Already have an account<Link to="/login"> <u className='register-color'>Sign-in Now </u></Link></p>
+             
             </div>
             
         

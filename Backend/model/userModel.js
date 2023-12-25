@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   cpassword: { type: String, required: true },
   contact: { type: String, required: true},
+  role: { type: String, default: "consumer" },
   date: {type: Date, default:Date.now},
   messages: [{
     email: { type: String, unique: true, lowercase: true, trim: true },

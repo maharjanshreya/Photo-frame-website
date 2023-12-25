@@ -9,6 +9,10 @@ import Navbar from './Navbar/navbar';
 import Account from './Profile/account';
 import AboutUs from './Homepage/aboutus';
 import ContactUs from './Homepage/ContactUs';
+import AdminLogin from './Admin/adminLogin';
+import AdminLogins from './LoginRegister/adminLogins';
+
+import AdminDashboard from './Admin/adminDashboard';
 function App() {
  
 
@@ -22,6 +26,9 @@ function App() {
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/account" element={<Account />} />
         <Route path="/contact" element={<ContactUs />} />
+        <Route path="/adminLogins" element={<AdminLogins />} />
+        <Route path="/adminLogin" element={<AdminLogin />} />
+        <Route path="/adminDashboard" element={<AdminDashboard />} />
       </Routes>
     </BrowserRouter>
   );

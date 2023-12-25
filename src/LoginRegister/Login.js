@@ -22,13 +22,38 @@ function Login(){
                 email,password
             })
         });
-        const data = res.json();
-        if(res.status === 400 || !data){
-            window.alert("Invalid Crediaitnlas");
-        }
-        else{
-            window.alert("Successfully entered: Homepage");
-            navigate("/account");
+        // const data = res.json();
+        // console.log(data);
+        // //localStorage.setItem('role', res.data.role);
+        // //const role = res.data.role;
+        // if(res.status === 400 || !data){
+        //     window.alert("Invalid Crediaitnlas");
+        // }
+        // // else if(role=="admin"){
+        // //     window.alert("Successfully entered as admin: Dashboard");
+        // //     navigate("/adminDashboard");
+        // // }
+        // else{
+        //     window.alert("Successfully entered as user: Homepage");
+        //     navigate("/");
+
+        // }
+        try {
+            const data = await res.json();
+            console.log("data",data);
+            console.log(data.userData.role);
+            const role=data.userData.role;
+            if (res.status === 400 || !data) {
+                window.alert("Invalid Credentials");
+            } else if(role==="admin") {
+                window.alert("Successfully entered as user: Homepage");
+                navigate("/adminDashboard");
+            }
+            else{
+                navigate("/");
+            }
+        } catch (error) {
+            console.error('Error parsing JSON:', error);
         }
     }
     
@@ -47,6 +72,7 @@ function Login(){
                 </form>
                 <p>Don't have an account?<Link to='/register' > <u className='register-color'>Register Now </u></Link></p>
                 <Link to='/'><button>CAncel</button></Link>
+                <Link to='/adminLogins'><p>Login as admin</p></Link>
             </div>
             
         

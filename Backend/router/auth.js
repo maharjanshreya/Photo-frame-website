@@ -14,7 +14,8 @@ router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
   });
 router.post('/register', async(req, res)=>{
-    const { firstname, lastname,username,email,password,cpassword,contact} = req.body;
+    const { firstname, lastname,username,email,password,cpassword,contact,role} = req.body;
+    const userRole = role || "consumer";
     if(!firstname|| !lastname|| !username|| !email|| !password|| !cpassword|| !contact){
         return res.status(422).json({error:"fill all the properties"});
     }
@@ -31,7 +32,7 @@ router.post('/register', async(req, res)=>{
   
     }
     else{
-        const user = new User({firstname, lastname,username,email,password,cpassword,contact});
+        const user = new User({firstname, lastname,username,email,password,cpassword,contact,role});
         const userRegister = await user.save();
         if(userRegister){
             res.status(201).json({message: "User resgister successfully"});
@@ -70,7 +71,12 @@ router.post('/signin',async(req,res)=> {
                 res.status(400).json({error: "invalid credentials passsowrd"});
     
             }else{
-                res.json({message: "user sign in successfully"});
+                res.json({message: "user sign in successfully",userData: {
+                    // Include any additional properties you want to send
+                    email: userLogin.email,
+                    role: userLogin.role,
+                    // Add other properties as needed
+                },});
             }
         }
         else{

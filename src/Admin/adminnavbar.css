@@ -1,0 +1,73 @@
+.navbar-wrapper {
+    background-color: #fff; /* Navbar background color */
+    
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add box shadow for a subtle effect */
+  }
+  
+  .navbar-wrapper .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar-wrapper .navbar-logo {
+    margin-right: auto;
+  }
+  
+  .navbar-wrapper .nav-links {
+    display: flex;
+  }
+  
+  .navbar-wrapper .nav-links a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #426751; /* Link color */
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  
+  .navbar-wrapper .nav-links a:hover {
+    color: #333; /* Hover color */
+  }
+  
+  .navbar-wrapper .icon {
+    margin-left: 20px;
+  }
+  
+  .side-navbar {
+    height: 100vh;
+    width: 220px; /* Adjust the width based on your design */
+    background-color: #FBE9A7; /* Sidebar background color */
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding-top: 0px;
+    color: #FBE9A7; /* Sidebar icon color */
+  }
+  
+  .side-navbar a {
+    text-decoration: none;
+    color: #fff; /* Sidebar link color */
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+  }
+  
+  .side-navbar a:hover {
+    color: #eee; /* Sidebar link hover color */
+  }
+  
+  .side-navbar .icon {
+    margin-bottom: 10px;
+  }
+  .side-navbar p {
+    color: #426751;
+    font-family: 'Poppins';
+    font-weight: bold;
+  }
+  
