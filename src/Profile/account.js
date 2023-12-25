@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import './profile.css';
 import Button from 'react-bootstrap/Button';
 import User from '../Images/user.png';
+
+import { Link } from 'react-router-dom';
 import { TbLogout2 } from "react-icons/tb";
 function Account(){
     const navigate = useNavigate();
@@ -39,6 +41,29 @@ function Account(){
         callMyAccount();
 
     }, []);
+    const handleLogout = async () => {
+      try {
+        const response = await fetch('/logout', {
+          method: 'GET',
+          headers: {
+            Accept: "application/json",
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        });
+  
+        if (response.ok) {
+          // Handle successful logout on the client side
+          console.log('Logout successful');
+          navigate('/login', { replace: true });
+        } else {
+          // Handle errors or display appropriate messages
+          console.error('Logout failed');
+        }
+      } catch (error) {
+        console.error('Error during logout:', error);
+      }
+    };
     return(
       <div>
         <Navbar/>
@@ -68,7 +93,7 @@ function Account(){
                 <span className='text-center profile-text'>{userData.contact} </span>
               )}<br/>
               
-               <Button variant="primary"> <TbLogout2 /> Log out</Button>
+              <Button variant="primary" onClick={handleLogout}> <TbLogout2 /> Log out</Button>
             </div>
           </div>
         </div>  {/*your information ended */ }

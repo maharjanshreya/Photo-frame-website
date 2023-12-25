@@ -95,6 +95,12 @@ router.get('/getData', authenticate, (req,res)=>{
     res.send(req.rootUser);
     
 });
+router.get('/logout', authenticate, (req,res)=>{
+    console.log("Log out user");
+    res.clearCookie('jwtoken',{path:'/'})
+    res.status(200).send("user log out successfully");
+    
+});
 
 router.post('/contact', authenticate, async (req,res)=>{
     try{
