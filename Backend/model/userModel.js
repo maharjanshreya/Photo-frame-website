@@ -12,6 +12,13 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   cpassword: { type: String, required: true },
   contact: { type: String, required: true},
+  date: {type: Date, default:Date.now},
+  messages: [{
+    email: { type: String, unique: true, lowercase: true, trim: true },
+    contact: { type: String, required: true},
+    message: { type: String, required: true}
+  }],
+
   tokens: [{token:  { type: String, required: true} }]
 });
 
@@ -34,6 +41,19 @@ userSchema.methods.generateAuthToken = async function(){
     console.log(err);
   }
 }
+
+//store the inquiry message
+
+userSchema.methods.addMessage = async function(email, contact, message) {
+  try {
+      this.messages = this.messages.concat({ email, contact, message });
+      await this.save();
+      return this.messages;
+  } catch (error) {
+      console.log(error);
+  }
+}
+
 //collection creation
 const User = mongoose.model('User', userSchema);
 

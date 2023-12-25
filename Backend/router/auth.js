@@ -9,6 +9,7 @@ const bcrypt = require('bcryptjs');
 require('../db/conn');
 const authenticate = require("../middleware/authenticate");
 const User = require("../model/userModel");
+const { useContext } = require('react');
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
   });
@@ -89,6 +90,32 @@ router.get('/account', authenticate, (req,res)=>{
     res.send(req.rootUser);
     
 });
+router.get('/getData', authenticate, (req,res)=>{
+    console.log("Contact page");
+    res.send(req.rootUser);
+    
+});
+
+router.post('/contact', authenticate, async (req,res)=>{
+    try{
+        const {email,contact,message}= req.body;
+        if(!email || !contact || !message){
+            console.log("Error in Contact form");
+            return res.json({error: "Please field the required fields"});
+        }
+        const userContact = await User.findOne({_id: req.userID});
+        if(userContact){
+            const userMessage = await userContact.addMessage(email,contact,message);
+            await userContact.save();
+            res.status(201).json({message:"USer contact successfull"}); 
+        }
+    }catch(err){
+        console.log(err);
+    }
+  
+    
+});
+
 
 module.exports = router;
   

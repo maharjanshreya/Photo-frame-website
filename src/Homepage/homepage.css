@@ -13,7 +13,14 @@
 .container{
     width: 100%;
     margin-left: 55px;
+    display: block;
+    height: auto;
+    
 }
+.contain{
+  display: block;
+}
+
 .hhh{
     font-family: 'Abril Fatface', serif;
     font-size: 65px;
@@ -112,3 +119,56 @@
    
    
   }
+  .contact-form{
+    text-align: center;
+    width: 1000px;
+    margin-left: 40px;
+    border: 1px solid #DBDBDB;
+    border-radius: 4px;
+    background-image: url('../Images/LoginImage.png');
+    box-shadow: 4 0 10px rgba(213, 34, 34, 0.2); /* Simple box shadow */
+    padding-bottom: 40px;
+
+  }
+  .email-input{
+    width: 20%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: white;
+  }
+  .placeholder{
+    
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: white;
+  }
+.contact-owner{
+  width: 600px;
+  background-color:#F4F4F4;
+  border-radius: 4px;
+  text-align: center;
+  border: 1px solid #DBDBDB ;
+  border-color: #DBDBDB;
+  margin: 60px;
+}
+.emoji{
+  margin: 30px;
+}
+.para{
+  text-align: left;
+  margin-top: 18px;
+}
+.center-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ margin-bottom: 40px;
+}

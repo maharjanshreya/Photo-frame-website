@@ -2,7 +2,9 @@ import Navbar from '../Navbar/navbar';
 import {React, useEffect,useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './profile.css';
+import Button from 'react-bootstrap/Button';
 import User from '../Images/user.png';
+import { TbLogout2 } from "react-icons/tb";
 function Account(){
     const navigate = useNavigate();
     const [userData, setUserData] = useState();
@@ -63,8 +65,10 @@ function Account(){
                 <span className='text-center profile-text' >{userData.email} </span>
               )}<br/>
               <span className='profile-bold-text'> Contact: </span>   {userData && (
-                <span className='text-center profile-text' >{userData.contact} </span>
-              )}
+                <span className='text-center profile-text'>{userData.contact} </span>
+              )}<br/>
+              
+               <Button variant="primary"> <TbLogout2 /> Log out</Button>
             </div>
           </div>
         </div>  {/*your information ended */ }
