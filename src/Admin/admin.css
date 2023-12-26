@@ -70,4 +70,39 @@
     font-family: 'Poppins';
     font-weight: bold;
   }
-  
+  .stack{
+    width: 400px;
+    border-top: 1px solid #9B9494;
+    border-left: 1px solid #9B9494;
+    border-right: 1px solid #9B9494;
+   
+  }
+  .category{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #888888;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  .admin-panel{
+    margin-right: 30px;
+  }
+  .p-2{
+    padding: 10px 25px;
+    border-bottom: 1px solid #9B9494;
+    font-family: 'Poppins';
+    text-align: center;
+  }
+  .active {
+    background-color: #0A57D1;
+    color: white;
+   
+  }
+  .header-text{
+   
+    font-weight:bold;
+    margin-bottom:20px;
+    margin-top: 40px;
+  }

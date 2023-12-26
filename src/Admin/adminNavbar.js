@@ -3,7 +3,7 @@ import { Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import Logo from '../Images/Rectangle 1.png';
-import './adminnavbar.css';
+import './admin.css';
 function adminNavbar(){
     
     return(

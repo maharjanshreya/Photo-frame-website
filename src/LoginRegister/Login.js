@@ -65,7 +65,7 @@ function Login(){
             <div className="right-column">
                 <p className='text'>Login and <br/>Design your frames with</p>
                 <img src={Logo} alt="logout" className=""  />
-                <form method='POST'>
+                <form method='POST' className='input-text'>
                 <input type="text" id="username" name="username" placeholder="Username" value={email} onChange={(e)=> setEmail(e.target.value)}/><br/>
                 <input type="text" id="password" name="password" placeholder="Password" value={password} onChange={(e)=> setPassword(e.target.value)}/><br/>
                 <input type="submit" value="Login" onClick={loginUser}/>

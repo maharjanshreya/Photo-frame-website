@@ -19,7 +19,7 @@ function AdminLogin(){
                 <input type="submit" value="Login" />
                 </form>
                 
-                <Link to='/'><button>CAncel</button></Link>
+                <Link to='/'><button>Cancel</button></Link>
                 <Link to='/login'><p>Login as user</p></Link>
             </div>
             
