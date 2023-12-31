@@ -83,7 +83,7 @@ function Account(){
             </div>
             <div className='profilepic'>
               {userData && (
-                <p className='text-center' style={{color:'#097D96',fontFamily:'Poppins',fontWeight:'lighter',fontSize:'32px'}}>{userData.firstname} {userData.lastname}</p>
+                <p className='' style={{color:'#097D96',fontFamily:'Poppins',fontWeight:'lighter',fontSize:'32px'}}>{userData.firstname} {userData.lastname}</p>
               )}<br/>
               <span className='profile-bold-text'>Email: </span>   {userData && (
                 <span className='text-center profile-text' >{userData.email} </span>
@@ -92,7 +92,7 @@ function Account(){
                 <span className='text-center profile-text'>{userData.contact} </span>
               )}<br/>
               
-              <Button variant="primary" onClick={handleLogout}> <TbLogout2 /> Log out</Button>
+              <Button variant="primary" onClick={handleLogout} style={{marginTop:'20px'}}> <TbLogout2 /> Log out</Button>
             </div>
           </div>
         </div>  {/*your information ended */ }

@@ -1,5 +1,5 @@
 .user-information{
-    height: 250px;
+    height: 269px;
     margin-right: 80px;
     margin-left: 80px;
     background-color: #E9E9E9;
@@ -20,6 +20,7 @@
     font-weight: bolder;
     font-size: 18px ;
     margin-right: 7px;
+    margin-bottom: 10px;
 }
 .purchase-information{
     height: 400px;

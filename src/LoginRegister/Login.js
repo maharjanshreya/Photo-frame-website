@@ -71,8 +71,7 @@ function Login(){
                 <input type="submit" value="Login" onClick={loginUser}/>
                 </form>
                 <p>Don't have an account?<Link to='/register' > <u className='register-color'>Register Now </u></Link></p>
-                <Link to='/'><button>CAncel</button></Link>
-                <Link to='/adminLogins'><p>Login as admin</p></Link>
+                <Link to='/'><button>Cancel</button></Link>
             </div>
             
         
