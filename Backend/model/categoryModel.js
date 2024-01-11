@@ -6,6 +6,6 @@ const categorySchema = new mongoose.Schema({
 });
 
 //collection creation
-const Category = mongoose.model('Category', categorySchema);
+const Category = mongoose.model("Category", categorySchema);
 
 module.exports = Category;

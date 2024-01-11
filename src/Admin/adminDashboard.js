@@ -5,6 +5,43 @@ import Stack from 'react-bootstrap/Stack';
 function Dashboard() {
   const [selectedOption, setSelectedOption] = useState('Create Category');
   const [activeOption, setActiveOption] = useState('Create Category');
+  const [category, setCategory] = useState({
+    name:""
+  });
+  let name,value;
+  const handleInputs = (e) =>{
+      console.log(e);
+      name = e.target.name;
+      value = e.target.value;
+      setCategory({...category, [name]:value});
+  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const{name} = category;
+    const res = await fetch("http://localhost:5000/category", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: name
+        })
+    });
+    if (!res.ok) {
+      console.log(`HTTP error! Status: ${res.status}`);
+    }
+  
+    const data = await res.json();
+    if(res.status=== 422 || !data){
+        window.alert("already exists category");
+        console.log("Category akready exists");
+        
+    }else{
+        window.alert("valid Category");
+        console.log("valid Category");
+
+    }
+}
   return (
     <div style={{ display: 'flex' }}>
       {/* Navbar on the left */}
@@ -49,9 +86,9 @@ function Dashboard() {
               {selectedOption === 'Create Category' && (
                 <div>
                   <h4 className='header-text' style={{color: '#444141'}}>Manage Category</h4>
-                  <form>
-                    <input type='text' placeholder='Enter your category' className='category'/>
-                    <input type='submit' value="Add" />
+                  <form method='POST'>
+                    <input type='text' placeholder='Enter your category' name="name" className='category'  required value={category.name} onChange={handleInputs}/>
+                    <input type='submit' value="Add" onClick={handleSubmit}/>
                   </form>
                 </div>
               )}

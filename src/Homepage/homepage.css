@@ -87,6 +87,28 @@
   .iconweight{
     font-weight: bolder;
   }
+  .product-homepage{
+    margin-top: 100px;
+    margin-left: 70px;
+    margin-right: 70px;
+  }
+  .product-name{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: #838383;
+    padding-top: 10px;
+
+  }
+  .price{
+    color: #C00505;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+
+
+
   
 /* about us section */
   .header-aboutus{
@@ -98,16 +120,64 @@
     font-size: 17px;
   }
   .image-height{
-    height: 500px;
-    width: 400px;
+    height: 400px;
+    
+  }
+  .para-about{
+    color: #000;
+
+    text-align: justify;
+    font-family: Poppins;
+    font-size: 19px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
   }
   .vision{
     margin-top: 57px;
     margin-left: 40px;
     padding-left: 40px;
-    margin-right: 40px;
-    padding-right: 20px;
+    margin-bottom: 122px;
+   
   }
+  .vision1{
+    font-family: 'Gelasio';
+    font-style: italic;
+    font-size: 39px;
+    color: #A40C0C;
+    font-weight: 200;
+    margin-bottom: 40px;
+    line-height: normal;
+  }
+  .mission{
+    margin-right: 120px;
+    margin-left: 120px;
+  }
+  .image-content{
+    margin: 90px;
+    
+  }
+  .image-content div{
+    margin: 30px;
+  }
+  .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    
+  }
+  .title{
+    color: #DFB41B;
+
+    text-align: justify;
+    font-family: Poppins;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+
+
   .contact{
     color: #8B8787;
     font-family: 'Gelasio', serif;
@@ -172,3 +242,4 @@
   align-items: center;
  margin-bottom: 40px;
 }
+
