@@ -29,7 +29,7 @@ function Navbar(){
                     <p style={{ fontFamily: 'Poppins', fontSize: '16px', paddingLeft: '20px', color: '#426751', fontWeight: '700', display: 'inline-block', verticalAlign: 'middle' }} className="text">About Us</p>
                 </Nav.Link>
         
-                <Nav.Link as={Link} to='/'  className='' >
+                <Nav.Link as={Link} to='/products'  className='' >
                     <p style={{ fontFamily: 'Poppins', fontSize: '16px', paddingLeft: '20px', color: '#426751', fontWeight: '700', display: 'inline-block', verticalAlign: 'middle' }} className="text">Products</p>
                 </Nav.Link>
         

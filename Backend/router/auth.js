@@ -50,16 +50,30 @@ router.post('/register', async(req, res)=>{
 
    
 });
-
+// Get all category names
+router.get('/category', async (req, res) => {
+    
+    try {
+      const categories = await Category.find({}, 'name');
+  
+      if (!categories || categories.length === 0) {
+        return res.status(404).json({ message: 'No categories found' });
+      }
+  
+      const categoryNames = categories.map(category => category.name);
+      console.log("Category Names:", categoryNames);
+      res.json(categoryNames);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+      console.log("Error: in vcategories");
+    }
+});
 router.post('/category', async (req, res) => {
     const {name} = req.body;
     if (!name) {
         return res.status(401).json({ message: 'Name is required' });
       }
     try {
-      
-     
-
       const existingCategory = await Category.findOne({ name });
 
       if (existingCategory) {
@@ -125,6 +139,14 @@ router.get('/account', authenticate, (req,res)=>{
     res.send(req.rootUser);
     
 });
+// router.get('/category', authenticate, (req,res)=>{
+//     console.log("Category");
+//     res.send(req.category);
+    
+// });
+  // Get all products
+
+
 router.get('/getData', authenticate, (req,res)=>{
     console.log("Contact page");
     res.send(req.rootUser);

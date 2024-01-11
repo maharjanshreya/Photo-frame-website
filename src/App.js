@@ -8,6 +8,7 @@ import Register from './LoginRegister/Register';
 import Navbar from './Navbar/navbar';
 import Account from './Profile/account';
 import AboutUs from './Homepage/aboutus';
+import Products from './Homepage/products';
 import ContactUs from './Homepage/ContactUs';
 import AdminLogin from './Admin/adminLogin';
 import AdminLogins from './LoginRegister/adminLogins';
@@ -24,6 +25,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/navbar" element={<Navbar />} />
         <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/products" element={<Products />} />
         <Route path="/account" element={<Account />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/adminLogins" element={<AdminLogins />} />
