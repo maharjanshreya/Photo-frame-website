@@ -9,6 +9,7 @@ const bcrypt = require('bcryptjs');
 require('../db/conn');
 const authenticate = require("../middleware/authenticate");
 const User = require("../model/userModel");
+const Category = require("../model/categoryModel");
 const { useContext } = require('react');
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
