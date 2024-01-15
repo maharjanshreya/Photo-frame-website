@@ -201,7 +201,7 @@ router.put('/category/:id', async (req, res) => {
         if (!updatedCategory) {
             return res.status(404).json({ error: 'Category not updated' });
         }
-
+        console.log('Updated Category:', updatedCategory);
         res.json(updatedCategory);
     } catch (error) {
         console.log("MEssagejfnskfn");
