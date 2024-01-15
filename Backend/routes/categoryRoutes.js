@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Category = require('../model/categoryModel');
+const { ObjectId } = require('mongodb');
 // Create category for products
 router.post('/category', async (req, res) => {
     try {
@@ -11,6 +12,7 @@ router.post('/category', async (req, res) => {
     }
   });
   // Get all users
+
 router.get('/category', async (req, res) => {
   try {
     const cat = await Category.find();
@@ -18,7 +20,9 @@ router.get('/category', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+
 });
-  
+
+
 
 module.exports = router;

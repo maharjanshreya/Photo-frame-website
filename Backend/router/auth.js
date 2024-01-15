@@ -11,6 +11,7 @@ const authenticate = require("../middleware/authenticate");
 const User = require("../model/userModel");
 const Category = require("../model/categoryModel");
 const { useContext } = require('react');
+const { ObjectId } = require('mongodb');
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
   });
@@ -60,9 +61,13 @@ router.get('/category', async (req, res) => {
         return res.status(404).json({ message: 'No categories found' });
       }
   
-      const categoryNames = categories.map(category => category.name);
-      console.log("Category Names:", categoryNames);
-      res.json(categoryNames);
+      const categoryData = categories.map(category => ({
+        id: category._id,  // Assuming you are using MongoDB and the ID is stored in _id
+        name: category.name
+      }));
+      console.log("Category Data:", categoryData);
+      // Send an object with a property "categories"
+        res.json({ categories: categoryData });
     } catch (error) {
       res.status(500).json({ error: error.message });
       console.log("Error: in vcategories");
@@ -156,7 +161,6 @@ router.get('/logout', authenticate, (req,res)=>{
     console.log("Log out user");
     res.clearCookie('jwtoken',{path:'/'})
     res.status(200).send("user log out successfully");
-    
 });
 
 router.post('/contact', authenticate, async (req,res)=>{
@@ -178,9 +182,55 @@ router.post('/contact', authenticate, async (req,res)=>{
   
     
 });
+// Update a specific category partially using PATCH
+router.put('/category/:id', async (req, res) => {
+    if(!req.body) {
+        return res.status(422).json({message: 'req.body is null'});
+    }
+   
+    try {
+        const categoryId = req.params.id;
+        const updates = req.body; // Updates should be sent as JSON in the request body
 
+        const updatedCategory = await Category.findByIdAndUpdate(
+            { _id: categoryId },
+            { $set: updates },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedCategory) {
+            return res.status(404).json({ error: 'Category not updated' });
+        }
+
+        res.json(updatedCategory);
+    } catch (error) {
+        console.log("MEssagejfnskfn");
+        res.status(500).json({ error: error.message });
+    }
+});
+
+  // Delete category by ID
+router.delete('/deletecategory/:id', async (req, res) => {
+    try {
+        const categoryId = req.params.id;
   
-
+        console.log('Received DELETE request for category ID:', categoryId);
+        // Perform the delete operation
+        const deletedCategory = await Category.findByIdAndDelete(categoryId);
+  
+        if (deletedCategory) {
+            return res.json({ message: 'Category deleted successfully', deletedCategory  });
+        } else {
+          console.log('Category not found:', categoryId);
+            return res.status(404).json({ error: 'Failed to delete category' });
+        }
+    } catch (error) {
+        console.error("error : ",error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+  
+  
 
 module.exports = router;
   
