@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-
-const UpdateCategory = ({ categoryId, onClose }) => {
+import Button from 'react-bootstrap/Button';
+const UpdateCategory = ({ categoryId, onClose, refreshCategoryList }) => {
     console.log("update category: ", categoryId);
     const [updates, setUpdates] = useState({
         name: '',
@@ -33,24 +33,24 @@ const UpdateCategory = ({ categoryId, onClose }) => {
 
             const updatedCategory = await response.json();
             console.log('Category updated:', updatedCategory);
+            // Call refreshCategoryList to fetch the updated category list
+         refreshCategoryList();
+            onClose();
         } catch (error) {
             console.error('Error:', error.message);
         }
     };
 
     return (
-        <form onSubmit={handleFormSubmit}>
-            <label htmlFor="name">Change Name:</label>
-            <input
-                type="text"
-                id="name"
-                name="name"
-                value={updates.name}
-                onChange={handleInputChange}
-            />
-
-            <button type="submit">Update Category</button>
-        </form>
+        <>
+        <div className='formedit'>
+            <form onSubmit={handleFormSubmit} >
+                <p className='editLabel'>Change your category name:</p>
+                <input type="text" id="name" name="name" value={updates.name} onChange={handleInputChange} className='categoryChange' placeholder='Enter your new category name'/><br/>
+                <Button type='submit' className='meterButtons' style={{backgroundColor:'green', width:'100%',borderColor:'green'}}>Submit</Button><br/>
+            </form>
+        </div>
+        </>
     );
 };
 

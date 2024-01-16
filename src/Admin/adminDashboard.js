@@ -7,35 +7,15 @@ import  {FiEdit} from "react-icons/fi";
 import {MdDeleteOutline} from "react-icons/md";
 import Button from 'react-bootstrap/Button';
 import UpdateCategory from './updateCategory';
-// edit the category name
-function editCategory(editId) {
-    
-  axios.put('/category/:id', {
-    
-    _id: editId,
-   
-    }, 
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    }).then(response => { 
-     
-      console.log("successful Submit add reader");  
-      console.log(response);
-      // window.location.reload();
-    }).catch(error => console.log(error.response.data));
-};
+import { FaBars } from "react-icons/fa";
+
 function Dashboard() {
   const [selectedOption, setSelectedOption] = useState('Create Category');
   const [show, setShow] = useState(false);
   const [activeOption, setActiveOption] = useState('Create Category');
   const [editId, setEditId] = useState(null);
   const handleClose = () => setShow(false);
-  const handleCategoryName = (event) => {
-    const categoryEditName = event.target.value;
-     
-  };
+  
   const handleShow = () => {
     
     setShow(true);
@@ -79,27 +59,7 @@ function Dashboard() {
 
   
 
-const handleEditSubmit = (event) => {
-  event.preventDefault();
-  console.log("Edit id: ",editId);
-  // Send PUT request using fetch or Axios
-  fetch('/category/${encodeURIComponent(editId)}', {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(category),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      // Handle the response data
-      console.log(data);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
- 
-};
+
   // Function to handle category deletion
   const handleDeleteCategory = async (_id) => {
     console.log('The category name to be deleted is ' + _id);
@@ -131,8 +91,9 @@ const handleEditSubmit = (event) => {
       // Handle error, show a message, etc.
     }
   };
-  const [categoryData, setCategoryData] = useState([]);
 
+  const [categoryData, setCategoryData] = useState([]);
+  const [navbarVisible, setNavbarVisible] = useState(false);
   const categoryFunc = async () => {
     try {
       const res = await fetch('/category',  {
@@ -164,14 +125,28 @@ const handleEditSubmit = (event) => {
     }, []);
     return (
       <>
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', position: 'relative' }}>
         {/* Navbar on the left */}
-        <div>
+        {/* Conditionally render the Navbar based on the navbarVisible state */}
+        {navbarVisible && (
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%' }}>
           <Navbar />
         </div>
+        )}
         <div style={{ flex: 1 }}>
           {/* Content on the right */}
-          <div style={{ marginLeft: '250px', padding: '20px' }}>
+          <div style={{ marginLeft: navbarVisible ? '250px' : '0', paddingLeft: '32px', paddingRight: '32px', transition: 'margin 0.3s'  }}>
+          <FaBars
+              className="toggle-button"
+              onClick={() => setNavbarVisible(!navbarVisible)}
+              style={{
+                position: 'absolute',
+                top: '10px',
+                left: '32px',
+                zIndex: '1000',
+              }}
+            />
+              
             <div className='d-flex'>
               <div className='admin-panel'>
                 <h4 className="header-text" style={{color: '#426751'}}>Admin Panel</h4>
@@ -216,13 +191,31 @@ const handleEditSubmit = (event) => {
                   
                 )}
                 {selectedOption === 'Create Product' && (
-                  <div>Manage Product</div>
+                  <div>
+                    <h4 className='header-text' style={{color: '#444141'}}>Manage Product</h4>
+                    <form method='POST'>
+                      <input type='text' placeholder='Enter product name' name="name" className='category'  required value={category.name} onChange={handleInputs}/>
+                      <input type='text' placeholder='Product Description' name="description" className='category'  required value={category.name} onChange={handleInputs}/>
+                      <input type='text' placeholder='Image' name="description" className='category'  required value={category.name} onChange={handleInputs}/>
+                      <input type='number' placeholder='Enter the product price' name="price" className='category'  required value={category.name} onChange={handleInputs}/>
+                      {/*Dropdown menu : out of stock or stock*/}
+                      <input type='text' placeholder='stock' name="stock" className='category'  required value={category.name} onChange={handleInputs}/>
+                      <input type='text' placeholder='size' name="size" className='category'  required value={category.name} onChange={handleInputs}/>
+                      <input type='text' placeholder='dimension' name="dimension" className='category'  required value={category.name} onChange={handleInputs}/>
+                      <input type='text' placeholder='color options' name="dimension" className='category'  required value={category.name} onChange={handleInputs}/>
+                     {/*ratings by users*/}
+                      <input type='text' placeholder='ratings' name="ratings" className='category'  required value={category.name} onChange={handleInputs}/>
+                    <hr />
+
+                      <input type='submit' value="Add" onClick={handleSubmit}/>
+                    </form>
+                  </div>
                 )}
                 {selectedOption === 'Users' && <div>Manage Users</div>}
               </div>
             </div>
             {categoryData && categoryData.length > 0 ? (
-            <table className="table table-striped meterReader-table outer-border">
+            <table className="table table-striped category-table outer-border">
           <thead>
             <tr>
               <th>Name</th>
@@ -234,7 +227,7 @@ const handleEditSubmit = (event) => {
           {categoryData.map((row) => (
               <tr key={row?.id}>
                 <td>{row?.name}</td>
-                <td>{row?.id}</td>
+               
                 <td>
                   <form >
                     <FiEdit size={18} alt="Edit Meter Reader" className="edit-icon" style={{marginRight:'6px'}} onClick={(e)=>{
@@ -269,7 +262,7 @@ const handleEditSubmit = (event) => {
       <Modal  show={show} onHide={handleClose} size="lg" aria-labelledby="contained-modal-title-vcenter" centered >
         <Modal.Body style={{padding:'68px',backgroundColor:'#D9D9D9'}}>
           <center><span style={{color: '#32325D',fontSize:'30px',fontWeight:'700'}}>Edit Your Account</span></center>
-          <UpdateCategory categoryId={editId} onClose={handleClose} />
+          <UpdateCategory categoryId={editId} onClose={handleClose} refreshCategoryList={categoryFunc} />
           
         </Modal.Body>
       </Modal>
