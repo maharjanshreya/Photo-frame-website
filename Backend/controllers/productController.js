@@ -65,13 +65,7 @@ const getProductController = async (req, res) => {
        
         });
         
-        // Save the product
-        const savedProduct = await products.save();
-        if (savedProduct) {
-            return res.status(201).json({ message: 'Product added', product: savedProduct });
-          } else {
-            return res.status(500).json({ error: 'Failed to save product' });
-          }
+        
     } catch (err) {
         console.error('Error:', err);
         res.status(500).send({
@@ -81,6 +75,35 @@ const getProductController = async (req, res) => {
         });
     }
 };
+//get single product by ID
+const getSingleProductController = async (req, res) => {
+    console.log('Request received for product ID:', req.params.id);
+    try {
+        const product = await Product.findById(req.params.id).select("-image");
+        
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found',
+            });
+        }
+
+        res.status(200).json({ 
+            success: true,
+            message: 'Product details',
+            product,
+        });
+        
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).json({
+            success: false,
+            message: 'Error in fetching product',
+            error: err.message,
+        });
+    }
+};
+
 
 //get photo
 const getPhotoController = async (req, res) => {
@@ -99,13 +122,7 @@ const getPhotoController = async (req, res) => {
        
         });
         
-        // Save the product
-        const savedProduct = await products.save();
-        if (savedProduct) {
-            return res.status(201).json({ message: 'Product added', product: savedProduct });
-          } else {
-            return res.status(500).json({ error: 'Failed to save product' });
-          }
+        
     } catch (err) {
         console.error('Error:', err);
         res.status(500).send({
@@ -117,4 +134,4 @@ const getPhotoController = async (req, res) => {
 };
 
 
-module.exports = {createProductController,getProductController,getPhotoController};
+module.exports = {createProductController,getProductController,getPhotoController,getSingleProductController};

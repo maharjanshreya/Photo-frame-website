@@ -2,22 +2,29 @@ import React, { useState,useEffect } from 'react';
 import Navbar from './adminNavbar';
 import Stack from 'react-bootstrap/Stack';
 import Modal from 'react-bootstrap/Modal';
-import axios from 'axios';
 import  {FiEdit} from "react-icons/fi";    
 import {MdDeleteOutline} from "react-icons/md";
-import Button from 'react-bootstrap/Button';
+import { FaRegImage } from "react-icons/fa6";
 import UpdateCategory from './updateCategory';
+import ViewDetails from './viewDetails';
 import PostProduct from './postProduct';
 function Dashboard() {
   const [selectedOption, setSelectedOption] = useState('Create Category');
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false); // for edit category
+  const [show2, setShow2] = useState(false);  // for viewing details of products
   const [activeOption, setActiveOption] = useState('Create Category');
   const [editId, setEditId] = useState(null);
+  const [productId, setProductId] = useState(null);
   const handleClose = () => setShow(false);
+  const handleClose2 = () => setShow2(false);
   
   const handleShow = () => {
     
     setShow(true);
+  };
+  const handleShow2 = () => {
+    
+    setShow2(true);
   };
   const [category, setCategory] = useState({
     name:""
@@ -92,7 +99,27 @@ function Dashboard() {
   };
 
   const [categoryData, setCategoryData] = useState([]);
-
+  const [productData, setProductData] = useState([]);
+  const productFunc = async () => {
+    try {
+      const res = await fetch('/products',  {
+      method: 'GET',
+      credentials: 'include',
+    });
+    if (!res.ok) {
+      const error = new Error(res.statusText);
+      throw error;
+    }
+      
+    const datas = await res.json();
+    console.log('API Response in products:', datas); 
+    setProductData(datas.products);
+    console.log("Datas.data",datas.products);
+  
+    } catch (err) {
+      console.log('Error in fetching data', err);
+    }
+    };
   const categoryFunc = async () => {
     try {
       const res = await fetch('/category',  {
@@ -120,6 +147,7 @@ function Dashboard() {
         
     useEffect(()=>{
       categoryFunc();
+      productFunc();
 
     }, []);
     return (
@@ -179,7 +207,7 @@ function Dashboard() {
                   <div>
                     <h4 className='header-text' style={{color: '#444141'}}>Manage Product</h4>
                     <PostProduct />
-                    
+                   
                   </div>
                 )}
                 {selectedOption === 'Users' && <div>Manage Users</div>}
@@ -189,7 +217,7 @@ function Dashboard() {
             <table className="table table-striped meterReader-table outer-border">
           <thead>
             <tr>
-              <th>Name</th>
+              <th>Category Name</th>
             <th>Action</th>
             </tr>
           </thead>
@@ -225,6 +253,55 @@ function Dashboard() {
          ) : (
           <p>No categories available.</p>
         )}
+
+        {productData && productData.length > 0 ? (
+            <table className="table table-striped meterReader-table outer-border">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+            <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+          
+          {productData.map((row) => (
+              <tr key={row?._id}>
+                <td>{row?._id}</td>
+                <td>{row?.productName}</td>
+                <td>{row?.description}</td>
+               
+                <td>
+                  <form >
+                    <FiEdit size={18} alt="Edit Meter Reader" className="edit-icon" style={{marginRight:'6px'}} onClick={(e)=>{
+                      setEditId(row._id);
+                      setShow(true);
+                    }} />
+                    <MdDeleteOutline style={{marginRight:'6px'}}
+                    size={21}
+                    alt="Delete Meter Reader"
+                    className="delete-icon"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleDeleteCategory(row?._id);
+                    }}
+                    
+                  />
+                 <FaRegImage onClick={(e)=>{
+                      setProductId(row._id); 
+                      
+                      setShow2(true);
+                    }}/>
+                  </form> 
+                </td>
+              </tr>
+            ))}
+            {/*Table Data end*/}
+          </tbody>
+        </table>
+         ) : (
+          <p>No categories available.</p>
+        )}
           </div>
         </div>
         
@@ -232,8 +309,17 @@ function Dashboard() {
       {/*pop up for updates */}
       <Modal  show={show} onHide={handleClose} size="lg" aria-labelledby="contained-modal-title-vcenter" centered >
         <Modal.Body style={{padding:'68px',backgroundColor:'#D9D9D9'}}>
-          <center><span style={{color: '#32325D',fontSize:'30px',fontWeight:'700'}}>Edit Your Account</span></center>
+          <center><span style={{color: '#32325D',fontSize:'30px',fontWeight:'700'}}>Edit Category</span></center>
           <UpdateCategory categoryId={editId} onClose={handleClose} refreshCategoryList={categoryFunc} />
+          
+        </Modal.Body>
+      </Modal>
+
+      {/*pop up for single product details*/}    
+      <Modal  show={show2} onHide={handleClose2} size="lg" aria-labelledby="contained-modal-title-vcenter" centered >
+        <Modal.Body style={{padding:'68px',backgroundColor:'#D9D9D9'}}>
+          <center><span style={{color: '#32325D',fontSize:'30px',fontWeight:'700'}}>View your details</span></center>
+          <ViewDetails productId={productId} onClose={handleClose2}  />
           
         </Modal.Body>
       </Modal>
