@@ -7,7 +7,6 @@ import  {FiEdit} from "react-icons/fi";
 import {MdDeleteOutline} from "react-icons/md";
 import Button from 'react-bootstrap/Button';
 import UpdateCategory from './updateCategory';
-import { FaBars } from "react-icons/fa";
 
 function Dashboard() {
   const [selectedOption, setSelectedOption] = useState('Create Category');
@@ -93,7 +92,7 @@ function Dashboard() {
   };
 
   const [categoryData, setCategoryData] = useState([]);
-  const [navbarVisible, setNavbarVisible] = useState(false);
+
   const categoryFunc = async () => {
     try {
       const res = await fetch('/category',  {
@@ -125,28 +124,14 @@ function Dashboard() {
     }, []);
     return (
       <>
-      <div style={{ display: 'flex', position: 'relative' }}>
+      <div style={{ display: 'flex' }}>
         {/* Navbar on the left */}
-        {/* Conditionally render the Navbar based on the navbarVisible state */}
-        {navbarVisible && (
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%' }}>
+        <div>
           <Navbar />
         </div>
-        )}
         <div style={{ flex: 1 }}>
           {/* Content on the right */}
-          <div style={{ marginLeft: navbarVisible ? '250px' : '0', paddingLeft: '32px', paddingRight: '32px', transition: 'margin 0.3s'  }}>
-          <FaBars
-              className="toggle-button"
-              onClick={() => setNavbarVisible(!navbarVisible)}
-              style={{
-                position: 'absolute',
-                top: '10px',
-                left: '32px',
-                zIndex: '1000',
-              }}
-            />
-              
+          <div style={{ marginLeft: '250px', padding: '20px' }}>
             <div className='d-flex'>
               <div className='admin-panel'>
                 <h4 className="header-text" style={{color: '#426751'}}>Admin Panel</h4>
@@ -198,6 +183,16 @@ function Dashboard() {
                       <input type='text' placeholder='Product Description' name="description" className='category'  required value={category.name} onChange={handleInputs}/>
                       <input type='text' placeholder='Image' name="description" className='category'  required value={category.name} onChange={handleInputs}/>
                       <input type='number' placeholder='Enter the product price' name="price" className='category'  required value={category.name} onChange={handleInputs}/>
+                      <select className='category' name='selectCategory' required style={{marginRight:'10px'}} onChange={handleInputs} >
+                                        <option>Select the category name</option>
+                                        {/* fetch the data */}
+                                        {
+                                            categoryData.map((row) => (
+                                            <option key={row.id} value={row.id}>
+                                            {row.name} 
+                                            </option>                                      
+                                        ))}
+                                    </select>
                       {/*Dropdown menu : out of stock or stock*/}
                       <input type='text' placeholder='stock' name="stock" className='category'  required value={category.name} onChange={handleInputs}/>
                       <input type='text' placeholder='size' name="size" className='category'  required value={category.name} onChange={handleInputs}/>
@@ -206,7 +201,7 @@ function Dashboard() {
                      {/*ratings by users*/}
                       <input type='text' placeholder='ratings' name="ratings" className='category'  required value={category.name} onChange={handleInputs}/>
                     <hr />
-
+                    
                       <input type='submit' value="Add" onClick={handleSubmit}/>
                     </form>
                   </div>
@@ -215,7 +210,7 @@ function Dashboard() {
               </div>
             </div>
             {categoryData && categoryData.length > 0 ? (
-            <table className="table table-striped category-table outer-border">
+            <table className="table table-striped meterReader-table outer-border">
           <thead>
             <tr>
               <th>Name</th>

@@ -4,12 +4,17 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const cookieParser = require("cookie-parser");
 
+const formidable = require('express-formidable');
 router.use(cookieParser());
 const bcrypt = require('bcryptjs');
 require('../db/conn');
 const authenticate = require("../middleware/authenticate");
 const User = require("../model/userModel");
 const Category = require("../model/categoryModel");
+const Product = require('../model/productModel');
+const fs = require('fs');
+
+const  createProductController  = require('../controllers/productController.js');
 const { useContext } = require('react');
 const { ObjectId } = require('mongodb');
 router.get('/', (req, res) => {
@@ -182,6 +187,8 @@ router.post('/contact', authenticate, async (req,res)=>{
   
     
 });
+
+router.post('/products',formidable(), createProductController);
 // Update a specific category partially using PATCH
 router.put('/category/:id', async (req, res) => {
     if(!req.body) {
