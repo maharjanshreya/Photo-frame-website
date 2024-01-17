@@ -7,7 +7,7 @@ import  {FiEdit} from "react-icons/fi";
 import {MdDeleteOutline} from "react-icons/md";
 import Button from 'react-bootstrap/Button';
 import UpdateCategory from './updateCategory';
-
+import PostProduct from './postProduct';
 function Dashboard() {
   const [selectedOption, setSelectedOption] = useState('Create Category');
   const [show, setShow] = useState(false);
@@ -178,32 +178,8 @@ function Dashboard() {
                 {selectedOption === 'Create Product' && (
                   <div>
                     <h4 className='header-text' style={{color: '#444141'}}>Manage Product</h4>
-                    <form method='POST'>
-                      <input type='text' placeholder='Enter product name' name="name" className='category'  required value={category.name} onChange={handleInputs}/>
-                      <input type='text' placeholder='Product Description' name="description" className='category'  required value={category.name} onChange={handleInputs}/>
-                      <input type='text' placeholder='Image' name="description" className='category'  required value={category.name} onChange={handleInputs}/>
-                      <input type='number' placeholder='Enter the product price' name="price" className='category'  required value={category.name} onChange={handleInputs}/>
-                      <select className='category' name='selectCategory' required style={{marginRight:'10px'}} onChange={handleInputs} >
-                                        <option>Select the category name</option>
-                                        {/* fetch the data */}
-                                        {
-                                            categoryData.map((row) => (
-                                            <option key={row.id} value={row.id}>
-                                            {row.name} 
-                                            </option>                                      
-                                        ))}
-                                    </select>
-                      {/*Dropdown menu : out of stock or stock*/}
-                      <input type='text' placeholder='stock' name="stock" className='category'  required value={category.name} onChange={handleInputs}/>
-                      <input type='text' placeholder='size' name="size" className='category'  required value={category.name} onChange={handleInputs}/>
-                      <input type='text' placeholder='dimension' name="dimension" className='category'  required value={category.name} onChange={handleInputs}/>
-                      <input type='text' placeholder='color options' name="dimension" className='category'  required value={category.name} onChange={handleInputs}/>
-                     {/*ratings by users*/}
-                      <input type='text' placeholder='ratings' name="ratings" className='category'  required value={category.name} onChange={handleInputs}/>
-                    <hr />
+                    <PostProduct />
                     
-                      <input type='submit' value="Add" onClick={handleSubmit}/>
-                    </form>
                   </div>
                 )}
                 {selectedOption === 'Users' && <div>Manage Users</div>}

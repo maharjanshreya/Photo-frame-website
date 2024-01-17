@@ -3,7 +3,7 @@ const router = express.Router();
 const formidable = require('express-formidable');
 const authenticate = require("../middleware/authenticate");
 const Product = require('../model/productModel.js');
-const  createProductController  = require('../controllers/productController.js');
+const  {createProductController}  = require('../controllers/productController.js');
 // Function to check if the user is an admin
 const isAdmin = (req, res, next) => {
     if (req.rootUser && req.rootUser.role === 'admin') {
