@@ -2,7 +2,7 @@ const Product = require('../model/productModel.js');
 const fs = require('fs');
 
 const createProductController = async (req, res) => {
-    const { productName, description, category, shipping, price, size, dimension } = req.fields;
+    const { productName, description, category, shipping, price,quantity, size, dimension } = req.fields;
     const { image } = req.files;
     try {
         // Validation
@@ -20,6 +20,7 @@ const createProductController = async (req, res) => {
             category,
             shipping,
             price,
+            quantity,
             size,
             dimension, });
 
@@ -56,7 +57,7 @@ const createProductController = async (req, res) => {
 const getProductController = async (req, res) => {
     
     try {
-       const products = await Product.find({}).select("-image").limit(12).sort({createdAt:-1});
+       const products = await Product.find({}).select("-image").limit(12).sort({createdAt:-1}).populate('category');
        res.status(200).json({ 
         success: true,
         total : products.length,
@@ -79,7 +80,7 @@ const getProductController = async (req, res) => {
 const getSingleProductController = async (req, res) => {
     console.log('Request received for product ID:', req.params.id);
     try {
-        const product = await Product.findById(req.params.id).select("-image");
+        const product = await Product.findById(req.params.id).select("-image").populate('category');
         
         if (!product) {
             return res.status(404).json({
@@ -133,5 +134,25 @@ const getPhotoController = async (req, res) => {
     }
 };
 
-
-module.exports = {createProductController,getProductController,getPhotoController,getSingleProductController};
+  // Delete category by ID
+  const deleteProductController = async (req, res) => {
+    try {
+        const productId = req.params.id;
+  
+        console.log('Received DELETE request for product ID:', productId);
+        // Perform the delete operation
+        const deletedProduct = await Product.findByIdAndDelete(productId);
+  
+        if (deletedProduct) {
+            return res.json({ message: 'Product deleted successfully', deletedProduct  });
+        } else {
+          console.log('Category not found:', productId);
+            return res.status(404).json({ error: 'Failed to delete category' });
+        }
+    } catch (error) {
+        console.error("error : ",error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+  
+module.exports = {createProductController,getProductController,getPhotoController,getSingleProductController,deleteProductController};

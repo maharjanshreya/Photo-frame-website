@@ -1,4 +1,4 @@
-@media only screen and (min-width: 1000px) {
+
   .d-flex {
     display: flex;
   }
@@ -138,156 +138,64 @@
     display: flex;
     justify-content: center;
   }
+  .product-view {
+   
+}
+  .view-width{
+    width: 20%;
+  }
+  .image{
+    flex: 0 0 auto;
+    width: 70%; /* Adjust the width as needed */
+    height: 80%; /* Adjust the height as needed */
+    overflow: hidden; /* Hide any content that overflows the image container */
+    margin-bottom: 10px;
+  }
+  .image img {
+    /* width: 100%;
+    height: 41%;
+    object-fit: cover; Maintain aspect ratio and cover the container */
+    display: block;
+    max-width: 100%; /* Make sure the image doesn't exceed its natural width */
+    max-height: 100vh; /* Adjust the height as needed, ensuring it doesn't exceed the viewport height */
+    width: auto;
+    height: auto;
+}
+.title-product-details{
+  color: #034959;
+font-family: Poppins;
+font-size: 23px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+padding-bottom: 3px;
+border-bottom: 1px solid #034959;
+}
+.title-name{
+  color: #175D73;
+font-family: Poppins;
+font-size: 17px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+margin-right: 10px;
+}
+.product-color-weight{
+  color: rgba(0, 0, 0, 0.46);
+font-family: Poppins;
+font-size: 15px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+}
+.details {
+  width: 90%; /* Adjust the width as needed */
+  text-align: justify;
+  padding: 20px; /* Add padding for better appearance */
+  overflow-y: auto; /* Enable vertical scrolling for overflowing content */
+}
+/* Optional: Style the details container to your liking */
+.details p {
+  margin: 0; /* Remove default margins */
 }
 
-@media only screen and (max-width: 450px) {
-  .toggle-button {
-    display: block; /* Show the button on small screens */
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 1000;
-  }
-  .navbar-wrapper {
-      margin-left: -200px; /* Hide the navbar on small screens */
-      background-color: #fff; /* Navbar background color */
-      
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add box shadow for a subtle effect */
-    }
-    
-    .navbar-wrapper .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .navbar-wrapper .navbar-logo {
-      margin-right: auto;
-    }
-    
-    .navbar-wrapper .nav-links {
-      display: flex;
-    }
-    
-    .navbar-wrapper .nav-links a {
-      margin-left: 20px;
-      text-decoration: none;
-      color: #426751; /* Link color */
-      font-family: 'Poppins', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-    }
-    
-    .navbar-wrapper .nav-links a:hover {
-      color: #333; /* Hover color */
-    }
-    
-    .navbar-wrapper .icon {
-      margin-left: 20px;
-    }
-    
-    .side-navbar {
-      height: 100vh;
-      width: 220px; /* Adjust the width based on your design */
-      background-color: #FBE9A7; /* Sidebar background color */
-      position: fixed;
-      left: 0;
-      top: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: left;
-      padding-top: 0px;
-      color: #FBE9A7; /* Sidebar icon color */
-    }
-    
-    .side-navbar a {
-      text-decoration: none;
-      color: #fff; /* Sidebar link color */
-      margin-top: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: left;
-    }
-    
-    .side-navbar a:hover {
-      color: #eee; /* Sidebar link hover color */
-    }
-    
-    .side-navbar .icon {
-      margin-bottom: 10px;
-    }
-    .side-navbar p {
-      color: #426751;
-      font-family: 'Poppins';
-      font-weight: bold;
-    }
-    .stack{
-      width: 400px;
-      border-top: 1px solid #9B9494;
-      border-left: 1px solid #9B9494;
-      border-right: 1px solid #9B9494;
-     
-    }
-    .category{
-      width: 92%;
-      padding: 12px 20px;
-      margin: 8px 0;
-      display: inline-block;
-      border: 1px solid #888888;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-    .category-table{
-      width: 92%;
-    }
-    
-    .admin-panel{
-      margin-right: 30px;
-    }
-    .p-2{
-      padding: 10px 25px;
-      border-bottom: 1px solid #9B9494;
-      font-family: 'Poppins';
-      text-align: center;
-    }
-    .active {
-      background-color: #0A57D1;
-      color: white;
-     
-    }
-    .header-text{
-     
-      font-weight:bold;
-      margin-bottom:20px;
-      margin-top: 40px;
-    }
-  
-    /* edit category */
-    .categoryChange{
-      width: 100%;
-      padding: 12px 20px;
-      margin-top: 0px;
-      margin-bottom: 8px;
-      display: inline-block;
-      border: 1px solid #888888;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-    .editLabel{
-      font-size: 20px;
-      font-weight: light;
-      font-family: 'Poppins', sans-serif;
-      color: #514c4c;
-      padding-top: 30px;
-      padding-bottom: 5px;
-      margin-bottom: 0px;
-    }
-    .formedit{
-      align-items: center;
-      display: flex;
-      justify-content: center;
-    }
-    .d-flex {
-      flex-direction: column;
-    }
-  }

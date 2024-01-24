@@ -37,6 +37,7 @@ function PostProduct(){
         image: "",
         category: "",
         price: "",
+        quantity: "",
         size: "",
         dimension: "",
       });
@@ -56,6 +57,7 @@ function PostProduct(){
         formData.append("description", product.description);
         formData.append("image", product.image); // Assuming product.image is a file input
         formData.append("price", product.price);
+        formData.append("quantity", product.quantity);
         formData.append("category", product.category);
         formData.append("size", product.size);
         formData.append("dimension", product.dimension);
@@ -90,6 +92,8 @@ function PostProduct(){
                       <input type='text' placeholder='Enter product name' name="productName" className='category'  required value={product.productName} onChange={handleInputs}/>
                       <input type='text' placeholder='Product Description' name="description" className='category'  required value={product.description} onChange={handleInputs}/>
                       <input type='file' placeholder='Image' name="image" className='category'  required  onChange={handleInputs}/>
+                      <input type='number' placeholder='Enter the product quantity' name="quantity" className='category'  required value={product.quantity} onChange={handleInputs}/>
+
                       <input type='number' placeholder='Enter the product price' name="price" className='category'  required value={product.price} onChange={handleInputs}/>
                       <select className='category' name='category' required style={{marginRight:'10px'}} onChange={handleInputs} >
                                         <option>Select the category name</option>

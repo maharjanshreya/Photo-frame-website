@@ -213,7 +213,9 @@ function Dashboard() {
                 {selectedOption === 'Users' && <div>Manage Users</div>}
               </div>
             </div>
-            {categoryData && categoryData.length > 0 ? (
+
+            {selectedOption === 'Create Category' && (
+            categoryData && categoryData.length > 0 ? (
             <table className="table table-striped meterReader-table outer-border">
           <thead>
             <tr>
@@ -252,13 +254,16 @@ function Dashboard() {
         </table>
          ) : (
           <p>No categories available.</p>
-        )}
+        ))}
 
-        {productData && productData.length > 0 ? (
+        {selectedOption === 'Create Product' && (
+        productData && productData.length > 0 ? (
             <table className="table table-striped meterReader-table outer-border">
           <thead>
             <tr>
               <th>Product Name</th>
+              <th>Product Quantity</th>
+              <th>Product Price</th>
             <th>Action</th>
             </tr>
           </thead>
@@ -266,9 +271,9 @@ function Dashboard() {
           
           {productData.map((row) => (
               <tr key={row?._id}>
-                <td>{row?._id}</td>
                 <td>{row?.productName}</td>
-                <td>{row?.description}</td>
+                <td>{row?.quantity}</td>
+                <td>{row?.price}</td>
                
                 <td>
                   <form >
@@ -301,7 +306,7 @@ function Dashboard() {
         </table>
          ) : (
           <p>No categories available.</p>
-        )}
+          ))}
           </div>
         </div>
         
@@ -316,9 +321,9 @@ function Dashboard() {
       </Modal>
 
       {/*pop up for single product details*/}    
-      <Modal  show={show2} onHide={handleClose2} size="lg" aria-labelledby="contained-modal-title-vcenter" centered >
-        <Modal.Body style={{padding:'68px',backgroundColor:'#D9D9D9'}}>
-          <center><span style={{color: '#32325D',fontSize:'30px',fontWeight:'700'}}>View your details</span></center>
+      <Modal  show={show2} onHide={handleClose2} size="lg" aria-labelledby="contained-modal-title-vcenter" centered style={{borderRadius:'24px'}}>
+        <Modal.Body style={{padding:'68px',paddingTop:'30px',paddingleft:'30px',backgroundColor:'#D9D9D9',borderRadius:'24px'}} >
+          <center style={{marginBottom:"30px"}}><span className='title-product-details'>View product details</span></center>
           <ViewDetails productId={productId} onClose={handleClose2}  />
           
         </Modal.Body>
