@@ -370,7 +370,7 @@ function Dashboard() {
       <Modal  show={show3} onHide={handleClose3} size="lg" aria-labelledby="contained-modal-title-vcenter" centered >
         <Modal.Body style={{padding:'68px',backgroundColor:'#D9D9D9'}}>
           <center><span style={{color: '#32325D',fontSize:'30px',fontWeight:'700'}}>Edit Category</span></center>
-          <UpdateProduct productId={editProductId} onClose={handleClose3} refreshCategoryList={productFunc} />
+          <UpdateProduct productId={editProductId} onClose={handleClose3} refreshProductList={productFunc} />
           
         </Modal.Body>
       </Modal>

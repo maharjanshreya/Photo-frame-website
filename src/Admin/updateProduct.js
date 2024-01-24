@@ -33,7 +33,6 @@ const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
     
         }, []);
     const [updates, setUpdates] = useState({
-        name: '',
         productName: '',
         description: '',
         image: '',
@@ -62,7 +61,6 @@ const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
             for (const key in updates) {
                 formData.append(key, updates[key]);
             }
-    
             const response = await fetch(`/product-update/${encodeURIComponent(productId)}`, {
                 method: 'PUT',
                 body: formData,
