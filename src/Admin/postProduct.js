@@ -6,7 +6,7 @@ function PostProduct(){
     try {
       const res = await fetch('/category',  {
       method: 'GET',
-      headers: {
+      headers: {   
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },

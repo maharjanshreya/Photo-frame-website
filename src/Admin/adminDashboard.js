@@ -6,17 +6,21 @@ import  {FiEdit} from "react-icons/fi";
 import {MdDeleteOutline} from "react-icons/md";
 import { FaRegImage } from "react-icons/fa6";
 import UpdateCategory from './updateCategory';
+import UpdateProduct from './updateProduct';
 import ViewDetails from './viewDetails';
 import PostProduct from './postProduct';
 function Dashboard() {
   const [selectedOption, setSelectedOption] = useState('Create Category');
   const [show, setShow] = useState(false); // for edit category
   const [show2, setShow2] = useState(false);  // for viewing details of products
+  const [show3, setShow3] = useState(false); // for edit product
   const [activeOption, setActiveOption] = useState('Create Category');
   const [editId, setEditId] = useState(null);
+  const [editProductId, setEditProductId] = useState(null);
   const [productId, setProductId] = useState(null);
   const handleClose = () => setShow(false);
   const handleClose2 = () => setShow2(false);
+  const handleClose3 = () => setShow3(false);
   
   const handleShow = () => {
     
@@ -311,8 +315,8 @@ function Dashboard() {
                 <td>
                   <form >
                     <FiEdit size={18} alt="Edit Meter Reader" className="edit-icon" style={{marginRight:'6px'}} onClick={(e)=>{
-                      setEditId(row._id);
-                      setShow(true);
+                      setEditProductId(row._id);
+                      setShow3(true);
                     }} />
                     <MdDeleteOutline style={{marginRight:'6px'}}
                     size={21}
@@ -344,7 +348,7 @@ function Dashboard() {
         </div>
         
       </div>
-      {/*pop up for updates */}
+      {/*pop up for updates of category*/}
       <Modal  show={show} onHide={handleClose} size="lg" aria-labelledby="contained-modal-title-vcenter" centered >
         <Modal.Body style={{padding:'68px',backgroundColor:'#D9D9D9'}}>
           <center><span style={{color: '#32325D',fontSize:'30px',fontWeight:'700'}}>Edit Category</span></center>
@@ -358,6 +362,15 @@ function Dashboard() {
         <Modal.Body style={{padding:'68px',paddingTop:'30px',paddingleft:'30px',backgroundColor:'#D9D9D9',borderRadius:'24px'}} >
           <center style={{marginBottom:"30px"}}><span className='title-product-details'>View product details</span></center>
           <ViewDetails productId={productId} onClose={handleClose2}  />
+          
+        </Modal.Body>
+      </Modal>
+
+      {/*pop up for updates of product */}
+      <Modal  show={show3} onHide={handleClose3} size="lg" aria-labelledby="contained-modal-title-vcenter" centered >
+        <Modal.Body style={{padding:'68px',backgroundColor:'#D9D9D9'}}>
+          <center><span style={{color: '#32325D',fontSize:'30px',fontWeight:'700'}}>Edit Category</span></center>
+          <UpdateProduct productId={editProductId} onClose={handleClose3} refreshCategoryList={productFunc} />
           
         </Modal.Body>
       </Modal>

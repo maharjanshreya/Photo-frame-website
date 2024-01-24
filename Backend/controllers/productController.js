@@ -134,8 +134,8 @@ const getPhotoController = async (req, res) => {
     }
 };
 
-  // Delete category by ID
-  const deleteProductController = async (req, res) => {
+// Delete category by ID
+const deleteProductController = async (req, res) => {
     try {
         const productId = req.params.id;
   
@@ -154,5 +154,65 @@ const getPhotoController = async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+// Update a specific product partially using put
+const updateProductController = async (req, res) =>  {
+    
+    try {
+        const { pid } = req.params;
+        const { productName, description, category, shipping, price,quantity, size, dimension} = req.fields;
+        const { image } = req.files;
+        // Validation
+        switch (true) {
+            case !productName:
+                return res.status(500).send({ error: 'Name is Required' });
+            case !description:
+                return res.status(500).send({ error: 'Description is Required' });
+            case image && image.size > 1000000:
+                return res.status(500).send({ error: 'Photo size is too large' });
+        }
+
+        const products = await Product.findByIdAndUpdate(pid,{
+            productName,
+            description,
+            category,
+            price,
+            quantity,
+            size,
+            dimension,
+        }, { new: true });
+        
+       
+
+        // Check if image exists
+        if (image && image.length > 0) {
+            try {
+                products.image.data = fs.readFileSync(image.path);
+                products.image.contentType = image.type;
+                console.log('Image Type:', image.type);
+            } catch (readFileError) {
+                console.error('Error reading file:', readFileError);
+                return res.status(500).json({ error: 'Failed to read image file' });
+            }
+        }
+
+        // Save the product
+        const savedProduct = await products.save();
+        if (savedProduct) {
+            return res.status(201).json({ success: true, message: 'Product updated',products: savedProduct });
+          } else {
+            return res.status(500).json({ error: 'Failed to save product' });
+          }
+    
+    } catch (error) {
+        console.error('Error console:', error);
+        res.status(500).send({
+            success: false,
+            error: error,
+            message: 'Error in updating product',
+        });
+    }
+};
+
   
-module.exports = {createProductController,getProductController,getPhotoController,getSingleProductController,deleteProductController};
+module.exports = {createProductController,getProductController,getPhotoController,getSingleProductController,deleteProductController,updateProductController};
