@@ -98,6 +98,39 @@ function Dashboard() {
     }
   };
 
+  // Function to handle product deletion
+  const handleDeleteProduct = async (_id) => {
+    console.log('The product name to be deleted is ' + _id);
+    try {
+      // Make an API call to delete the category
+      const response = await fetch(`/deleteproduct/${encodeURIComponent(_id)}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          // Add any other headers as needed (e.g., authentication token)
+        },
+      });
+
+      if (response.ok) {
+        // If deletion is successful, update the state to reflect the changes
+        try {
+          // Update the state to remove the deleted category
+          setProductData(prevProduct => prevProduct.filter(product => product._id !== _id));
+      } catch (error) {
+          console.error('Error during product deletion', error);
+          // Handle error, show a message, etc.
+      }
+      } else {
+        console.error('Failed to delete product messafe');
+        // Handle error, show a message, etc.
+      }
+    } catch (error) {
+      console.error('Error during product deletion', error);
+      // Handle error, show a message, etc.
+    }
+  };
+
+
   const [categoryData, setCategoryData] = useState([]);
   const [productData, setProductData] = useState([]);
   const productFunc = async () => {
@@ -288,7 +321,7 @@ function Dashboard() {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      handleDeleteCategory(row?._id);
+                      handleDeleteProduct(row?._id);
                     }}
                     
                   />
