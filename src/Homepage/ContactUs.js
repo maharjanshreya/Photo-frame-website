@@ -125,7 +125,7 @@ function Contact(){
                 <h3 style={{padding:'30px',color:'white'}}>Get in touch.</h3>
                 <form method='POST' onSubmit={contactForm}>
                     
-                    <input type="email" id="email" name="email" value={userData.email}onChange={handleInputs}required className='email-input' placeholder='Enter your email' style={{marginRight:'20px'}}/>
+                    <input type="email" id="email" name="email" value={userData.email} onChange={handleInputs}required className='email-input' placeholder='Enter your email' style={{marginRight:'20px'}}/>
                     
                     <input type="contact" id="contact" name="contact" value={userData.contact}onChange={handleInputs}required className='email-input'  placeholder='Enter your contact'/><br />
                     

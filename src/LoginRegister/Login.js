@@ -43,14 +43,20 @@ function Login(){
             console.log("data",data);
             console.log(data.userData.role);
             const role=data.userData.role;
+            
+
             if (res.status === 400 || !data) {
                 window.alert("Invalid Credentials");
             } else if(role==="admin") {
                 window.alert("Successfully entered as user: Homepage");
                 navigate("/adminDashboard");
+                localStorage.setItem('status', 'true');
+
             }
             else{
                 navigate("/");
+                localStorage.setItem('status', 'true');
+
             }
         } catch (error) {
             console.error('Error parsing JSON:', error);

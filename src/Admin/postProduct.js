@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react';
-function PostProduct(){
+function PostProduct({refreshCategoryList }){
     const [categoryData, setCategoryData] = useState([]);
 
   const categoryFunc = async () => {
@@ -77,11 +77,12 @@ function PostProduct(){
             const data = await res.json();
     
             if (res.status === 422 || !data) {
-                window.alert("Category already exists");
-                console.log("Category already exists");
+                window.alert("Product already exists");
+                console.log("Product already exists");
             } else {
-                window.alert("Valid Category");
-                console.log("Valid Category");
+                window.alert("Product Valid");
+                console.log("Product Valid");
+                refreshCategoryList();
             }
         } catch (error) {
             console.error('Error during fetch:', error);

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
-const UpdateCategory = ({ categoryId, onClose, refreshCategoryList }) => {
+const UpdateCategory = ({ categoryName,categoryId, onClose, refreshCategoryList }) => {
     console.log("update category: ", categoryId);
+    console.log("categroy nemae: ", categoryName);
     const [updates, setUpdates] = useState({
-        name: '',
+        name: categoryName,
     });
     let name,value;
     const handleInputChange = (e) => {
@@ -46,7 +47,7 @@ const UpdateCategory = ({ categoryId, onClose, refreshCategoryList }) => {
         <div className='formedit'>
             <form onSubmit={handleFormSubmit} >
                 <p className='editLabel'>Change your category name:</p>
-                <input type="text" id="name" name="name" value={updates.name} onChange={handleInputChange} className='categoryChange' placeholder='Enter your new category name'/><br/>
+                <input type="text" id="name" name="name" value={updates.name} defaultValue={categoryName}  onChange={handleInputChange} className='categoryChange' placeholder='Enter your new category name'/><br/>
                 <Button type='submit' className='meterButtons' style={{backgroundColor:'green', width:'100%',borderColor:'green'}}>Submit</Button><br/>
             </form>
         </div>

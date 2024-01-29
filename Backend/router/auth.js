@@ -87,6 +87,7 @@ router.post('/category', async (req, res) => {
       const existingCategory = await Category.findOne({ name });
 
       if (existingCategory) {
+        console.log("Category already exits");
         return res.status(200).json({ message: 'Category already exists' });
       }
 

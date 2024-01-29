@@ -16,6 +16,7 @@ function Dashboard() {
   const [show3, setShow3] = useState(false); // for edit product
   const [activeOption, setActiveOption] = useState('Create Category');
   const [editId, setEditId] = useState(null);
+  const [defaultName, setDefaultName] = useState(null);
   const [editProductId, setEditProductId] = useState(null);
   const [productId, setProductId] = useState(null);
   const handleClose = () => setShow(false);
@@ -57,13 +58,14 @@ function Dashboard() {
       console.log(`HTTP error! Status: ${res.status}`);
     }    
     const data = await res.json();
-    if(res.status=== 422 || !data){
+    if(res.status=== 200 || !data){
         window.alert("already exists category");
         console.log("Category akready exists");
         
     }else{
         window.alert("valid Category");
         console.log("valid Category");
+        categoryFunc();
     }
   }
 
@@ -87,7 +89,7 @@ function Dashboard() {
         // If deletion is successful, update the state to reflect the changes
         try {
           // Update the state to remove the deleted category
-          setCategoryData(prevCategories => prevCategories.filter(category => category._id !== _id));
+          setCategoryData(prevCategories => prevCategories.filter(category => category.id !== _id));
       } catch (error) {
           console.error('Error during category deletion', error);
           // Handle error, show a message, etc.
@@ -243,7 +245,7 @@ function Dashboard() {
                 {selectedOption === 'Create Product' && (
                   <div>
                     <h4 className='header-text' style={{color: '#444141'}}>Manage Product</h4>
-                    <PostProduct />
+                    <PostProduct refreshProductList={productFunc}/>
                    
                   </div>
                 )}
@@ -269,7 +271,7 @@ function Dashboard() {
                 <td>
                   <form >
                     <FiEdit size={18} alt="Edit Meter Reader" className="edit-icon" style={{marginRight:'6px'}} onClick={(e)=>{
-                      setEditId(row.id);
+                      setEditId(row.id); setDefaultName(row.name);
                       setShow(true);
                     }} />
                     <MdDeleteOutline
@@ -352,7 +354,7 @@ function Dashboard() {
       <Modal  show={show} onHide={handleClose} size="lg" aria-labelledby="contained-modal-title-vcenter" centered >
         <Modal.Body style={{padding:'68px',backgroundColor:'#D9D9D9'}}>
           <center><span style={{color: '#32325D',fontSize:'30px',fontWeight:'700'}}>Edit Category</span></center>
-          <UpdateCategory categoryId={editId} onClose={handleClose} refreshCategoryList={categoryFunc} />
+          <UpdateCategory categoryName={defaultName} categoryId={editId} onClose={handleClose} refreshCategoryList={categoryFunc} />
           
         </Modal.Body>
       </Modal>

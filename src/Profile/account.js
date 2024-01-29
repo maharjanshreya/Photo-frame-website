@@ -32,7 +32,7 @@ function Account(){
       
         } catch (err) {
           console.log('Error in fetching data', err);
-          navigate('/login');
+          navigate('/login', { replace: true });
         }
       };
       
@@ -53,7 +53,8 @@ function Account(){
   
         if (response.ok) {
           // Handle successful logout on the client side
-          console.log('Logout successful');
+          // localStorage.setItem('status', 'false');
+          console.log('Logout successful'); 
           navigate('/login', { replace: true });
         } else {
           // Handle errors or display appropriate messages

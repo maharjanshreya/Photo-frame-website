@@ -93,19 +93,41 @@
     margin-right: 70px;
   }
   .product-name{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Gelasio';
     font-size: 20px;
-    font-weight: bold;
     color: #838383;
     padding-top: 10px;
 
   }
   .price{
-    color: #C00505;
+    font-family: 'fenix';
+    color: #B4B4B4;
     font-size: 20px;
-    font-weight: bold;
+  }
+  .heading-title{
+    margin: 30px;
+    color: #3F4141;
+    margin-top: 50px;
+    font-family: Gelasio;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    
   }
 
+  .fade-in {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .visible {
+    opacity: 1;
+  }
+  
+  .hidden {
+    opacity: 0;
+  }
 
 
 
@@ -164,6 +186,10 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
+    
+  }
+  .center:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     
   }
   .title{

@@ -1,0 +1,21 @@
+.product-single{
+    margin: 40px;
+}
+.image-product{
+    margin: 40px;
+    margin-top: 0px;
+    float: left;
+}
+.product-names{
+    font-family: 'Gelasio';
+    font-size: 30px;
+    color: #5c5858;
+    padding-top: 10px;
+
+}
+.price-single-product{
+    font-family: 'fenix';
+    font-size: 30px;
+    color: #c50909;
+    font-weight: bold;
+}
