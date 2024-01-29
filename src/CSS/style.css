@@ -6,6 +6,7 @@
 
 .left-column {
   flex: 1; /* Take up as much space as available */
+  width: 40%;
 }
 
 .right-column {
@@ -19,6 +20,10 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  position: fixed;
+  top: 0;
+  left: 0%;
+  transform: translateX(-50%);
 }
 .text{
   font-family: 'Poppins', sans-serif;

@@ -36,8 +36,12 @@ function App() {
     //   setHasToken(false);
     // }
    // Check for the presence of a valid token
-   const token = Cookies.get('jwtoken'); // Replace with your actual token cookie name
-   setHasToken(!!token);
+   const token = localStorage.getItem('token'); // Replace with your actual token cookie name
+   
+   // Check if the cookie with the name 'jwtoken' exists
+  const hasJWToken = token !== undefined;
+  console.log("jwtoken",hasJWToken);
+   setHasToken(hasJWToken);
   }, []);
 
   return (

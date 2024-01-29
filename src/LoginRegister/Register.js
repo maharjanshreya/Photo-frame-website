@@ -46,7 +46,7 @@ function Register(){
             <div className="right-column">
                 <p className='text'>Login and <br/>Design your frames with</p>
                 <img src={Logo} alt="logout" className=""  />
-                <form method='POST'>
+                <form method='POST' className='input-text'>
                 <input type="text" id="username" name="firstname" placeholder="Firstname"  required value={user.firstname} onChange={handleInputs}/><br/>
                 <input type="text" id="username" name="lastname" placeholder="Lastname" required value={user.lastname} onChange={handleInputs}/><br/>
                 <input type="text" id="username" name="username" placeholder="Username" required value={user.username} onChange={handleInputs}/><br/>

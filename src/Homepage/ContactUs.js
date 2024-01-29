@@ -4,6 +4,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { MdOutlineMail } from "react-icons/md";
 import './homepage.css';
+import Footer from './footer';
 function Contact(){
     const mapUrl = "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d613.83748789161!2d85.30232469876128!3d27.709523225122158!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb18f7472a7699%3A0xb9746c639eb67d58!2sSaman%20Photo%20Frame!5e0!3m2!1sen!2snp!4v1703425149052!5m2!1sen!2snp";
     
@@ -134,6 +135,7 @@ function Contact(){
                 </form>
             </div>
             </div>
+            <Footer/>
         </div>
     );
 }

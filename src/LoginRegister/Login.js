@@ -51,7 +51,7 @@ function Login(){
                 window.alert("Successfully entered as user: Homepage");
                 navigate("/adminDashboard");
                 localStorage.setItem('status', 'true');
-
+                localStorage.setItem('token', 'true');
             }
             else{
                 navigate("/");

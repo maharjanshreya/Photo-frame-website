@@ -6,8 +6,8 @@ import { IoSearchOutline } from "react-icons/io5";
 import Button from 'react-bootstrap/Button';
 import Image from '../Images/Group 7.png';
 import Image2 from '../Images/Group 14.png';
-
-import Frame from '../Images/product7.png';
+import Footer from './footer';
+import Frame from '../Images/product5.png';
 import Carousel from 'react-bootstrap/Carousel';
 import { FaRegHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -162,7 +162,7 @@ function Homepage(){
             <input type="file" onChange={handlePhotoUpload} />
             {userPhoto && <ImageFrameOverlay frameSrc={Frame} photoSrc={userPhoto} />}
           </div>
-
+        <Footer />
         </div>
         
 

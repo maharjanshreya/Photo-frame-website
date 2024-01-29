@@ -4,7 +4,7 @@ import sideImage1 from '../Images/about.png';
 import flex1 from '../Images/about1.png';
 import flex2 from '../Images/about2.png';
 import flex3 from '../Images/about3.png';
-
+import Footer from './footer';
 function Aboutus(){
     return(
         <div>
@@ -57,6 +57,7 @@ function Aboutus(){
                 </div>
 
             </div>
+            <Footer/>
         </div>
     );
 }

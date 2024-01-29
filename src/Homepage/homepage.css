@@ -269,3 +269,10 @@
  margin-bottom: 40px;
 }
 
+/* footer  */
+.facebook:hover{
+   color: #0A57D1;
+}
+.instagram:hover{
+  color: #ED4956;
+}

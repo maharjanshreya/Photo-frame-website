@@ -91,7 +91,9 @@ function Product(){
                         <p style={{fontWeight:'600'}}>Size: {productData.size}</p>
                         
                         <p style={{fontWeight:'600'}}>Dimension: {productData.dimension}</p>
-                        <p style={{fontWeight:'600'}}>Available({productData.quantity})</p>
+                        <p style={{ fontWeight: '600' }}>
+                          {productData.quantity > 0 ? `Available(${productData.quantity})` : <span style={{color:'red', fontWeight:'800'}}>Out of Stock</span>}
+                        </p>
 
 
                     </div>
