@@ -43,7 +43,7 @@ function Navbar(){
                     <RiMessage2Line size={26}/>
                 </Nav.Link>
 
-                <Nav.Link as={Link} to='/'  className='icon' >
+                <Nav.Link as={Link} to='/cart'  className='icon' >
                     <PiShoppingCart size={26} />
                 </Nav.Link>
 

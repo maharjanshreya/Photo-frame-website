@@ -19,3 +19,18 @@
     color: #c50909;
     font-weight: bold;
 }
+.add-to-cart{
+    background-color: #c50909;
+    padding: 8px 20px;
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 7px;
+}
+.add-to-cart:hover{
+    background-color: #ab1010;
+}
+.added-to-cart{
+    padding: 8px 20px;
+    border: 1px solid #fff;
+    border-radius: 7px;
+}

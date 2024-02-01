@@ -63,6 +63,7 @@
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.07);
   }
   .round-button-search{
+    width: 80%;
     display: inline-block;
     padding-top: 10px; /* Adjust padding as needed */
     padding-bottom: 10px;
@@ -275,4 +276,23 @@
 }
 .instagram:hover{
   color: #ED4956;
+}
+
+
+/* Search  */
+.search-container{
+  margin-left: 60px;
+  margin-right: 60px;
+  
+}
+.search-button{
+  border: 1px solid #fff;
+  padding: 4px 10px;
+  background-color: #000;
+  border-radius: 5px;
+}
+.found-text{
+  color: #525555;
+  font-family: 'Gelasio';
+  font-size: 20px;
 }

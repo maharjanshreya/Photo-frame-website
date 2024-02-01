@@ -3,10 +3,15 @@ import Navbar from '../Navbar/navbar';
 import { useParams } from 'react-router-dom';
 import { CiStar } from "react-icons/ci";
 import './product.css';
+import Button from 'react-bootstrap/Button';
+import { MdCheck } from "react-icons/md";
+import Cart from '../ProductView/cart';
 function Product(){
     const { productId } = useParams();
     const [productData, setProductData] = useState([]);
     const [imageURL, setImageURL] = useState(null);
+    const [isAdded, setIsAdded] = useState(false);
+
     const productFunc = async () => {
         try {
           const res = await fetch(`/products/${encodeURIComponent(productId)}`,  {
@@ -27,8 +32,18 @@ function Product(){
           console.log('Error in fetching data', err);
         }
     };
-    
+    const handleCart = (id, productName,price)=>{
+       
+      setIsAdded(true);
+      passArray(id, productName,price);
+    }
+    const passArray = (id, productName,price)=>{
 
+      Cart(id, productName,price);
+    }
+    const handleReverse= ()=>{
+      setIsAdded(false);
+    }
     const imageFunc = async () => {
         try {
           const res = await fetch(`/product-image/${encodeURIComponent(productId)}`  ,  {
@@ -95,7 +110,8 @@ function Product(){
                           {productData.quantity > 0 ? `Available(${productData.quantity})` : <span style={{color:'red', fontWeight:'800'}}>Out of Stock</span>}
                         </p>
 
-
+                         {/* {isAdded ? <Button variant="success" onClick={handleReverse}className='added-to-cart'><MdCheck/></Button>:<button className='add-to-cart' onClick={handleCart(productData._id,productData.productName,productData.price)}>Add To Cart</button>
+                          } */}
                     </div>
                 )}
             </div>

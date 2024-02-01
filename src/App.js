@@ -11,9 +11,13 @@ import Account from './Profile/account';
 import AboutUs from './Homepage/aboutus';
 import Products from './Homepage/products';
 import ContactUs from './Homepage/ContactUs';
+
+import Search from './Homepage/searchPage';
 import AdminLogin from './Admin/adminLogin';
 import ProductView from './ProductView/product';
 import AdminDashboard from './Admin/adminDashboard';
+import Cart from './ProductView/cart';
+
 
 import { useNavigate } from 'react-router-dom';
 import Homepage from './Homepage/homepage';
@@ -58,6 +62,7 @@ function App() {
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/products" element={<Products />} />
         <Route path="/account" element={<Account />}/>
+        <Route path="/search" element={<Search />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/adminLogin" element={<AdminLogin />} />
         {hasToken && (
@@ -66,6 +71,7 @@ function App() {
         </>
         )}
         <Route path="/productView/:productId" element={<ProductView />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
     </BrowserRouter>
   );

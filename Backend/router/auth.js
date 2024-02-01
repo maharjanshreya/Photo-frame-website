@@ -13,7 +13,7 @@ const User = require("../model/userModel");
 const Category = require("../model/categoryModel");
 const Product = require('../model/productModel');
 const fs = require('fs');
-
+const {searchController}= require('../controllers/searchController.js');
 const  {createProductController,getProductController,getPhotoController,getSingleProductController,deleteProductController,updateProductController}  = require('../controllers/productController.js');
 const { useContext } = require('react');
 const { ObjectId } = require('mongodb');
@@ -195,6 +195,9 @@ router.get('/products/:id', getSingleProductController);
 router.get('/product-image/:pid', getPhotoController);
 router.delete('/deleteproduct/:id', deleteProductController);
 router.put('/product-update/:pid',formidable(), updateProductController);
+
+
+router.get('/search/:keyword', searchController);
 
 // Update a specific category partially using PATCH
 router.put('/category/:id', async (req, res) => {
