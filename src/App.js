@@ -24,7 +24,6 @@ import Homepage from './Homepage/homepage';
 
 function App() {
   const [hasToken, setHasToken] = useState(false);
-  console.log("componenedy renedered");
   useEffect(() => {
     // const tokenCookieName = 'jwtoken';
     

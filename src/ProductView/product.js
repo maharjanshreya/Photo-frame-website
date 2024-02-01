@@ -6,6 +6,8 @@ import './product.css';
 import Button from 'react-bootstrap/Button';
 import { MdCheck } from "react-icons/md";
 import Cart from '../ProductView/cart';
+
+import axios from 'axios';
 function Product(){
     const { productId } = useParams();
     const [productData, setProductData] = useState([]);
@@ -32,15 +34,13 @@ function Product(){
           console.log('Error in fetching data', err);
         }
     };
-    const handleCart = (id, productName,price)=>{
-       
+    const [product_id, setProduct_Id] = useState(productData._id);
+    const handleCart = (p_id)=>{
+      setProduct_Id(p_id);
+      
       setIsAdded(true);
-      passArray(id, productName,price);
     }
-    const passArray = (id, productName,price)=>{
-
-      Cart(id, productName,price);
-    }
+    
     const handleReverse= ()=>{
       setIsAdded(false);
     }
@@ -69,11 +69,58 @@ function Product(){
           console.log('Error in fetching image data', err);
         }
     }; 
+    const addToCart = async () => {
+      const data = {
+        userId: userData.userId,
+        items: [
+          {
+            productId: product_id,
+            quantity: 2,
+          },
+        ],
+      };
+      try {
+          const response = await axios.post('/add-to-cart', data);
+          window.alert("Successfully added to cart");
+          console.log("cart: ",response.data);
+        } catch (error) {
+          console.error('Error adding to cart:', error);
+        }
+      };
+      const [userData, setUserData] = useState({userId:""});
+
+      const userContact = async () => {
+        try {
+           const res = await fetch('/getData', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+      
+          if (!res.ok) {
+            const error = new Error(res.statusText);
+            throw error;
+          }
+      
+          const data = await res.json();
+          setUserData({...userData, userId: data._id});
+          console.log(data);
+      
+        } catch (err) {
+          console.log('Error in fetching data', err);
+          
+        }
+      };
 
     useEffect(()=>{
+      console.log("handle cart id: ", product_id);
+     
+      addToCart();
         productFunc();
         imageFunc();
-    }, []);
+        userContact();
+    }, [product_id]);
     const starStyle = { color: '#B8930F', size: 30, fill: '#B8930F' };  
     return(<>
         <Navbar />
@@ -109,9 +156,9 @@ function Product(){
                         <p style={{ fontWeight: '600' }}>
                           {productData.quantity > 0 ? `Available(${productData.quantity})` : <span style={{color:'red', fontWeight:'800'}}>Out of Stock</span>}
                         </p>
-
-                         {/* {isAdded ? <Button variant="success" onClick={handleReverse}className='added-to-cart'><MdCheck/></Button>:<button className='add-to-cart' onClick={handleCart(productData._id,productData.productName,productData.price)}>Add To Cart</button>
-                          } */}
+                        <button className='add-to-cart' onClick={() => handleCart(productData._id)}>Add To Cart</button>
+                          {/* {isAdded ? <Button variant="success" onClick={handleReverse}className='added-to-cart'><MdCheck/></Button>:<button className='add-to-cart' onClick={() => handleCart(productData._id)}>Add To Cart</button>
+                          }  */}
                     </div>
                 )}
             </div>
