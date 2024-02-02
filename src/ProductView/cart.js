@@ -95,6 +95,41 @@ function Cart(){
       console.log('Error in fetching data', err);
     }
     };
+ // Function to handle product deletion
+ const handleRemoveCart = async (_id) => {
+  console.log('The product name to be deleted is ' + _id);
+  try {
+    // Make an API call to delete the categoryuserData.userId
+    const response = await fetch(`/remove-item/${encodeURIComponent(userData.userId)}/${encodeURIComponent(_id)}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        // Add any other headers as needed (e.g., authentication token)
+      },
+    });
+
+    if (response.ok) {
+      // If deletion is successful, update the state to reflect the changes
+      try {
+        const updatedCart = await response.json();
+        console.log("Deleted successfully");
+        // Update the state to remove the deleted category
+        setCartData(updatedCart);
+    } catch (error) {
+        console.error('Error during product deletion', error);
+        // Handle error, show a message, etc.
+    }
+    } else {
+      console.error('Failed to delete product messafe');
+      // Handle error, show a message, etc.
+    }
+  } catch (error) {
+    console.error('Error during product deletion', error);
+    // Handle error, show a message, etc.
+  }
+};
+
+    
     useEffect(() => {
         getCart();
         userContact();
@@ -143,7 +178,7 @@ function Cart(){
                      
                 <MDBCard className="mb-3">
                   <MDBCardBody>
-                  {cartData.cart.items && Array.isArray(cartData.cart.items) && (
+                  {cartData.cart && Array.isArray(cartData.cart.items) && (
                     <>
                       {cartData.cart.items.map((item, index) => (
                         <div key={index}>
@@ -181,7 +216,7 @@ function Cart(){
                         </div>
                         
                        <div style={{ width: "20px" }}> <a href="#!" style={{ color: "#cecece" }}>
-                          <MdDelete fas icon="trash-alt" />
+                          <MdDelete fas icon="trash-alt" onClick={() => handleRemoveCart(item.productId._id)}/>
                         </a></div>
                       </div>
                     </div>
