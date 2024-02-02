@@ -16,20 +16,32 @@ const cartController = async (req, res) => {
     if (!isValidProduct) {
       return res.status(404).json({ success: false, message: 'Invalid Product ID' });
     }
+     // Find the user's cart
+     const userCart = await Cart.findOne({ userId });
 
-    // Create a new cart item
-    const newCartItem = {
-        productId: productIdd,
-      quantity: Math.max(1, quantity), // Ensure quantity is at least 1
-    };
+     if (!userCart) {
+       // If the user doesn't have a cart, create a new one
+       const newCart = new Cart({
+         userId,
+         items: [{ productId: productIdd, quantity }]
+       });
+       await newCart.save();
+       return res.status(200).json({ success: true, message: 'Product added to cart successfully', cart: newCart });
+     }
+ 
 
-    // Find the user's cart or create a new one if it doesn't exist
-    const userCart = await Cart.findOneAndUpdate(
-      { userId },
-      { $addToSet: { items: newCartItem } }, // Use $addToSet to avoid duplicates
-      { upsert: true, new: true }
-    );
+    // Check if the product already exists in the cart
+    const existingItem = userCart.items.find(item => item.productId._id.toString() === productIdd.toString());
 
+    if (existingItem) {
+      // If the product exists, update the quantity by adding the provided quantity
+      existingItem.quantity += 1;
+    } else {
+      // If the product doesn't exist, add a new item to the cart
+      userCart.items.push({ productId: productIdd, quantity });
+    }
+     // Save the updated cart
+     await userCart.save();
     res.status(200).json({ success: true, message: 'Product added to cart successfully', cart: userCart });
   } catch (err) {
     console.error(err);

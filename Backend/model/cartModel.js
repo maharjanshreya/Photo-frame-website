@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
     quantity: {
         type: Number,
         required: true,
-        default: 1, // Default quantity is 1
+        default: 1, // Default quantity is 0
     },
     });
 

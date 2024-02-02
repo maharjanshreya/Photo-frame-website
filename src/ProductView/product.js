@@ -6,13 +6,15 @@ import './product.css';
 import Button from 'react-bootstrap/Button';
 import { MdCheck } from "react-icons/md";
 import Cart from '../ProductView/cart';
-
+import { useCart } from '../context/add-cart';
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 function Product(){
     const { productId } = useParams();
     const [productData, setProductData] = useState([]);
     const [imageURL, setImageURL] = useState(null);
-    const [isAdded, setIsAdded] = useState(false);
+    const { isAdded, setIsAdded } = useCart();
 
     const productFunc = async () => {
         try {
@@ -37,8 +39,8 @@ function Product(){
     const [product_id, setProduct_Id] = useState(productData._id);
     const handleCart = (p_id)=>{
       setProduct_Id(p_id);
-      
-      setIsAdded(true);
+       // Reset isAdded to false
+       addToCart();
     }
     
     const handleReverse= ()=>{
@@ -81,7 +83,7 @@ function Product(){
       };
       try {
           const response = await axios.post('/add-to-cart', data);
-          window.alert("Successfully added to cart");
+          toast.success('Item added to cart!');
           console.log("cart: ",response.data);
         } catch (error) {
           console.error('Error adding to cart:', error);
@@ -116,7 +118,7 @@ function Product(){
     useEffect(()=>{
       console.log("handle cart id: ", product_id);
      
-      addToCart();
+      
         productFunc();
         imageFunc();
         userContact();
@@ -157,10 +159,12 @@ function Product(){
                           {productData.quantity > 0 ? `Available(${productData.quantity})` : <span style={{color:'red', fontWeight:'800'}}>Out of Stock</span>}
                         </p>
                         <button className='add-to-cart' onClick={() => handleCart(productData._id)}>Add To Cart</button>
-                          {/* {isAdded ? <Button variant="success" onClick={handleReverse}className='added-to-cart'><MdCheck/></Button>:<button className='add-to-cart' onClick={() => handleCart(productData._id)}>Add To Cart</button>
-                          }  */}
+                        
                     </div>
-                )}
+                )}<Toaster
+                          position="top-center"
+                          reverseOrder={true}
+                        />
             </div>
         </div>
         </div>
