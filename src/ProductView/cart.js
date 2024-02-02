@@ -3,41 +3,54 @@ import {React, useEffect,useState} from 'react';
 import './product.css';
 import axios from 'axios';
 
+import {
+MDBBtn,
+MDBCard,
+MDBCardBody,
+MDBCardImage,
+MDBCol,
+MDBContainer,
+MDBIcon,
+MDBInput,
+MDBRow,
+MDBTypography,
+} from "mdb-react-ui-kit";
+import { MdDelete } from "react-icons/md";
+
+
 function Cart(){
     const [userData, setUserData] = useState({userId:""});
     const [cartData, setCartData] = useState({ cart: { items: [] } });
     const [vat, setVa] = useState([]);
      
     const [imageURL, setImageURL] = useState(null);
-      const userContact = async () => {
-        try {
-           const res = await fetch('/getData', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-      
-          if (!res.ok) {
-            const error = new Error(res.statusText);
-            throw error;
-          }
-      
-          const data = await res.json();
-          setUserData((prevUserData) => ({ ...prevUserData, userId: data._id }));
-          
-      
-        } catch (err) {
-          console.log('Error in fetching data', err);
-          
+    const userContact = async () => {
+      try {
+        const res = await fetch('/getData', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+    
+        if (!res.ok) {
+          const error = new Error(res.statusText);
+          throw error;
         }
-      };
+    
+        const data = await res.json();
+        setUserData((prevUserData) => ({ ...prevUserData, userId: data._id }));
+    
+      } catch (err) {
+        console.log('Error in fetching data', err);
+      }
+    };
     let va;
     const getCart = async () => {
-        try {
-          const res = await fetch(`/add-to-cart/${encodeURIComponent(userData.userId)}`,  {
-          method: 'GET',
-          credentials: 'include',
+      try {
+        const res = await fetch(`/add-to-cart/${encodeURIComponent(userData.userId)}`,  {
+        method: 'GET',
+        credentials: 'include',
         });
         if (!res.ok) {
           const error = new Error(res.statusText);
@@ -52,119 +65,216 @@ function Cart(){
         console.log("cardData",cartData);
         if (datas.cart.items && datas.cart.items.length > 0) {
           const imagePromises = datas.cart.items.map(async (item) => {
-            try {
-              const imageRes = await fetch(`/product-image/${encodeURIComponent(item.productId._id)}`, {
-                method: 'GET',
-                credentials: 'include',
-              });
-  
-              if (!imageRes.ok) {
-                throw new Error(`Failed to fetch image for product ID ${item.productId._id}`);
-              }
-  
-              const buffer = await imageRes.arrayBuffer();
-              const base64Image = btoa(new Uint8Array(buffer).reduce((data, byte) => data + String.fromCharCode(byte), ''));
-              return {
-                productId: item.productId._id,
-                url: `data:image/png;base64,${base64Image}`,
-              };
-            } catch (error) {
-              console.error(error.message);
-              return null;
-            }
-          });
-  
-          // Resolve all image promises
-          const resolvedImages = await Promise.all(imagePromises);
-  
-          // Filter out any null values from failed requests
-          const filteredImages = resolvedImages.filter((image) => image !== null);
-  
-          setImageURL(filteredImages);
-        }
+          try {
+            const imageRes = await fetch(`/product-image/${encodeURIComponent(item.productId._id)}`, {
+              method: 'GET',
+              credentials: 'include',
+            });
 
-        
-        } catch (err) {
-          console.log('Error in fetching data', err);
-        }
+            if (!imageRes.ok) {
+                throw new Error(`Failed to fetch image for product ID ${item.productId._id}`);
+            }
+    
+            const buffer = await imageRes.arrayBuffer();
+            const base64Image = btoa(new Uint8Array(buffer).reduce((data, byte) => data + String.fromCharCode(byte), ''));
+            return {
+              productId: item.productId._id,
+              url: `data:image/png;base64,${base64Image}`,
+            };
+          } catch (error) {
+            console.error(error.message);
+            return null;
+          }
+        });
+  
+        const resolvedImages = await Promise.all(imagePromises);     // Resolve all image promises
+        const filteredImages = resolvedImages.filter((image) => image !== null);   // Filter out any null values from failed requests
+        setImageURL(filteredImages);
+      }
+    } catch (err) {
+      console.log('Error in fetching data', err);
+    }
     };
     useEffect(() => {
         getCart();
         userContact();
-        // imageFunc();
-      }, [userData.userId]); 
+    }, [userData.userId]); 
 
 
-     
-      
-   
-    const imageFunc = async () => {
-        
-        try {
-          const res = await fetch(`/product-image/${encodeURIComponent(vat)}`  ,  {
-          method: 'GET',
-          credentials: 'include',
-        });
-        if (!res.ok) {
-          const error = new Error(res.statusText);
-          throw error;
-        }
-          
-         // Read the binary data as an ArrayBuffer
-         const buffer = await res.arrayBuffer();
-    
-         // Convert the ArrayBuffer to a base64 string
-         const base64Image = btoa(new Uint8Array(buffer).reduce((data, byte) => data + String.fromCharCode(byte), ''));
-    
-         // Set the base64 string as the image source
-         setImageURL(`data:image/png;base64,${base64Image}`);
-          
-      
-        } catch (err) {
-          console.log('Error in fetching image data', err);
-        }
-    }; 
-    
-    // useEffect(()=>{
-    //     imageFunc();
-    // }, []);
-    return(
+  return(
     <>
-        <Navbar />
-        <div>
-            My Cart
-            
-            {/* Render items if available */}
-            {cartData.cart.items && Array.isArray(cartData.cart.items) && (
-        <div>
-          <h3>Items:</h3>
-          {cartData.cart.items.map((item, index) => (
-            <div key={index}>
-              
-              <p>Item {index + 1}:</p>
-              <ul>
-                <li>Product ID: {item.productId._id}</li>
-                {imageURL && imageURL.map((image) => (
-  // Match product ID to display the correct image
-  image.productId === item.productId._id && (
-    <img
-      key={image.productId}
-      src={image.url}
-      alt="Product Image"
-      style={{ width: '400px', height: '450px' }}
-    />
-  )
-))}
-                            <li>Quantity: {item.quantity}</li>
-              </ul>
-            </div>
-          ))} 
-        </div>
-      )}
-            {/* {imageURL && <img src={imageURL} alt="Product Image" style={{ width: '400px', height: '450px' }}/>} */}
-            
-        </div>
+      <Navbar />
+      
 
-    </>);
+
+    <section className="h-100 h-custom" style={{ backgroundColor: "#eee" }}>
+  <MDBContainer className="py-5 h-100">
+    <MDBRow className="justify-content-center align-items-center h-100">
+      <MDBCol>
+        <MDBCard>
+          <MDBCardBody className="p-4">
+            <MDBRow>
+              <MDBCol lg="7">
+                <MDBTypography tag="h5">
+                  <a href="#!" className="text-body">
+                    <MDBIcon fas icon="long-arrow-alt-left me-2" /> Continue
+                    shopping
+                  </a>
+                </MDBTypography>
+
+                <hr />
+
+                <div className="d-flex justify-content-between align-items-center mb-4">
+                  <div>
+                    <p className="mb-1">Shopping cart</p>
+                    <p className="mb-0">You have 4 items in your cart</p>
+                  </div>
+                  <div>
+                    <p>
+                      <span className="text-muted">Sort by:</span>
+                      <a href="#!" className="text-body">
+                        price
+                        <MDBIcon fas icon="angle-down mt-1" />
+                      </a>
+                    </p>
+                  </div>
+                </div>
+
+                     
+                <MDBCard className="mb-3">
+                  <MDBCardBody>
+                  {cartData.cart.items && Array.isArray(cartData.cart.items) && (
+                    <>
+                      {cartData.cart.items.map((item, index) => (
+                        <div key={index}>
+                    <div className="d-flex justify-content-between">
+                      <div className="d-flex flex-row align-items-center">
+                        <div>
+                        {imageURL && imageURL.map((image) => (
+                          image.productId === item.productId._id && (
+                      <MDBCardImage key={image.productId} src={image.url}
+                        fluid className="rounded-3" style={{ width: "45px" }} alt="Avatar" /> )
+                        ))}
+                        </div>
+                        <div className="ms-4">
+                          <MDBTypography tag="h5">
+                          {item.productId.productName}
+                          </MDBTypography>
+                          <p className="small mb-0">1TB, Graphite</p>
+                        </div>
+                      </div>
+                      <div className="d-flex flex-row align-items-center">
+                        <div style={{ width: "50px" }}>
+                          <MDBTypography tag="h5" className="fw-normal mb-0">
+                          {item.quantity}
+                          </MDBTypography>
+                        </div>
+                        <div style={{ width: "88px" }}>
+                          <MDBTypography tag="h5" className="mb-0"  style={{color:'red'}}>
+                          
+                              
+                             
+                          Rs. {item.quantity * item.productId.price}
+                                
+                             
+                          </MDBTypography>
+                        </div>
+                        
+                       <div style={{ width: "20px" }}> <a href="#!" style={{ color: "#cecece" }}>
+                          <MdDelete fas icon="trash-alt" />
+                        </a></div>
+                      </div>
+                    </div>
+                    <hr />
+                </div>
+                    ))}
+            </>
+          )}
+                  </MDBCardBody>
+                </MDBCard>
+              </MDBCol>
+
+              <MDBCol lg="5">
+                <MDBCard className="bg-primary text-white rounded-3">
+                  <MDBCardBody>
+                    <div className="d-flex justify-content-between align-items-center mb-4">
+                      <MDBTypography tag="h5" className="mb-0">
+                        Card details
+                      </MDBTypography>
+                      
+                    </div>
+
+                    <p className="small">Card type</p>
+                    <a href="#!" type="submit" className="text-white">
+                      <MDBIcon fab icon="cc-mastercard fa-2x me-2" />
+                    </a>
+                    <a href="#!" type="submit" className="text-white">
+                      <MDBIcon fab icon="cc-visa fa-2x me-2" />
+                    </a>
+                    <a href="#!" type="submit" className="text-white">
+                      <MDBIcon fab icon="cc-amex fa-2x me-2" />
+                    </a>
+                    <a href="#!" type="submit" className="text-white">
+                      <MDBIcon fab icon="cc-paypal fa-2x me-2" />
+                    </a>
+
+                    <form className="mt-4">
+                      <MDBInput className="mb-4" label="Cardholder's Name" type="text" size="lg"
+                        placeholder="Cardholder's Name" contrast />
+
+                      <MDBInput className="mb-4" label="Card Number" type="text" size="lg"
+                        minLength="19" maxLength="19" placeholder="1234 5678 9012 3457" contrast />
+
+                      <MDBRow className="mb-4">
+                        <MDBCol md="6">
+                          <MDBInput className="mb-4" label="Expiration" type="text" size="lg"
+                            minLength="7" maxLength="7" placeholder="MM/YYYY" contrast />
+                        </MDBCol>
+                        <MDBCol md="6">
+                          <MDBInput className="mb-4" label="Cvv" type="text" size="lg" minLength="3"
+                            maxLength="3" placeholder="&#9679;&#9679;&#9679;" contrast />
+                        </MDBCol>
+                      </MDBRow>
+                    </form>
+
+                    <hr />
+
+                    <div className="d-flex justify-content-between">
+                      <p className="mb-2">Subtotal</p>
+                      <p className="mb-2">$4798.00</p>
+                    </div>
+
+                    <div className="d-flex justify-content-between">
+                      <p className="mb-2">Shipping</p>
+                      <p className="mb-2">$20.00</p>
+                    </div>
+
+                    <div className="d-flex justify-content-between">
+                      <p className="mb-2">Total(Incl. taxes)</p>
+                      <p className="mb-2">$4818.00</p>
+                    </div>
+
+                    <MDBBtn color="info" block size="lg">
+                      <div className="d-flex justify-content-between">
+                        <span>$4818.00</span>
+                        <span>
+                          Checkout{" "}
+                          <i className="fas fa-long-arrow-alt-right ms-2"></i>
+                        </span>
+                      </div>
+                    </MDBBtn>
+                  </MDBCardBody>
+                </MDBCard>
+              </MDBCol>
+            </MDBRow>
+          </MDBCardBody>
+        </MDBCard>
+      </MDBCol>
+    </MDBRow>
+  </MDBContainer>
+</section>
+
+    </>
+  );
 }
 export default Cart;
