@@ -24,28 +24,35 @@ import Homepage from './Homepage/homepage';
 
 function App() {
   const [hasToken, setHasToken] = useState(false);
+  const checkUserRole = () => {
+    // Check for the presence of a valid token
+    const token = localStorage.getItem('tokens'); // Replace with your actual token cookie name
+    if (token) {
+      // Parse the JSON data
+      const parsedData = JSON.parse(token);
+
+      // Access the role property
+      const userRole = parsedData.userData.role;
+
+      // Now, userRole contains the role value
+      console.log("User Role:", userRole);
+
+      // Check if the role is admin
+      const hasJWToken = userRole === "admin";
+
+      console.log("Admin: ", hasJWToken);
+      setHasToken(hasJWToken);
+    }
+  };
   useEffect(() => {
-    // const tokenCookieName = 'jwtoken';
-    
-    const localStatus = localStorage.getItem('status');
-    console.log('Local Status:', localStatus);
-    setHasToken(localStatus === 'true');
-    console.log('Setting hasToken to true',localStatus);
-    // if (localStatus === 'true') {
-    //   console.log('Setting hasToken to true');
-    //   setHasToken(localStatus === 'true');
-    // }else{
-    //   console.log('Setting hasToken to true');
-    //   setHasToken(false);
-    // }
-   // Check for the presence of a valid token
-   const token = localStorage.getItem('token'); // Replace with your actual token cookie name
-   
-   // Check if the cookie with the name 'jwtoken' exists
-  const hasJWToken = token !== undefined;
-  console.log("jwtoken",hasJWToken);
-   setHasToken(hasJWToken);
+   // Check the user role when the component mounts
+   checkUserRole();
+     
   }, []);
+  useEffect(() => {
+    // Check the user role whenever the token changes
+    checkUserRole();
+  }, [localStorage.getItem('tokens')]);
 
   return (
     <BrowserRouter>
@@ -64,11 +71,11 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/adminLogin" element={<AdminLogin />} />
-        {hasToken && (
-          <>
+        {hasToken ? (
         <Route path="/adminDashboard" element={<AdminDashboard />} />
-        </>
-        )}
+          ) : ( 
+            <Route path="/login" element={<Login />}/>
+          )}
         <Route path="/productView/:productId" element={<ProductView />} />
         <Route path="/cart" element={<Cart />} />
       </Routes>

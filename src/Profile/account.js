@@ -53,7 +53,7 @@ function Account(){
   
         if (response.ok) {
           // Handle successful logout on the client side
-          // localStorage.setItem('status', 'false');
+          localStorage.removeItem('tokens');
           console.log('Logout successful'); 
           navigate('/login', { replace: true });
         } else {

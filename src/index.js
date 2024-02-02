@@ -5,17 +5,20 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {SearchProvider} from './context/search';
 import { CartProvider } from './context/cart';
-import { AddCartProvider} from './context/add-cart';
+import { AddCartProvider} from './context/token';
+import { AuthProvider} from './context/token';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <SearchProvider>
-      <CartProvider>
-        <AddCartProvider>
-          <App />
-        </AddCartProvider>
-      </CartProvider>
-    </SearchProvider>
+    <AuthProvider>
+      <SearchProvider>
+        <CartProvider>
+          
+            <App />
+         
+        </CartProvider>
+      </SearchProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
 

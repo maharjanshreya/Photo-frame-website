@@ -2,7 +2,8 @@ import Navbar from '../Navbar/navbar';
 import {React, useEffect,useState} from 'react';
 import './product.css';
 import axios from 'axios';
-
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 import {
 MDBBtn,
 MDBCard,
@@ -16,6 +17,7 @@ MDBRow,
 MDBTypography,
 } from "mdb-react-ui-kit";
 import { MdDelete } from "react-icons/md";
+import { FaAngleDown } from "react-icons/fa6";
 
 
 function Cart(){
@@ -63,6 +65,7 @@ function Cart(){
         
         console.log("cart data for image",datas.cart.items[0].productId._id);
         console.log("cardData",cartData);
+        console.log("Items length in cart: ",datas.cart.items.length);
         if (datas.cart.items && datas.cart.items.length > 0) {
           const imagePromises = datas.cart.items.map(async (item) => {
           try {
@@ -111,10 +114,18 @@ function Cart(){
     if (response.ok) {
       // If deletion is successful, update the state to reflect the changes
       try {
-        const updatedCart = await response.json();
+        const updatedCart = await fetch(`/add-to-cart/${encodeURIComponent(userData.userId)}`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+        if (!updatedCart.ok) {
+          throw new Error('Failed to fetch updated cart data');
+        }
+
+        const updatedCartData = await updatedCart.json();
         console.log("Deleted successfully");
         // Update the state to remove the deleted category
-        setCartData(updatedCart);
+        setCartData(updatedCartData);
     } catch (error) {
         console.error('Error during product deletion', error);
         // Handle error, show a message, etc.
@@ -151,7 +162,7 @@ function Cart(){
             <MDBRow>
               <MDBCol lg="7">
                 <MDBTypography tag="h5">
-                  <a href="#!" className="text-body">
+                  <a href="/products" className="text-body">
                     <MDBIcon fas icon="long-arrow-alt-left me-2" /> Continue
                     shopping
                   </a>
@@ -162,15 +173,17 @@ function Cart(){
                 <div className="d-flex justify-content-between align-items-center mb-4">
                   <div>
                     <p className="mb-1">Shopping cart</p>
-                    <p className="mb-0">You have 4 items in your cart</p>
+                    
+                    <p className="mb-0">You have {cartData.cart.items.length} items in your cart</p>
                   </div>
                   <div>
                     <p>
                       <span className="text-muted">Sort by:</span>
-                      <a href="#!" className="text-body">
+                      <ul><a href="#!" className="text-body">
                         price
-                        <MDBIcon fas icon="angle-down mt-1" />
-                      </a>
+                        <FaAngleDown fas icon="angle-down mt-1" />
+                      </a></ul>
+                      
                     </p>
                   </div>
                 </div>

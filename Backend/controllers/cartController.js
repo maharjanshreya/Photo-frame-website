@@ -1,5 +1,6 @@
 const Cart = require('../model/cartModel'); // Import the Cart model
 const Product = require('../model/productModel'); // Import the Product model
+
 const mongoose = require('mongoose');
 const cartController = async (req, res) => {
     const userId = (req.body.userId);

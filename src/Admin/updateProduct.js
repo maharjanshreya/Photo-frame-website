@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
     console.log("update product: ", productId);
     const [categoryData, setCategoryData] = useState([]);
+    const [productData, setProductData] = useState([]);
     const categoryFunc = async () => {
         try {
           const res = await fetch('/category',  {
@@ -27,9 +28,31 @@ const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
           console.log('Error in fetching data', err);
         }
         };
+
+        const productFunc = async () => {
+            try {
+              const res = await fetch(`/products/${encodeURIComponent(productId)}`,  {
+              method: 'GET',
+              credentials: 'include',
+            });
+            if (!res.ok) {
+              const error = new Error(res.statusText);
+              throw error;
+            }
+              
+            const datas = await res.json();
+            console.log('API Response in products:', datas); 
+            setProductData(datas.product);
+            console.log("Hello product data",datas.product);
+          
+            } catch (err) {
+              console.log('Error in fetching data', err);
+            }
+        };
             
         useEffect(()=>{
           categoryFunc();
+          productFunc();
     
         }, []);
     const [updates, setUpdates] = useState({
@@ -85,11 +108,11 @@ const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
         <div className='formedit'>
             <form onSubmit={handleFormSubmit} >
                 <p className='editLabel'>Change your update name:</p>
-                <input type='text' placeholder='Enter product name' name="productName" className='category'  required value={updates.productName} onChange={handleInputChange}/>
-                <input type='text' placeholder='Product Description' name="description" className='category'  required value={updates.description} onChange={handleInputChange}/>
+                <input type='text' placeholder='Enter product name' name="productName" className='category'  required value={updates.productName || productData.productName} onChange={handleInputChange}/>
+                <input type='text' placeholder='Product Description' name="description" className='category'  required value={updates.description || productData.description} onChange={handleInputChange}/>
                 <input type='file' placeholder='Image' name="image" className='category'  required  onChange={handleInputChange}/>
-                <input type='number' placeholder='Enter the product quantity' name="quantity" className='category'  required value={updates.quantity} onChange={handleInputChange}/>
-                <input type='number' placeholder='Enter the product price' name="price" className='category'  required value={updates.price} onChange={handleInputChange}/>
+                <input type='number' placeholder='Enter the product quantity' name="quantity" className='category'  required value={updates.quantity || productData.quantity} onChange={handleInputChange}/>
+                <input type='number' placeholder='Enter the product price' name="price" className='category'  required value={updates.price || productData.price} onChange={handleInputChange}/>
                 <select className='category' name='category' required style={{marginRight:'10px'}} onChange={handleInputChange} >
                                         <option>Select the category name</option>
                                         {/* fetch the data */}
@@ -102,8 +125,8 @@ const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
                                     </select>
                       {/*Dropdown menu : out of stock or stock
                       <input type='text' placeholder='stock' name="stock" className='category'  required value={category.name} onChange={handleInputChange}/>*/}
-                      <input type='text' placeholder='size' name="size" className='category'  required value={updates.size} onChange={handleInputChange}/>
-                      <input type='text' placeholder='dimension' name="dimension" className='category'  required value={updates.dimension} onChange={handleInputChange}/>
+                      <input type='text' placeholder='size' name="size" className='category'  required value={updates.size || productData.size} onChange={handleInputChange}/>
+                      <input type='text' placeholder='dimension' name="dimension" className='category'  required value={updates.dimension || productData.dimension} onChange={handleInputChange}/>
                 <Button type='submit' className='meterButtons' style={{backgroundColor:'green', width:'100%',borderColor:'green'}}>Submit</Button><br/>
             </form>
         </div>

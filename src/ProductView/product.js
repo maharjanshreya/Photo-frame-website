@@ -6,7 +6,7 @@ import './product.css';
 import Button from 'react-bootstrap/Button';
 import { MdCheck } from "react-icons/md";
 import Cart from '../ProductView/cart';
-import { useCart } from '../context/add-cart';
+import { useAuth } from '../context/token';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
@@ -14,7 +14,6 @@ function Product(){
     const { productId } = useParams();
     const [productData, setProductData] = useState([]);
     const [imageURL, setImageURL] = useState(null);
-    const { isAdded, setIsAdded } = useCart();
 
     const productFunc = async () => {
         try {
@@ -43,9 +42,7 @@ function Product(){
        addToCart();
     }
     
-    const handleReverse= ()=>{
-      setIsAdded(false);
-    }
+    
     const imageFunc = async () => {
         try {
           const res = await fetch(`/product-image/${encodeURIComponent(productId)}`  ,  {
@@ -115,10 +112,7 @@ function Product(){
         }
       };
 
-    useEffect(()=>{
-      console.log("handle cart id: ", product_id);
-     
-      
+    useEffect(()=>{   
         productFunc();
         imageFunc();
         userContact();

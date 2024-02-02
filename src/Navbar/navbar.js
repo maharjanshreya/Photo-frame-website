@@ -40,19 +40,19 @@ function Navbar(){
 
             <div className='d-flex text-right'>
                 <Nav.Link as={Link} to='/'  className='icon' >
-                    <RiMessage2Line size={26}/>
+                    <RiMessage2Line size={26} className='iconify'/>
                 </Nav.Link>
 
                 <Nav.Link as={Link} to='/cart'  className='icon' >
-                    <PiShoppingCart size={26} />
+                    <PiShoppingCart size={26} className='iconify'/>
                 </Nav.Link>
 
                 <Nav.Link as={Link} to='/'  className='icon' >
-                    <MdOutlineFavoriteBorder size={26} />
+                    <MdOutlineFavoriteBorder size={26} className='iconify'/>
                 </Nav.Link>
 
                 <Nav.Link as={Link} to='/account'  className='icon' >
-                    <VscAccount size={26}  style={{marginRight: '30px'}} />
+                    <VscAccount size={26}  style={{marginRight: '30px'}} className='iconify'/>
                 </Nav.Link>
             </div>
 

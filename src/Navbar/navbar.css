@@ -8,7 +8,7 @@
   /* Add margin to the icons */
   .navbar-nav .icon {
     margin-left: 20px; /* Adjust as needed */
-    
+    color: black;
     font-size: 20px; /* Set the desired font size for icons */
   }
   .navbar-nav .texts {
@@ -24,3 +24,11 @@
     font-size: 20px; /* Set the desired font size for icons */
     font-weight: bolder;
   }
+  .iconify{
+    color: #426751;
+    
+  }
+  .iconify:hover{
+    color: #76bb90;
+  }
+  

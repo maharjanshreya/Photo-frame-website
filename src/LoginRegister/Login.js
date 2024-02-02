@@ -5,9 +5,11 @@ import { Link } from 'react-router-dom';
 import React from 'react';
 import {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/token';
 function Login(){
     const navigate = useNavigate();
     const [email,setEmail] = useState('');
+    const [auth,setAuth] = useAuth();
     const [password,setPassword] = useState('');
     const loginUser = async (e) => {
         e.preventDefault();
@@ -51,7 +53,7 @@ function Login(){
                 window.alert("Successfully entered as user: Homepage");
                 navigate("/adminDashboard");
                 localStorage.setItem('status', 'true');
-                localStorage.setItem('token', 'true');
+                localStorage.setItem('tokens', JSON.stringify(data));
             }
             else{
                 navigate("/");
