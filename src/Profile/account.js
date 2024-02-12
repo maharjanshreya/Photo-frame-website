@@ -39,7 +39,7 @@ function Account(){
     useEffect(()=>{
         callMyAccount();
 
-    }, []);
+    }, [userData]);
     const handleLogout = async () => {
       try {
         const response = await fetch('/logout', {

@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Image from '../Images/Group 7.png';
 import Image2 from '../Images/Group 14.png';
 import Footer from './footer';
-import Frame from '../Images/product5.png';
+import Frame from '../Images/product7.png';
 import Carousel from 'react-bootstrap/Carousel';
 import { FaRegHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -28,7 +28,7 @@ function Homepage() {
   useEffect(() => {
 
     productFunc();
-  }, []);
+  }, [productData]);
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -66,7 +66,6 @@ function Homepage() {
       const datas = await res.json();
       console.log('API Response in products:', datas);
       setProductData(datas.products);
-      console.log("Datas.data", datas.products);
 
     } catch (err) {
       console.log('Error in fetching data', err);

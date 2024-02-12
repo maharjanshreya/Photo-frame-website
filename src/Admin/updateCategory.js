@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
+
 const UpdateCategory = ({ categoryName,categoryId, onClose, refreshCategoryList }) => {
     console.log("update category: ", categoryId);
     console.log("categroy nemae: ", categoryName);
@@ -44,12 +45,18 @@ const UpdateCategory = ({ categoryName,categoryId, onClose, refreshCategoryList 
 
     return (
         <>
-        <div className='formedit'>
+        <div>
             <form onSubmit={handleFormSubmit} >
-                <p className='editLabel'>Change your category name:</p>
                 <input type="text" id="name" name="name" value={updates.name} defaultValue={categoryName}  onChange={handleInputChange} className='categoryChange' placeholder='Enter your new category name'/><br/>
-                <Button type='submit' className='meterButtons' style={{backgroundColor:'green', width:'100%',borderColor:'green'}}>Submit</Button><br/>
-            </form>
+                <hr/>
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Button onClick={onClose} style={{ backgroundColor: '#6c757d', width: 'auto', borderColor: '#6c757d', marginRight: '8px' }}>
+                    Close
+                </Button>
+                <Button type='submit' className='meterButtons' style={{ backgroundColor: '#0d6efd', width: 'auto' }}>
+                    Save changes
+                </Button>
+                </div></form>
         </div>
         </>
     );

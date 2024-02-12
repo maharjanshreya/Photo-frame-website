@@ -1,5 +1,5 @@
 //import './App.css';
-import React, { useEffect, useState }from 'react';
+import React, { useEffect, useState ,useCallback}from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Cookies from 'js-cookie';
 import { BrowserRouter, Route, Routes, Navigate  } from 'react-router-dom';
@@ -24,35 +24,20 @@ import Homepage from './Homepage/homepage';
 
 function App() {
   const [hasToken, setHasToken] = useState(false);
-  const checkUserRole = () => {
-    // Check for the presence of a valid token
-    const token = localStorage.getItem('tokens'); // Replace with your actual token cookie name
+
+  const checkUserRole = useCallback(() => {
+    const token = localStorage.getItem('tokens');
     if (token) {
-      // Parse the JSON data
       const parsedData = JSON.parse(token);
-
-      // Access the role property
       const userRole = parsedData.userData.role;
-
-      // Now, userRole contains the role value
-      console.log("User Role:", userRole);
-
-      // Check if the role is admin
       const hasJWToken = userRole === "admin";
-
-      console.log("Admin: ", hasJWToken);
       setHasToken(hasJWToken);
     }
-  };
-  useEffect(() => {
-   // Check the user role when the component mounts
-   checkUserRole();
-     
   }, []);
+
   useEffect(() => {
-    // Check the user role whenever the token changes
     checkUserRole();
-  }, [localStorage.getItem('tokens')]);
+  }, [checkUserRole]);
 
   return (
     <BrowserRouter>

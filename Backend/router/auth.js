@@ -1,9 +1,7 @@
 const express = require('express');
-
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const cookieParser = require("cookie-parser");
-
 const formidable = require('express-formidable');
 router.use(cookieParser());
 const bcrypt = require('bcryptjs');
@@ -11,10 +9,7 @@ require('../db/conn');
 const authenticate = require("../middleware/authenticate");
 const User = require("../model/userModel");
 const Category = require("../model/categoryModel");
-const Product = require('../model/productModel');
-const fs = require('fs');
 const {searchController}= require('../controllers/searchController.js');
-
 const {cartController,getCartController, removeCartController}= require('../controllers/cartController.js');
 const  {createProductController,getProductController,getPhotoController,getSingleProductController,deleteProductController,updateProductController}  = require('../controllers/productController.js');
 const { useContext } = require('react');
