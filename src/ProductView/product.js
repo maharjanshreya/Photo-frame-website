@@ -10,11 +10,13 @@ import { useAuth } from '../context/token';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
+let product_id = null;
+
 function Product(){
     const { productId } = useParams();
     const [productData, setProductData] = useState([]);
     const [imageURL, setImageURL] = useState(null);
-
+    const [quantity, setQuantity] = useState(productData.quantity);
     const productFunc = async () => {
         try {
           const res = await fetch(`/products/${encodeURIComponent(productId)}`,  {
@@ -27,19 +29,23 @@ function Product(){
         }
           
         const datas = await res.json();
-        console.log('API Response in products:', datas); 
+        //console.log('API Response in products:', datas); 
         setProductData(datas.product);
-        console.log("Datas.data",datas.product);
+        product_id = datas.product._id; // Set product_id here
+        setQuantity(datas.product.quantity); // Reset quantity
+        //console.log("Datas.data",datas.product);
       
         } catch (err) {
           console.log('Error in fetching data', err);
         }
     };
-    const [product_id, setProduct_Id] = useState(productData._id);
-    const handleCart = (p_id)=>{
-      setProduct_Id(p_id);
-       // Reset isAdded to false
-       addToCart();
+    //const [product_id, setProduct_Id] = useState(productData._id);
+    
+    const handleCart = ()=>{
+      //setProduct_Id(p_id);
+      if (product_id) {
+      addToCart();
+    }
     }
     
     
@@ -74,14 +80,14 @@ function Product(){
         items: [
           {
             productId: product_id,
-            quantity: 2,
+            quantity: quantity,
           },
         ],
       };
       try {
           const response = await axios.post('/add-to-cart', data);
           toast.success('Item added to cart!');
-          console.log("cart: ",response.data);
+        //  console.log("cart: ",response.data);
         } catch (error) {
           console.error('Error adding to cart:', error);
         }
@@ -104,18 +110,26 @@ function Product(){
       
           const data = await res.json();
           setUserData({...userData, userId: data._id});
-          console.log(data);
+         // console.log(data);
       
         } catch (err) {
           console.log('Error in fetching data', err);
           
         }
       };
+      useEffect(() => {
+        // Ensure product_id is not null or undefined
+        if (product_id) {
+          // Use the latest state value when calling addToCart
+          addToCart();
+        }
+      }, [product_id]);
 
     useEffect(()=>{   
         productFunc();
         imageFunc();
         userContact();
+        
     }, [product_id]);
     const starStyle = { color: '#B8930F', size: 30, fill: '#B8930F' };  
     return(<>
@@ -152,7 +166,7 @@ function Product(){
                         <p style={{ fontWeight: '600' }}>
                           {productData.quantity > 0 ? `Available(${productData.quantity})` : <span style={{color:'red', fontWeight:'800'}}>Out of Stock</span>}
                         </p>
-                        <button className='add-to-cart' onClick={() => handleCart(productData._id)}>Add To Cart</button>
+                        <button className='add-to-cart' onClick={(e) =>{e.preventDefault();handleCart();}}>Add To Cart</button>
                         
                     </div>
                 )}<Toaster

@@ -28,7 +28,7 @@ function Account(){
       
           const data = await res.json();
           setUserData(data);
-          console.log(data);
+          //console.log(data);
       
         } catch (err) {
           console.log('Error in fetching data', err);

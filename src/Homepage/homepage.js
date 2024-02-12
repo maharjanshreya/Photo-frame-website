@@ -64,7 +64,7 @@ function Homepage() {
       }
 
       const datas = await res.json();
-      console.log('API Response in products:', datas);
+     // console.log('API Response in products:', datas);
       setProductData(datas.products);
 
     } catch (err) {
@@ -81,7 +81,7 @@ function Homepage() {
     e.preventDefault();
     try {
       const { data } = await axios.get(`/search/${values.keyword}`);
-      console.log('API response:', data);
+     // console.log('API response:', data);
       setValues((prevValues) => ({
         ...prevValues,
         results: data.result,
@@ -94,6 +94,47 @@ function Homepage() {
       console.log(err);
     }
   }
+  const wishlist = async (userId, productId) => {
+   
+
+    try {
+       
+        const res = await fetch('/add-to-wishlist', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userId,
+              items: [
+                  {
+                      productId,
+                  },
+              ],
+
+            }),
+            credentials: 'include', 
+        });
+
+        const data = await res.json();
+        if (!data) {
+            console.log("Message not sent");
+        } else {
+            window.alert("added to favoruites");
+            
+        }
+    } catch (error) {
+        console.error("Error sending contact form:", error);
+        window.alert("Failed to add to wishlist. Please try again later.");
+    }
+};
+// Example usage in your component
+const handleAddToWishlist = (productId) => {
+  // Get userId from your authentication or context
+  const userId = '65b7baa072fc77bf9af8d5e1'; // Replace with the actual userId
+
+  wishlist(userId, productId);
+};
   return (
     <div style={{ backgroundColor, transition: 'background-color 0.5s' }}>
       <Navbar />
@@ -179,8 +220,8 @@ function Homepage() {
                 <div><p className='price' style={{ marginRight: '155px' }}>Rs. {row?.price}</p>
                 </div>
                 <div>
-
-                  <FaRegHeart /></div> </div>
+               
+                  <FaRegHeart  onClick={() => handleAddToWishlist(row?._id)} /></div> </div>
 
             </div>
           ))}

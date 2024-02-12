@@ -42,7 +42,7 @@ function Login(){
         // }
         try {
             const data = await res.json();
-            console.log("data",data);
+           // console.log("data",data);
             console.log(data.userData.role);
             const role=data.userData.role;
             
