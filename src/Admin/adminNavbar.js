@@ -20,16 +20,16 @@ function adminNavbar(){
                 <Link to='/adminDashboard' className='icon'>
                 <p>Category</p>
                 </Link>
-                <Link to='/' className='icon'>
+                <Link to='/adminOrder' className='icon'>
                 <p>Orders</p>
                 </Link>
-                <Link to='/' className='icon'>
+                <Link to='/adminContact' className='icon'>
                 <p>User contact</p>
                 </Link>
-                <Link to='/account' className='icon'>
+                <Link to='/adminAnalysis' className='icon'>
                 <p>Anylatics</p>
                 </Link>
-                <Link to='/account' className='icon'>
+                <Link to='/adminReview' className='icon'>
                 <p>Reviews and ratings</p>
                 </Link>
       </div>

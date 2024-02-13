@@ -78,8 +78,8 @@ function Footer() {
                 </a>
               </p>
               <p>
-                <a href='#!' className='text-reset'>
-                  Help
+                <a href='/report' className='text-reset'>
+                  Report a problem
                 </a>
               </p>
             </MDBCol>

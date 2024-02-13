@@ -8,6 +8,7 @@ import Login from './LoginRegister/Login';
 import Register from './LoginRegister/Register';
 import Navbar from './Navbar/navbar';
 import Account from './Profile/account';
+import Report from './Homepage/report';
 import AboutUs from './Homepage/aboutus';
 import Products from './Homepage/products';
 import ContactUs from './Homepage/ContactUs';
@@ -16,6 +17,10 @@ import Search from './Homepage/searchPage';
 import AdminLogin from './Admin/adminLogin';
 import ProductView from './ProductView/product';
 import AdminDashboard from './Admin/adminDashboard';
+import AdminOrder from './Admin/adminOrder';
+import AdminReview from './Admin/adminReview';
+import AdminAnalysis from './Admin/adminAnalysis';
+import AdminContact from './Admin/adminContact';
 import Cart from './ProductView/cart';
 
 
@@ -54,6 +59,7 @@ function App() {
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/products" element={<Products />} />
         <Route path="/account" element={<Account />}/>
+        <Route path="/report" element={<Report />} />
         <Route path="/search" element={<Search />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/adminLogin" element={<AdminLogin />} />
@@ -63,6 +69,10 @@ function App() {
             <Route path="/login" element={<Login />}/>
           )}
         <Route path="/productView/:productId" element={<ProductView />} />
+        <Route path="/adminOrder" element={<AdminOrder />} />
+        <Route path="/adminReview" element={<AdminReview/>} />
+        <Route path="/adminAnalysis" element={<AdminAnalysis/>} />
+        <Route path="/adminContact" element={<AdminContact/>} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist/:userId" element={<Wishlist />} />
         
