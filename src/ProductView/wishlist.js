@@ -8,6 +8,7 @@ import { Toaster } from 'react-hot-toast';
 function Wishlist(){
     //const { userId } = useParams();
     const { userId } = useUser();
+    console.log(userId,"user");
     const [wishlist, setWishlist] = useState({ wishlist: { items: [] } });
     const [imageURL, setImageURL] = useState(null);
     const [productData, setProductData] = useState([]);

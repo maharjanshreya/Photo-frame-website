@@ -206,7 +206,7 @@ router.delete('/remove-item/:userId/:productId',authenticate, removeCartControll
 router.post('/add-to-wishlist', authenticate, addToWishlistController);
 router.get('/add-to-wishlist/:userId', authenticate, getWishlistController);
 
-router.post('/report', authenticate, reportController);
+router.post('/report', reportController);
 // Update a specific category partially using PATCH
 router.put('/category/:id', async (req, res) => {
     if(!req.body) {

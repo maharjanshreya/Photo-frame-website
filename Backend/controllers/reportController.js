@@ -1,51 +1,52 @@
+const Report = require('../model/reportModel');
+const User = require('../model/userModel');
+
+// Controller function for creating a report
 const reportController = async (req, res) => {
-    const { productName, description, category, shipping, price,quantity, size, dimension } = req.fields;
-    const { image } = req.files;
+  try {
+    const { title, description, userId } = req.body;
+
+    // Check if the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    const report = new Report({
+      title,
+      description,
+      user: userId, // Assign the user ObjectId
+    });
+
+    await report.save();
+
+    res.status(201).json({ success: true, message: 'Report submitted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+//get products
+const getReportController = async (req, res) => {
+    
     try {
-        // Validation
-        switch (true) {
-            case !productName:
-                return res.status(500).send({ error: 'Name is Required' });
-            case !description:
-                return res.status(500).send({ error: 'Description is Required' });
-            case image && image.size > 1000000:
-                return res.status(500).send({ error: 'Photo size is too large' });
-        }
-
-        const products = new Product({productName,
-            description,
-            category,
-            shipping,
-            price,
-            quantity,
-            size,
-            dimension, });
-
-        // Check if image exists
-        if (image) {
-            try {
-                products.image.data = fs.readFileSync(image.path);
-                products.image.contentType = image.type;
-                console.log('Image Type:', image.type);
-            } catch (readFileError) {
-                console.error('Error reading file:', readFileError);
-                return res.status(500).json({ error: 'Failed to read image file' });
-            }
-        }
-
-        // Save the product
-        const savedProduct = await products.save();
-        if (savedProduct) {
-            return res.status(201).json({ message: 'Product added', product: savedProduct });
-          } else {
-            return res.status(500).json({ error: 'Failed to save product' });
-          }
+       const products = await Product.find({}).select("-image").limit(12).sort({createdAt:-1}).populate('category');
+       res.status(200).json({ 
+        success: true,
+        total : products.length,
+        message: 'All Products',
+        products,
+       
+        });
+        
+        
     } catch (err) {
         console.error('Error:', err);
         res.status(500).send({
             success: false,
-            error: err,
             message: 'Error in creating product',
+            error: err.message,
         });
     }
 };
+module.exports = {reportController,getReportController};
