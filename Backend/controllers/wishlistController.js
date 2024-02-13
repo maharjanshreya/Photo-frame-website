@@ -24,13 +24,18 @@ const addToWishlistController = async (req, res) => {
             const productIdd = item.productId;
             console.log("Product id is : ",productIdd);
             // Check if the product is already in the wishlist
-            const isProductInWishlist = userWishlist.items.some(item => item.equals(productIdd));
+            const isProductInWishlist = userWishlist.items.some(item => item.productId.toString() === productIdd.toString());
 
             if (!isProductInWishlist) {
                 // Add the product to the wishlist
                 userWishlist.items.push({ productId: productIdd });
             } else {
                 console.log(`Product with ID ${productIdd} is already in the wishlist`);
+                return res.status(400).json({
+                    success: false,
+                    message: `Product with ID ${productIdd} is already in the wishlist`,
+                    wishlist: userWishlist
+                });
             }
         }
 
@@ -47,5 +52,26 @@ const addToWishlistController = async (req, res) => {
     }
 };
 
+
+const getWishlistController = async (req, res) => {
+    const { userId } = req.params.userId;
+    
+    try {
+        // Find the user's wishlist
+        const userWishlist = await Wishlist.findOne({ userId });
+
+        if (!userWishlist) {
+            return res.status(404).json({ success: false, message: 'Wishlist not found' });
+        }
+
+        // Log the current state of the wishlist
+        console.log('Current Wishlist:', userWishlist);
+
+        return res.status(200).json({ success: true, wishlist: userWishlist });
+    } catch (error) {
+        console.error('Error getting wishlist:', error);
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
   
-  module.exports = { addToWishlistController };
+  module.exports = { addToWishlistController,getWishlistController };

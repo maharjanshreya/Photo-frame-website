@@ -14,7 +14,7 @@ const {cartController,getCartController, removeCartController}= require('../cont
 const  {createProductController,getProductController,getPhotoController,getSingleProductController,deleteProductController,updateProductController}  = require('../controllers/productController.js');
 const { useContext } = require('react');
 const { ObjectId } = require('mongodb');
-const { addToWishlistController } = require('../controllers/wishlistController.js');
+const { addToWishlistController,getWishlistController } = require('../controllers/wishlistController.js');
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
   });
@@ -203,7 +203,7 @@ router.delete('/remove-item/:userId/:productId',authenticate, removeCartControll
 
 
 router.post('/add-to-wishlist', authenticate, addToWishlistController);
-
+router.get('/add-to-wishlist/:userId', authenticate, getWishlistController);
 
 // Update a specific category partially using PATCH
 router.put('/category/:id', async (req, res) => {

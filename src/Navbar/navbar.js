@@ -8,7 +8,7 @@ import { RiMessage2Line } from "react-icons/ri";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { PiShoppingCart } from "react-icons/pi";
 import { VscAccount } from "react-icons/vsc";
-function Navbar(){
+function Navbar({ userId }){
     const location = useLocation();
     const [activeLink, setActiveLink] = useState(location.pathname);
     return(
@@ -47,7 +47,7 @@ function Navbar(){
                     <PiShoppingCart size={26} className='iconify'/>
                 </Nav.Link>
 
-                <Nav.Link as={Link} to='/'  className='icon' >
+                <Nav.Link as={Link} to={`/wishlist/${userId}`}  className='icon' >
                     <MdOutlineFavoriteBorder size={26} className='iconify'/>
                 </Nav.Link>
 

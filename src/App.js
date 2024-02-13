@@ -11,7 +11,7 @@ import Account from './Profile/account';
 import AboutUs from './Homepage/aboutus';
 import Products from './Homepage/products';
 import ContactUs from './Homepage/ContactUs';
-
+import Wishlist from './ProductView/wishlist';
 import Search from './Homepage/searchPage';
 import AdminLogin from './Admin/adminLogin';
 import ProductView from './ProductView/product';
@@ -42,6 +42,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        
         <Route path="/register" element={<Register/>} />
         <Route path="/" element={<HomePage />} />
         {/* <Route
@@ -63,6 +64,8 @@ function App() {
           )}
         <Route path="/productView/:productId" element={<ProductView />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/wishlist/:userId" element={<Wishlist />} />
+        
       </Routes>
     </BrowserRouter>
   );

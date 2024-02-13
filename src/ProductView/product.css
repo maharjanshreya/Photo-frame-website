@@ -34,3 +34,11 @@
     border: 1px solid #fff;
     border-radius: 7px;
 }
+
+.wishlist{
+    margin: 10px 80px;
+}
+.wishlist h1{
+    font-family: 'Poppins';
+    color: #5c5858;
+}

@@ -6,10 +6,11 @@ import Button from 'react-bootstrap/Button';
 import User from '../Images/user.png';
 import { RiEditLine } from "react-icons/ri";
 import { TbLogout2 } from "react-icons/tb";
+import { useUser } from '../context/user';
 function Account(){
     const navigate = useNavigate();
     const [userData, setUserData] = useState();
-
+    const { userId, setUserId } = useUser();
     const callMyAccount = async () => {
         try {
            const res = await fetch('/account', {
@@ -28,6 +29,8 @@ function Account(){
       
           const data = await res.json();
           setUserData(data);
+          setUserId(data._id);
+          console.log("user issss",userId);
           //console.log(data);
       
         } catch (err) {
@@ -66,7 +69,7 @@ function Account(){
     };
     return(
       <div>
-        <Navbar/>
+        <Navbar userId={userData && userData._id}/>
         <h2 className='text-center' style={{color:'#ECB800',fontFamily:'Poppins',fontWeight:'bolder'}}>Welcome to your profile</h2><br/>
         {userData && (
 
