@@ -80,7 +80,6 @@ function Report(){
                 </form>
             </div>
         </div>
-        <input type='text'/>
 
         </>
     )

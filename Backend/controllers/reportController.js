@@ -26,27 +26,17 @@ const reportController = async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
-//get products
-const getReportController = async (req, res) => {
-    
+//get reports
+const getReportController = async (req, res) => {    
     try {
-       const products = await Product.find({}).select("-image").limit(12).sort({createdAt:-1}).populate('category');
-       res.status(200).json({ 
-        success: true,
-        total : products.length,
-        message: 'All Products',
-        products,
-       
-        });
-        
-        
-    } catch (err) {
-        console.error('Error:', err);
-        res.status(500).send({
-            success: false,
-            message: 'Error in creating product',
-            error: err.message,
-        });
-    }
+        // Fetch all reports from the database
+        const reports = await Report.find();
+        // Send the reports as a JSON response
+        res.json(reports);
+      } catch (error) {
+        // Handle errors
+        console.error('Error fetching reports:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
 };
 module.exports = {reportController,getReportController};
