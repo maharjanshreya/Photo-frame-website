@@ -3,14 +3,18 @@ import Logo from '../Images/Rectangle 1.png';
 import  '../CSS/style.css';
 import { Link } from 'react-router-dom';
 import React from 'react';
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/token';
+
+import { useUser } from '../context/user';
 function Login(){
     const navigate = useNavigate();
+    const [userData, setUserData] = useState([]);
     const [email,setEmail] = useState('');
     const [auth,setAuth] = useAuth();
     const [password,setPassword] = useState('');
+    const { userId, setUserId } = useUser();
     const loginUser = async (e) => {
         e.preventDefault();
         const res = await fetch('/signin', {
@@ -45,26 +49,64 @@ function Login(){
            // console.log("data",data);
             console.log(data.userData.role);
             const role=data.userData.role;
+            if (res.status == 400) {
+                // Check if the response contains an 'error' property
+                if (data && data.error) {
+                  throw new Error(data.error);
+                } else {
+                  throw new Error("An unknown error occurred.");
+                }
+              }
             
 
             if (res.status === 400 || !data) {
                 window.alert("Invalid Credentials");
             } else if(role==="admin") {
-                window.alert("Successfully entered as user: Homepage");
+                
                 navigate("/adminDashboard");
                 localStorage.setItem('status', 'true');
                 localStorage.setItem('tokens', JSON.stringify(data));
             }
             else{
-                navigate("/");
+                
                 localStorage.setItem('status', 'true');
+                const apiUrl = 'account'; 
+                
+                // Fetch the data from the API
+                fetch(apiUrl)
+                .then((response) => {
+                    if (!response.ok) {
+                      throw new Error('An unknown error occurred.');
+                    }
+                    return response.json();
+                  })
+                .then((data) => {
+                    // Update the state with the fetched data
+                    setUserData(data);
+                    setUserId(data._id);
+                    localStorage.setItem('userId', data._id);
+                    console.log("userId in login :",userId);
+                    navigate("/");
+                })
 
+                .catch((error) => {
+                    window.alert(error.message);
+                  console.log('Error fetching data:', error.message);
+                });
+                
             }
         } catch (error) {
-            console.error('Error parsing JSON:', error);
+            window.alert(error.message);
+            console.log('Error parsing JSON:', error.message);
         }
     }
-    
+    useEffect(() => {
+        if (userId) {
+          console.log("Login user id ", userId);
+      
+          // Additional logic (e.g., API calls) that depends on the updated userId
+        }
+      }, [userId]);
     return(
         <div className="full-screen-image">
             <div className="left-column">
@@ -80,6 +122,7 @@ function Login(){
                 </form>
                 <p>Don't have an account?<Link to='/register' > <u className='register-color'>Register Now </u></Link></p>
                 <Link to='/'><button>Cancel</button></Link>
+                
             </div>
             
         

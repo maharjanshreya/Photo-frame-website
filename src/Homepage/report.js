@@ -2,24 +2,27 @@ import Navbar from '../Navbar/navbar';
 import { useUser } from '../context/user';
 import {React,useState,useEffect} from 'react';
 import { toast } from 'react-hot-toast';
+
 import { Toaster } from 'react-hot-toast';
 function Report(){
-    const { userId } = useUser();
-    console.log(userId);
-    
+  const { userId, setUserId } = useUser();
+  console.log("report user id",userId);
+    useEffect(() => {
+      console.log('useEffect in Report component');
+      console.log('userId:', userId);
+      // Update userId in the state when it changes
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        userId: userId || '',
+      }));
+    }, [userId]);
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        userId:  "65831cff42e9c33911502ab7", // Assuming you have the user's ID available in your frontend
+        userId:  userId|| '', // Assuming you have the user's ID available in your frontend
       });
       let name,value;
-      useEffect(() => {
-        // Update userId in the state when it changes
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          //userId: userId || '',
-        }));
-      }, [userId]);
+      
     
       const handleChange = (e) => {
         console.log('Handling change:', e.target.name, e.target.value);
@@ -67,8 +70,9 @@ function Report(){
             <div className="row justify-content-center">
                 <form className="col-md-6" >
                     <div className="mb-3">
+                    <p>User ID: {userId}</p>
                         <label htmlFor="title" className="form-label">Title</label>
-                        <input type="text" name="title" className="form-control" id="title" value={formData.title} onChange={handleChange} defaultValue="Hello!"/>
+                        <input type="text" name="title" className="form-control" id="title" value={formData.title} onChange={handleChange} />
                     </div>
                     
                     <div className="mb-3">

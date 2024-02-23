@@ -31,4 +31,21 @@
   .iconify:hover{
     color: #76bb90;
   }
+  .count {
+    position: absolute;
+    padding-top: 2px;
+    margin-left:90px;
+    margin-top: 5px;
+    font-size: 14px;
+    border-radius: 50%;
+    background: #d60b28;
+    width: 18px;
+    height: 18px;
+    line-height:16px;
+    display: block;
+    text-align: center;
+    color: white;
+    font-family: 'fenix';
+   
+  }
   

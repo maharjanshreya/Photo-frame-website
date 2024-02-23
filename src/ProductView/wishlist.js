@@ -1,164 +1,137 @@
+import React, { useEffect, useState } from 'react';
 import Navbar from '../Navbar/navbar';
-import { useParams } from 'react-router-dom';
-import {React, useEffect,useState} from 'react';
 import { useUser } from '../context/user';
 import axios from 'axios';
-import { toast } from 'react-hot-toast';
-import { Toaster } from 'react-hot-toast';
-function Wishlist(){
-    //const { userId } = useParams();
-    const { userId } = useUser();
-    console.log(userId,"user");
-    const [wishlist, setWishlist] = useState({ wishlist: { items: [] } });
-    const [imageURL, setImageURL] = useState(null);
-    const [productData, setProductData] = useState([]);
-    const [productId, setProductId] = useState([]);
-    const handleCart = (p_id)=>{
-      setProductId(p_id);
-     
-      addToCart(p_id);
-    
-    }
-    const addToCart = async (productId) => {
-      const data = {
-        userId: userId,
-        items: [
-          {
-            productId: productId,
-            quantity: 1,
-          },
-        ],
-      };
-      try {
-          const response = await axios.post('/add-to-cart', data);
-          toast.success('Item added to cart!');
-        //  console.log("cart: ",response.data);
-        } catch (error) {
-          console.error('Error adding to cart:', error);
-        }
-      };
-    const getWishlist= async () => {
-        try {
-          const res = await fetch(`/add-to-wishlist/${encodeURIComponent(userId)}`,  {
-          method: 'GET',
-          credentials: 'include',
-          });
-          if (!res.ok) {
-            const error = new Error(res.statusText);
-            throw error;
-          }
-            
-          const datas = await res.json();
-          setWishlist(datas);
-          console.log("Wishlist data",datas);
-          const productIds = datas.wishlist.items.map(item => item.productId);
-          console.log("Productsss ID from the first item in the wishlist", productIds);
-         
-          if (datas.wishlist.items && datas.wishlist.items.length > 0) {
-            
-            try {
-              const productDataitems =  await Promise.all(datas.wishlist.items.map(async (item) => {
-                const res = await fetch(`/products/${encodeURIComponent(item.productId)}`,  {
-                  method: 'GET',
-                  credentials: 'include',
-                });
-                if (!res.ok) {
-                  const error = new Error(res.statusText);
-                  throw error;
-                }
-              
-                const productData = await res.json();
-                
-                console.log("Product data",productData.product);
-                return productData.product;
-             })
-             );
-             setProductData(productDataitems);
-               
+import { toast,Toaster } from 'react-hot-toast';
+import Button from 'react-bootstrap/Button';
+function Wishlist() {
+  const userId = localStorage.getItem('userId');
+  const [imageURL, setImageURL] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
+  const [productData, setProductData] = useState([]);
+  const [loadedImages, setLoadedImages] = useState([]);
 
-            console.log("Product IDs from the wishlistssds:", productIds);
-            } catch (err) {
-              console.log('Error in fetching data', err);
-            }
-          
-          }
-          if (datas.wishlist.items && datas.wishlist.items.length > 0) {
-            const imagePromises = datas.wishlist.items.map(async (item) => {
-            try {
-              if (!item.productId) {
-                // Handle the case where productId is undefined for the item
-                console.error(`ProductId is undefined for item: ${JSON.stringify(item)}`);
-                return null;
-              }
-              const imageRes = await fetch(`/product-image/${encodeURIComponent(item.productId)}`, {
-                method: 'GET',
-                credentials: 'include',
-              });
+  const handleCart = (p_id) => {
+    addToCart(p_id);
+  };
   
-              if (!imageRes.ok) {
-                  throw new Error(`Failed to fetch image for product ID ${item.productId}`);
-              }
-      
-              const buffer = await imageRes.arrayBuffer();
-              const base64Image = btoa(new Uint8Array(buffer).reduce((data, byte) => data + String.fromCharCode(byte), ''));
-              return {
-                productId: item.productId,
-                url: `data:image/png;base64,${base64Image}`,
-              };
-            } catch (error) {
-              console.error(error.message);
-              return null;
-            }
+  const addToCart = async (productId) => {
+    const data = {
+      userId: userId,
+      items: [
+        {
+          productId: productId,
+          quantity: 1,
+        },
+      ],
+    };
+    try {
+      const response = await axios.post('/add-to-cart', data);
+      toast.success('Item added to cart!');
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    }
+  };
 
-          
-          });
-    
-          const resolvedImages = await Promise.all(imagePromises);     // Resolve all image promises
-          const filteredImages = resolvedImages.filter((image) => image !== null);   // Filter out any null values from failed requests
-          setImageURL(filteredImages);
-        }
-      } catch (err) {
-        console.log('Error in fetching data', err);
+  const imageFunc = async (productId, index) => {
+    try {
+      const res = await fetch(`/product-image/${encodeURIComponent(productId)}`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (!res.ok) {
+        const error = new Error(res.statusText);
+        throw error;
       }
-      };
-      
 
-      useEffect(() => {
-        getWishlist();
-    }, []); 
-    return(
-      <>
-        <Navbar/>
-        <div className='wishlist'>
-          <h1>Favoruites</h1>
-          <p className="mb-0" >You have {wishlist.wishlist.items.length} items in your cart</p>
-          <div className="row text-center" style={{marginTop:'30px'}}>
-            {wishlist.wishlist && Array.isArray(wishlist.wishlist.items) && (
-              <>
-                {wishlist.wishlist.items.map((item, index) => (
-                  <div key={index} className="wishlist-item col-md-3">
-                    {imageURL && imageURL.map((image) => (
-                      image.productId && image.productId === item.productId && 
-                      (
-                        <>
-                          <img key={image.productId} src={image.url} className="rounded-3" style={{ width: "150px",height:'200px' }} alt="Avatar" />
-                          {productData.length > index && (
-                              <div key={index} className="wishlist-details">
-                                  <div><p style={{fontSize:'17px', fontWeight:'400',marginTop:'10px',marginBottom:'4px'}}>{productData[index].productName}</p> Size: <span style={{fontFamily:'fenix',fontWeight:'600'}}>{productData[index].size}</span><br/>Rs. {productData[index].price}</div>
-                                  <button className='add-to-cart' onClick={(e) =>{e.preventDefault();handleCart(productData[index]._id);}}>Add To Cart</button>
-                                  {/* Add other product details here */}
-                              </div>
-                          )}<Toaster position="top-center" reverseOrder={true}/>
-                        </>
-                      )
-                    ))}
-                  </div>
-                ))}
-              </>
-            )}
+      const buffer = await res.arrayBuffer();
+      const base64Image = btoa(new Uint8Array(buffer).reduce((data, byte) => data + String.fromCharCode(byte), ''));
+
+      // Update the state by creating a new array with the current URL and the new one
+      setLoadedImages((prevLoadedImages) => [...prevLoadedImages, index]);
+      return `data:image/png;base64,${base64Image}`;
+    } catch (err) {
+      console.log('Error in fetching image data', err);
+      return null;
+    }
+  };
+
+  const categoryFunc = async () => {
+    try {
+      const res = await fetch(`/add-to-wishlist/${encodeURIComponent(userId)}`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+
+      if (!res.ok) {
+        const error = new Error(res.statusText);
+        throw error;
+      }
+
+      const data = await res.json();
+      setProductData(data);
+      const productIds = data.wishlist.products.map((product) => product._id);
+
+      // Clear the loadedImages state before fetching images for the new set of products
+      setLoadedImages([]);
+
+      // Use Promise.all to wait for all image fetches to complete before proceeding
+      const imageURLs = await Promise.all(productIds.map((productId, index) => imageFunc(productId, index)));
+
+      // Set the imageURL state once all images are loaded
+      setImageURL(imageURLs);
+
+      console.log(data);
+
+    } catch (err) {
+      console.log('Error in fetching data', err);
+    }
+  };
+
+  useEffect(() => {
+    categoryFunc();
+  }, []);
+
+  return (
+    <>
+      <Navbar />
+      <div className='wishlist'>
+        <h1>Favorites</h1>
+        <p className="mb-0">You have {wishlist.products} items in your cart</p>
+        <div className="row text-center" style={{ marginTop: '30px' }}>
+          <div className="image-container" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+            {productData && productData.wishlist && productData.wishlist.products.map((product, index) => (
+              <div key={product._id} className="image-item" style={{ flexBasis: 'calc(25% - 20px)', margin: '10px' }}>
+                {loadedImages.includes(index) && (
+                  <>
+                    <img
+                      src={imageURL[index]}
+                      alt={`Product Image ${index + 1}`}
+                      style={{ width: '160px', height: '200px',marginBottom:'10px' }}
+                    />
+                    <h2 style={{fontFamily:'Gelasio', fontSize:'18px'}}>{product.productName}</h2>
+                    <p style={{marginBottom:'0px'}}>Size: {product.size}</p>
+                    <p>Rs. {product.price}</p>
+                    <Button onClick={() => handleCart(product._id)}>Add to cart</Button>
+                    <Toaster
+                          position="top-center"
+                          reverseOrder={true}
+                        />
+                    {/* Add more elements as needed */}
+                  </>
+                )}
+              </div>
+            ))}
           </div>
         </div>
-      </>
-    );
+      </div>
+    </>
+  );
 }
+
 export default Wishlist;

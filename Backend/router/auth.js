@@ -15,7 +15,7 @@ const  {createProductController,getProductController,getPhotoController,getSingl
 const { useContext } = require('react');
 const { ObjectId } = require('mongodb');
 const { addToWishlistController,getWishlistController } = require('../controllers/wishlistController.js');
-const { reportController,getReportController } = require('../controllers/reportController.js');
+const { reportController,getReportController,replyToReportController} = require('../controllers/reportController.js');
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
   });
@@ -121,7 +121,7 @@ router.post('/signin',async(req,res)=> {
             
             });
             if(!isMatch){
-                res.status(400).json({error: "invalid credentials passsowrd"});
+                res.status(400).json({error: "invalid credentials "});
     
             }else{
                 res.json({message: "user sign in successfully",userData: {
@@ -133,7 +133,7 @@ router.post('/signin',async(req,res)=> {
             }
         }
         else{
-            res.status(400).json({message: "Invalid credentials"});
+            res.status(400).json({message: "No user id"});
   
         }
         
@@ -149,6 +149,28 @@ router.get('/account', authenticate, (req,res)=>{
     res.send(req.rootUser);
     
 });
+
+router.get('/account/:userId', authenticate, async (req, res) => {
+    try {
+      const userId = req.params.userId;
+  
+      // Assuming you are using a database and have a User model
+      const user = await User.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      // Check if the authenticated user has permission to access this user's account
+      // ...
+  
+      // Send the user details in the response
+      res.json(user);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
 // router.get('/category', authenticate, (req,res)=>{
 //     console.log("Category");
 //     res.send(req.category);
@@ -206,8 +228,9 @@ router.delete('/remove-item/:userId/:productId',authenticate, removeCartControll
 router.post('/add-to-wishlist', authenticate, addToWishlistController);
 router.get('/add-to-wishlist/:userId', authenticate, getWishlistController);
 
-router.post('/report', reportController);
-router.get('/report', getReportController);
+router.post('/report', authenticate,reportController);
+router.post('/report/reply',authenticate, replyToReportController);
+router.get('/report',authenticate, getReportController);
 // Update a specific category partially using PATCH
 router.put('/category/:id', async (req, res) => {
     if(!req.body) {

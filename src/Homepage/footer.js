@@ -4,7 +4,11 @@ import { TiSocialFacebook } from "react-icons/ti";
 import { BiLogoInstagramAlt } from "react-icons/bi";
 import Logo from '../Images/Rectangle 1.png';
 import './homepage.css';
+import { useUser } from '../context/user';
+import { Link } from "react-router-dom";
 function Footer() {
+  const { userId, setUserId } = useUser();
+  
   return (
     <MDBFooter bgColor='light' className='text-center text-lg-start text-muted'>
       <section className='d-flex justify-content-center justify-content-lg-between p-4 border-bottom'>
@@ -78,9 +82,7 @@ function Footer() {
                 </a>
               </p>
               <p>
-                <a href='/report' className='text-reset'>
-                  Report a problem
-                </a>
+              <Link to="/report">report a problem</Link>
               </p>
             </MDBCol>
 

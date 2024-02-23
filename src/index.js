@@ -13,16 +13,17 @@ root.render(
   <React.StrictMode>
     <AuthProvider>
       <UserProvider>
-      <SearchProvider>
-        <CartProvider>
+        <SearchProvider>
+          <CartProvider>
+            
+              <App />
           
-            <App />
-         
-        </CartProvider>
-      </SearchProvider>
+          </CartProvider>
+        </SearchProvider>
       </UserProvider>
     </AuthProvider>
   </React.StrictMode>
+  
 );
 
 // If you want to start measuring performance in your app, pass a function

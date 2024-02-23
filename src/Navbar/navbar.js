@@ -1,16 +1,41 @@
-import {React,useState} from 'react';
+import {React,useEffect,useState} from 'react';
 import { Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import Logo from '../Images/Rectangle 1.png';
 import './navbar.css';
-import { RiMessage2Line } from "react-icons/ri";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { PiShoppingCart } from "react-icons/pi";
 import { VscAccount } from "react-icons/vsc";
-function Navbar({ userId }){
+import { useUser } from '../context/user';
+import { IoMdNotificationsOutline } from "react-icons/io";
+function Navbar(){
     const location = useLocation();
+    const userId = localStorage.getItem('userId');
+    const [cartData, setCartData] = useState({ cart: { items: [] } });
     const [activeLink, setActiveLink] = useState(location.pathname);
+    const getCart = async () => {
+        try {
+          const res = await fetch(`/add-to-cart/${encodeURIComponent(userId)}`,  {
+          method: 'GET',
+          credentials: 'include',
+          });
+          if (!res.ok) {
+            const error = new Error(res.statusText);
+            throw error;
+          }
+            
+          const datas = await res.json();
+          setCartData(datas);
+         
+          console.log("Items length in cartin navbar:  ",datas.cart.items.length);
+        } catch (err) {
+            console.log('Error in fetching data', err);
+        }
+    };  
+    useEffect(() => {
+        getCart();
+      }, [userId]);
     return(
         <div className='navbar-wrappers'>
         <Nav className='d-flex justify-content-between' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'  }}>
@@ -40,14 +65,14 @@ function Navbar({ userId }){
 
             <div className='d-flex text-right'>
                 <Nav.Link as={Link} to='/'  className='icon' >
-                    <RiMessage2Line size={26} className='iconify'/>
+                    <IoMdNotificationsOutline size={26} className='iconify'/>
                 </Nav.Link>
 
                 <Nav.Link as={Link} to='/cart'  className='icon' >
                     <PiShoppingCart size={26} className='iconify'/>
                 </Nav.Link>
-
-                <Nav.Link as={Link} to={`/wishlist/${userId}`}  className='icon' >
+                <span class="count">{cartData.cart.items.length}</span>
+                <Nav.Link as={Link} to={'/wishlist'}  className='icon' >
                     <MdOutlineFavoriteBorder size={26} className='iconify'/>
                 </Nav.Link>
 

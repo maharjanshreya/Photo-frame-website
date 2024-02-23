@@ -15,7 +15,11 @@ import ProductView from '../ProductView/product';
 import ImageFrameOverlay from './ImageFrameOverlay';
 import { useSearch } from '../context/search';
 import axios from 'axios';
+
+import { useUser } from '../context/user';
 function Homepage() {
+  const { userId, setUserId } = useUser();
+  
   const [userPhoto, setUserPhoto] = useState(null);
 
   const handlePhotoUpload = (event) => {
@@ -94,7 +98,7 @@ function Homepage() {
       console.log(err);
     }
   }
-  const wishlist = async (userId, productId) => {
+  const wishlist = async ( productId) => {
    
 
     try {
@@ -104,13 +108,7 @@ function Homepage() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              userId,
-              items: [
-                  {
-                      productId,
-                  },
-              ],
+            body: JSON.stringify({ userId, productId 
 
             }),
             credentials: 'include', 
@@ -119,6 +117,7 @@ function Homepage() {
         const data = await res.json();
         if (!data) {
             console.log("Message not sent");
+            window.alert("Message not sent");
         } else {
             window.alert("added to favoruites");
             
@@ -131,9 +130,9 @@ function Homepage() {
 // Example usage in your component
 const handleAddToWishlist = (productId) => {
   // Get userId from your authentication or context
-  const userId = '65b7baa072fc77bf9af8d5e1'; // Replace with the actual userId
+  
 
-  wishlist(userId, productId);
+  wishlist(productId);
 };
   return (
     <div style={{ backgroundColor, transition: 'background-color 0.5s' }}>

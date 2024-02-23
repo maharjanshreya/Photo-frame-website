@@ -30,8 +30,8 @@ const ImageFrameOverlay = ({ frameSrc, photoSrc }) => {
 
         // Calculate the scaling factor for the user photo
         const scaleFactor = Math.min(
-            (frameImage.width - 10) / userPhoto.width,
-            (frameImage.height - 14) / userPhoto.height
+            (frameImage.width - 4) / userPhoto.width,
+            (frameImage.height - 4) / userPhoto.height
         );
 
         // Calculate the new dimensions for the user photo

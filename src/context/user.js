@@ -6,9 +6,7 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [userId, setUserId] = useState(null);
 
-  const setUser = (data) => {
-    setUserId(data);
-  };
+  
 
   return (
     <UserContext.Provider value={{ userId, setUserId }}>

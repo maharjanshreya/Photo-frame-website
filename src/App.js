@@ -14,6 +14,7 @@ import Products from './Homepage/products';
 import ContactUs from './Homepage/ContactUs';
 import Wishlist from './ProductView/wishlist';
 import Search from './Homepage/searchPage';
+import Footer from './Homepage/footer';
 import AdminLogin from './Admin/adminLogin';
 import ProductView from './ProductView/product';
 import AdminDashboard from './Admin/adminDashboard';
@@ -59,7 +60,7 @@ function App() {
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/products" element={<Products />} />
         <Route path="/account" element={<Account />}/>
-        <Route path="/report" element={<Report />} />
+      
         <Route path="/search" element={<Search />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/adminLogin" element={<AdminLogin />} />
@@ -74,8 +75,9 @@ function App() {
         <Route path="/adminAnalysis" element={<AdminAnalysis/>} />
         <Route path="/adminContact" element={<AdminContact/>} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/wishlist/:userId" element={<Wishlist />} />
-        
+        <Route path="/footer" element={<Footer />} />
+        <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/report" element={<Report />} />
       </Routes>
     </BrowserRouter>
   );

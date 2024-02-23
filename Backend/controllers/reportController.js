@@ -1,7 +1,7 @@
 const Report = require('../model/reportModel');
 const User = require('../model/userModel');
 
-// Controller function for creating a report
+// post report
 const reportController = async (req, res) => {
   try {
     const { title, description, userId } = req.body;
@@ -39,4 +39,44 @@ const getReportController = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
       }
 };
-module.exports = {reportController,getReportController};
+// reply back by admin 
+const replyToReportController = async (req, res) => {
+  const { reportId, adminReply } = req.body;
+  console.log('report Replt:', adminReply);
+  try {
+    
+    const reportReply = await Report.findOne({_id: reportId});
+    console.log('Updated Report:', reportReply);
+    console.log('Original Report:', reportReply);
+
+    const reply = await reportReply.addMessage(adminReply);
+    await reportReply.save();
+
+    console.log('Updated Report:', reportReply);
+
+    res.status(201).json({ message: 'User contact successful', reply: reply });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+// router.post('/contact', authenticate, async (req,res)=>{
+//   try{
+//       const {email,contact,message}= req.body;
+//       if(!email || !contact || !message){
+//           console.log("Error in Contact form");
+//           return res.json({error: "Please field the required fields"});
+//       }
+//       const userContact = await User.findOne({_id: req.userID});
+//       if(userContact){
+//           const userMessage = await userContact.addMessage(email,contact,message);
+//           await userContact.save();
+//           res.status(201).json({message:"USer contact successfull"}); 
+//       }
+//   }catch(err){
+//       console.log(err);
+//   }
+
+// });
+module.exports = {reportController,getReportController,replyToReportController};
