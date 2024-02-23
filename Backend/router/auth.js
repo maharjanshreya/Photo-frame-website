@@ -231,7 +231,7 @@ router.get('/add-to-wishlist/:userId', authenticate, getWishlistController);
 router.post('/report', authenticate,reportController);
 router.post('/report/reply',authenticate, replyToReportController);
 router.get('/report',authenticate, getReportController);
-router.get('/report/reply',authenticate, getReplyController);
+router.get('/report/reply/:userId',authenticate, getReplyController);
 // Update a specific category partially using PATCH
 router.put('/category/:id', async (req, res) => {
     if(!req.body) {

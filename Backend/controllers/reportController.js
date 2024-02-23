@@ -40,19 +40,25 @@ const getReportController = async (req, res) => {
       }
 };
 
-//get admin replies
-const getReplyController = async (req, res) => {    
+const getReplyController = async (req, res) => {
   try {
-      // Fetch all reports from the database
-      const reports = await Report.find();
-      // Send the reports as a JSON response
-      res.json(reports.adminReply);
-    } catch (error) {
-      // Handle errors
-      console.error('Error fetching reports:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
+    const { userId } = req.body;
+
+    // Fetch reports for the specified user ID
+    const reports = await Report.find({ user: userId });
+
+    // Extract admin replies from the reports
+    const adminReplies = reports.length > 0 ? reports[0].adminReply : [];
+
+    res.json(adminReplies);
+    console.log('Admin Replies:', adminReplies);
+  } catch (error) {
+    // Handle errors
+    console.error('Error fetching admin replies:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 };
+
 
 // reply back by admin 
 const replyToReportController = async (req, res) => {

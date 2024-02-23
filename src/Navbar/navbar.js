@@ -64,7 +64,7 @@ function Navbar(){
             </div>
 
             <div className='d-flex text-right'>
-                <Nav.Link as={Link} to='/'  className='icon' >
+                <Nav.Link as={Link} to='/notification'  className='icon' >
                     <IoMdNotificationsOutline size={26} className='iconify'/>
                 </Nav.Link>
 

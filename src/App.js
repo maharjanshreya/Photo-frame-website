@@ -23,7 +23,7 @@ import AdminReview from './Admin/adminReview';
 import AdminAnalysis from './Admin/adminAnalysis';
 import AdminContact from './Admin/adminContact';
 import Cart from './ProductView/cart';
-
+import Notification from './ProductView/notification';
 
 import { useNavigate } from 'react-router-dom';
 import Homepage from './Homepage/homepage';
@@ -78,6 +78,7 @@ function App() {
         <Route path="/footer" element={<Footer />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/report" element={<Report />} />
+        <Route path="/notification" element={<Notification />} />
       </Routes>
     </BrowserRouter>
   );
