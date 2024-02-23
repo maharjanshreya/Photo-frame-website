@@ -15,7 +15,7 @@ const  {createProductController,getProductController,getPhotoController,getSingl
 const { useContext } = require('react');
 const { ObjectId } = require('mongodb');
 const { addToWishlistController,getWishlistController } = require('../controllers/wishlistController.js');
-const { reportController,getReportController,replyToReportController} = require('../controllers/reportController.js');
+const { reportController,getReportController,replyToReportController,getReplyController} = require('../controllers/reportController.js');
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
   });
@@ -231,6 +231,7 @@ router.get('/add-to-wishlist/:userId', authenticate, getWishlistController);
 router.post('/report', authenticate,reportController);
 router.post('/report/reply',authenticate, replyToReportController);
 router.get('/report',authenticate, getReportController);
+router.get('/report/reply',authenticate, getReplyController);
 // Update a specific category partially using PATCH
 router.put('/category/:id', async (req, res) => {
     if(!req.body) {

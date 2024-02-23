@@ -39,6 +39,21 @@ const getReportController = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
       }
 };
+
+//get admin replies
+const getReplyController = async (req, res) => {    
+  try {
+      // Fetch all reports from the database
+      const reports = await Report.find();
+      // Send the reports as a JSON response
+      res.json(reports.adminReply);
+    } catch (error) {
+      // Handle errors
+      console.error('Error fetching reports:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
 // reply back by admin 
 const replyToReportController = async (req, res) => {
   const { reportId, adminReply } = req.body;
@@ -61,22 +76,5 @@ const replyToReportController = async (req, res) => {
   }
 };
 
-// router.post('/contact', authenticate, async (req,res)=>{
-//   try{
-//       const {email,contact,message}= req.body;
-//       if(!email || !contact || !message){
-//           console.log("Error in Contact form");
-//           return res.json({error: "Please field the required fields"});
-//       }
-//       const userContact = await User.findOne({_id: req.userID});
-//       if(userContact){
-//           const userMessage = await userContact.addMessage(email,contact,message);
-//           await userContact.save();
-//           res.status(201).json({message:"USer contact successfull"}); 
-//       }
-//   }catch(err){
-//       console.log(err);
-//   }
 
-// });
-module.exports = {reportController,getReportController,replyToReportController};
+module.exports = {reportController,getReportController,replyToReportController,getReplyController};

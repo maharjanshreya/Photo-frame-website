@@ -6,6 +6,8 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { CiSearch } from "react-icons/ci";
 import { CiCalendar } from "react-icons/ci";
+import { FaReply } from "react-icons/fa";
+
 function Contact() {
   const [reports, setReports] = useState([]);
   const [userData, setUserData] = useState([]);
@@ -13,6 +15,13 @@ function Contact() {
   const [sortDirection, setSortDirection] = useState('asc'); // 'asc' for ascending, 'desc' for descending
   const [searchTerm, setSearchTerm] = useState('');
   const [replyText, setReplyText] = useState('');
+  const [showForm, setShowForm] = useState(false);
+  const [activeFormId, setActiveFormId] = useState(null);
+
+  const handleButtonClick = (reportId) => {
+   
+     setActiveFormId((prevId) => (prevId === reportId ? null : reportId));
+  };
   const sendReplyToServer = async (event, reportId) => {
     console.log("repl text in frontend: ",replyText);
     event.preventDefault();
@@ -31,7 +40,12 @@ function Contact() {
       if (!response.ok) {
         throw new Error('Failed to send reply');
       }
-  
+      fetchReportData();
+        // After successfully sending the reply, reset the active form
+        setActiveFormId(null);
+
+        // Reset the replyText state
+        setReplyText('');
       // Handle success, update UI or state accordingly
       console.log('Reply sent successfully');
       setReplyText('');
@@ -40,38 +54,32 @@ function Contact() {
       console.error('Error sending reply:', error.message);
     }
   };
-  useEffect(() => {
-    const apiUrl = 'report'; 
-    
-    // Fetch the data from the API
-    fetch(apiUrl)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // Update the state with the fetched data
-        setReports(data);
-        console.log("data",data);
-        // Extract user IDs from reports
-        const userIds = data.map((report) => report.user);
-       
-         // Fetch user data for each user ID
-         Promise.all(userIds.map((userId) => fetch(`account/${userId}`).then((response) => response.json())))
-         .then((userData) => {
-           setUserData(userData);
-           console.log("User data: ",userData);
-         })
-         .catch((error) => {
-           console.error('Error fetching user data:', error);
-         });
-     })
+  const fetchReportData = async () => {
+    try {
+      const response = await fetch('report');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setReports(data);
 
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
+      // Fetch user data for each user ID
+      const userIds = data.map((report) => report.user);
+      Promise.all(userIds.map((userId) => fetch(`account/${userId}`).then((response) => response.json())))
+        .then((userData) => {
+          setUserData(userData);
+        })
+        .catch((error) => {
+          console.error('Error fetching user data:', error);
+        });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchReportData();
+    
       
   }, []);
   const filteredReports = reports.filter((report) =>
@@ -139,7 +147,7 @@ function Contact() {
                 <strong>Description: </strong> {report.description}<br />
                 {report.adminReply && report.adminReply.length > 0 && (
                 <div>
-                  <strong>Report replies: </strong>
+                  <strong>Admin replies: </strong>
                   {report.adminReply.map((reply, index) => (
                     <div key={index}>
                       <p>{reply}</p>
@@ -153,14 +161,15 @@ function Contact() {
                   day: 'numeric',
                   year: 'numeric',
                 })}<br/>
-                Reply back:
-                <form>
-                  <Form.Control as="textarea" rows={3} placeholder="Reply back to user" onChange={(e) => setReplyText(e.target.value)} />
-                  <Button variant="primary" name="replies" type="submit" style={{ marginTop: '10px' }} onClick={(e) => sendReplyToServer(e, report._id)}>
-                    Submit
-                  </Button>
-                </form>
-
+                <Button variant="secondary" style={{marginTop:'6px',marginBottom:'6px'}} onClick={() => handleButtonClick(report._id)}><FaReply style={{marginRight:'6px'}} />Reply</Button>
+                {activeFormId === report._id && (
+                  <form>
+                    <Form.Control as="textarea" rows={3} placeholder="Reply back to user" onChange={(e) => setReplyText(e.target.value)} />
+                    <Button variant="success" name="replies" type="submit" style={{ marginTop: '10px' }} onClick={(e) => sendReplyToServer(e, report._id)}>
+                      Submit
+                    </Button>
+                  </form>
+                )}
               </p>
             ))}
 
