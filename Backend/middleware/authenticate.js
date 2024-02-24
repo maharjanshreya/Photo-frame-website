@@ -14,7 +14,7 @@ const Authenticate = async(req,res,next) =>{
         
                 // Inside the try block of Authenticate middleware
         console.log("Token verified successfully");
-        console.log("Root user:", rootUser);
+        //console.log("Root user:", rootUser);
         req.token = token;
         req.rootUser = rootUser;
         req.userID = rootUser._id;

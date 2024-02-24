@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import AdminNavbar from './adminNavbar';
-import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -17,7 +16,7 @@ function Contact() {
   const [replyText, setReplyText] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [activeFormId, setActiveFormId] = useState(null);
-
+  const createdAt = new Date().toISOString();
   const handleButtonClick = (reportId) => {
    
      setActiveFormId((prevId) => (prevId === reportId ? null : reportId));
@@ -32,9 +31,11 @@ function Contact() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          reportId: reportId,
-          adminReply: replyText,
-        }),
+          reportId,
+          replyText,
+          createdAt,
+          }),
+          credentials: 'include', // Add this line
       });
       
       if (!response.ok) {
@@ -112,8 +113,8 @@ function Contact() {
           <div className='report'>
             <h1 >Report by users </h1>
             <hr />
-            <div class="d-flex align-items-center" style={{ marginBottom: '20px' }}>
-              <div class=" flex-grow-1 ">
+            <div className="d-flex align-items-center" style={{ marginBottom: '20px' }}>
+              <div className=" flex-grow-1 ">
                 <InputGroup className="mb-1">
                   <InputGroup.Text id="inputGroup-sizing-default">
                     <CiSearch />
@@ -124,7 +125,7 @@ function Contact() {
                     onChange={(e) => setSearchTerm(e.target.value)} />
                 </InputGroup>
               </div>
-              <div class="d-flex align-items-center" style={{ marginLeft: '10px' }}>
+              <div className="d-flex align-items-center" style={{ marginLeft: '10px' }}>
                 <label style={{ marginRight: '5px' }}>
                   Sort:
                 </label>
@@ -134,7 +135,7 @@ function Contact() {
                   <option value="description">Description</option>
                 </Form.Select>
               </div>
-              <div class="ml-2">
+              <div className="ml-2">
                 <Button style={{ marginLeft: '10px' }} onClick={toggleSortDirection}>
                   {sortDirection === 'asc' ? 'Sort Descending' : 'Sort Ascending'}
                 </Button>
@@ -145,13 +146,13 @@ function Contact() {
                 <span style={{color:'gray'}}>From: {userData[index]?.email}  </span><br/>
                 <strong>Title: </strong>{report.title}<br />
                 <strong>Description: </strong> {report.description}<br />
-                {report.adminReply && report.adminReply.length > 0 && (
+                {Array.isArray(report.adminReply) && report.adminReply.length > 0 && (
                 <div>
                   <strong>Admin replies: </strong>
                   {report.adminReply.map((reply, index) => (
                     <div key={index}>
-                      <p>{reply}</p>
-                      {/* Add any styling or additional content for each reply */}
+                      {reply && reply.replyText && <p>{reply.replyText}</p>}
+                      {/* Add any styling or additional content for each valid reply */}
                     </div>
                   ))}
                 </div>

@@ -5,7 +5,8 @@ import { toast } from 'react-hot-toast';
 
 import { Toaster } from 'react-hot-toast';
 function Report(){
-  const { userId, setUserId } = useUser();
+  const userId = localStorage.getItem('userId');
+  
   console.log("report user id",userId);
     useEffect(() => {
       console.log('useEffect in Report component');

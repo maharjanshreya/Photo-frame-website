@@ -14,43 +14,39 @@ const reportSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  adminReply: {
-    type: [String], 
-    required: false,
-  },
+  adminReply: [
+    {
+      replyText: {
+        type: String,
+        required: false,
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-reportSchema.methods.addMessage = async function (adminReply) {
+
+
+reportSchema.methods.addMessage = async function (replyText, createdAt) {
   try {
-    console.log('Before save:', this.adminReply);
-
-    // Filter out null values before pushing the new adminReply
-    this.adminReply = (this.adminReply || []).filter((reply) => reply !== null);
-    this.adminReply.push(adminReply);
-
-    await this.save();
-
-    console.log('After save:', this.adminReply);
-
+    if (replyText && createdAt) {
+      this.adminReply = this.adminReply.concat({ replyText, createdAt });
+      await this.save();
+    }
     return this.adminReply;
   } catch (error) {
     console.log(error);
-    throw error;
+    throw error; // Make sure to rethrow the error so that it's propagated
   }
-};
-// userSchema.methods.addMessage = async function(email, contact, message) {
-//   try {
-//       this.messages = this.messages.concat({ email, contact, message });
-//       await this.save();
-//       return this.messages;
-//   } catch (error) {
-//       console.log(error);
-//   }
-// }
+}
+
 const Report = mongoose.model('Report', reportSchema);
 
 module.exports = Report;

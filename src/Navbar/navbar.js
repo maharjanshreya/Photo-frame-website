@@ -71,7 +71,7 @@ function Navbar(){
                 <Nav.Link as={Link} to='/cart'  className='icon' >
                     <PiShoppingCart size={26} className='iconify'/>
                 </Nav.Link>
-                <span class="count">{cartData.cart.items.length}</span>
+                <span className="count">{cartData.cart.items.length}</span>
                 <Nav.Link as={Link} to={'/wishlist'}  className='icon' >
                     <MdOutlineFavoriteBorder size={26} className='iconify'/>
                 </Nav.Link>
