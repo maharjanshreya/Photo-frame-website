@@ -8,6 +8,8 @@ import Login from './LoginRegister/Login';
 import Register from './LoginRegister/Register';
 import Navbar from './Navbar/navbar';
 import Account from './Profile/account';
+
+import ImagePage from './Homepage/image';
 import Report from './Homepage/report';
 import AboutUs from './Homepage/aboutus';
 import Products from './Homepage/products';
@@ -22,6 +24,7 @@ import AdminOrder from './Admin/adminOrder';
 import AdminReview from './Admin/adminReview';
 import AdminAnalysis from './Admin/adminAnalysis';
 import AdminContact from './Admin/adminContact';
+import AdminNotifyUpdates from './Admin/addNotification';
 import Cart from './ProductView/cart';
 import Notification from './ProductView/notification';
 
@@ -71,6 +74,7 @@ function App() {
           )}
         <Route path="/productView/:productId" element={<ProductView />} />
         <Route path="/adminOrder" element={<AdminOrder />} />
+        <Route path="/notify" element={<AdminNotifyUpdates />} />
         <Route path="/adminReview" element={<AdminReview/>} />
         <Route path="/adminAnalysis" element={<AdminAnalysis/>} />
         <Route path="/adminContact" element={<AdminContact/>} />
@@ -79,6 +83,7 @@ function App() {
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/report" element={<Report />} />
         <Route path="/notification" element={<Notification />} />
+        <Route path="/imagepage" element={<ImagePage />} />
       </Routes>
     </BrowserRouter>
   );

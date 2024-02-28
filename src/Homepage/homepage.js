@@ -1,27 +1,74 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect,useRef } from 'react';
 import Navbar from '../Navbar/navbar';
+import ImagePagea from '../Homepage/image';
 import SideImage from '../Images/Group 9.png';
 import './homepage.css';
 import { IoSearchOutline } from "react-icons/io5";
 import Button from 'react-bootstrap/Button';
 import Image from '../Images/Group 7.png';
 import Image2 from '../Images/Group 14.png';
+import MyProdu from '../Images/MyImageProduct.jpg';
 import Footer from './footer';
 import Frame from '../Images/product7.png';
 import Carousel from 'react-bootstrap/Carousel';
 import { FaRegHeart } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ProductView from '../ProductView/product';
 import ImageFrameOverlay from './ImageFrameOverlay';
 import { useSearch } from '../context/search';
 import axios from 'axios';
-
+import Draggable from 'react-draggable';
+import {Resizable} from 'react-resizable';
 import { useUser } from '../context/user';
+import ImagePage from './image';
 function Homepage() {
   const { userId, setUserId } = useUser();
   
   const [userPhoto, setUserPhoto] = useState(null);
+  const [scale, setScale] = useState(1);
+  const [rotation, setRotation] = useState(0);
 
+  const handleResize = (e, { size }) => {
+    const newScale = size.width / 200; // Adjust as needed
+    setScale(newScale);
+  };
+
+  const handleRotate = () => {
+    const newRotation = rotation + 90; // Rotate by 90 degrees
+    setRotation(newRotation);
+  };
+
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const imageRef = useRef(null);
+
+  const handleZoom = (delta) => {
+    // Adjust scale based on delta
+    const newScale = Math.min(Math.max(0.5, scale + delta * -0.01), 3.0);
+    setScale(newScale);
+  };
+
+  const handleMouseDown = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e) => {
+    if (isDragging) {
+      const rect = imageRef.current.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left;
+      const offsetY = e.clientY - rect.top;
+
+      setPosition({
+        x: offsetX - rect.width / 2,
+        y: offsetY - rect.height / 2,
+      });
+  }
+};
   const handlePhotoUpload = (event) => {
     const uploadedPhoto = event.target.files[0];
     // Perform any necessary validation or processing
@@ -228,11 +275,14 @@ const handleAddToWishlist = (productId) => {
         </div>
       </div>
 
-      <div>
-        {/* Other components or routes go here */}
+      {/* <div>
+        
         <input type="file" onChange={handlePhotoUpload} />
         {userPhoto && <ImageFrameOverlay frameSrc={Frame} photoSrc={userPhoto} />}
-      </div>
+      </div> */}
+
+      
+   
       <Footer />
     </div>
 
