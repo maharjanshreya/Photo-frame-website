@@ -3,18 +3,38 @@ import Logo from '../Images/Rectangle 1.png';
 import  '../CSS/style.css';
 import { Link } from 'react-router-dom';
 import React from 'react';
-import {useState,useEffect} from 'react';
+import {useState,useEffect,useCallback} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/token';
-
+import { FaEye } from "react-icons/fa";
 import { useUser } from '../context/user';
 function Login(){
     const navigate = useNavigate();
     const [userData, setUserData] = useState([]);
     const [email,setEmail] = useState('');
-    const [auth,setAuth] = useAuth();
+    const [hasToken, setHasToken] = useState(false);
+
+    const checkUserRole = useCallback(() => {
+        const token = localStorage.getItem('tokens');
+        if (token) {
+        const parsedData = JSON.parse(token);
+        const userRole = parsedData.userData.role;
+        if (userRole === 'admin') {
+            setHasToken(true);
+        }
+        }
+    }, []);
+
+    useEffect(() => {
+        checkUserRole();
+    }, [checkUserRole]);
     const [password,setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const { userId, setUserId } = useUser();
+    
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
     const loginUser = async (e) => {
         e.preventDefault();
         const res = await fetch('/signin', {
@@ -28,27 +48,17 @@ function Login(){
                 email,password
             })
         });
-        // const data = res.json();
-        // console.log(data);
-        // //localStorage.setItem('role', res.data.role);
-        // //const role = res.data.role;
-        // if(res.status === 400 || !data){
-        //     window.alert("Invalid Crediaitnlas");
-        // }
-        // // else if(role=="admin"){
-        // //     window.alert("Successfully entered as admin: Dashboard");
-        // //     navigate("/adminDashboard");
-        // // }
-        // else{
-        //     window.alert("Successfully entered as user: Homepage");
-        //     navigate("/");
-
-        // }
+      
+    
         try {
             const data = await res.json();
            // console.log("data",data);
             console.log(data.userData.role);
             const role=data.userData.role;
+            
+            setUserId(data.userData._id);
+            localStorage.setItem('status', 'true');
+            localStorage.setItem('userId', data.userData._id);
             if (res.status == 400) {
                 // Check if the response contains an 'error' property
                 if (data && data.error) {
@@ -63,9 +73,11 @@ function Login(){
                 window.alert("Invalid Credentials");
             } else if(role==="admin") {
                 
-                navigate("/adminDashboard");
+                
                 localStorage.setItem('status', 'true');
                 localStorage.setItem('tokens', JSON.stringify(data));
+                checkUserRole();
+                navigate("/adminDashboard");
             }
             else{
                 
@@ -117,7 +129,19 @@ function Login(){
                 <img src={Logo} alt="logout" className=""  />
                 <form method='POST' className='input-text'>
                 <input type="text" id="username" name="username" placeholder="Username" value={email} onChange={(e)=> setEmail(e.target.value)}/><br/>
-                <input type="text" id="password" name="password" placeholder="Password" value={password} onChange={(e)=> setPassword(e.target.value)}/><br/>
+                
+                <input  type={showPassword ? 'text' : 'password'} id="password" name="password" placeholder="Password" value={password} onChange={(e)=> setPassword(e.target.value)}  style={{ paddingRight: '30px' }} /><br/>
+                <p style={{marginRight:'15pc'}}>
+                <label htmlFor="showPassword">
+                <input
+                type="checkbox"
+                id="showPassword"
+                checked={showPassword}
+                onChange={handleTogglePassword}
+                />
+                Show Password
+            </label></p>
+              
                 <input type="submit" value="Login" onClick={loginUser}/>
                 </form>
                 <p>Don't have an account?<Link to='/register' > <u className='register-color'>Register Now </u></Link></p>

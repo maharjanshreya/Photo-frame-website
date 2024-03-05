@@ -8,6 +8,7 @@ import { MdCheck } from "react-icons/md";
 import Cart from '../ProductView/cart';
 import { useAuth } from '../context/token';
 import axios from 'axios';
+import Image from '../Homepage/image';
 import { toast } from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
 let product_id = null;
@@ -138,10 +139,12 @@ function Product(){
         <div className='product-single'>
         
         <div className=''>
-            <div className='image-product'>
-                {imageURL && <img src={imageURL} alt="Product Image" style={{ width: '400px', height: '450px' }}/>}
-
-            </div>
+        <div className='image-product'>
+          <div className='image-overlay'>
+            {imageURL && <img src={imageURL} alt="Product Image" style={{ width: '400px', height: '450px' }} />}
+          </div>
+          <Image />
+        </div>
             <div>
             
                 {productData && (
@@ -174,6 +177,7 @@ function Product(){
                           reverseOrder={true}
                         />
             </div>
+        
         </div>
         </div>
 

@@ -3,9 +3,11 @@ import Navbar from '../Navbar/navbar';
 import { CiCalendar } from "react-icons/ci";
 import { FaCircle } from "react-icons/fa";
 import { IoTimeOutline } from "react-icons/io5";
+
+import { useNavigate } from 'react-router-dom';
 function Notification() {
   const [reports, setReports] = useState([]);
-
+  const navigate = useNavigate();
   const fetchReportData = async () => {
     try {
       // Retrieve user ID from local storage or wherever it's stored
@@ -13,7 +15,7 @@ function Notification() {
 
       if (!userId) {
         console.error('User ID not found');
-        return;
+        navigate('/login', { replace: true });
       }
 
       // Include user ID in request headers
@@ -39,6 +41,7 @@ function Notification() {
 
       console.log('Notification: ', data);
     } catch (error) {
+      navigate('/login', { replace: true });
       console.error('Error fetching Notification:', error);
     }
   };

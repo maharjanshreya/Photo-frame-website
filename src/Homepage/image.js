@@ -31,17 +31,32 @@ function Image(){
   };
 
   const handleMouseMove = (e) => {
-    if (isResizing) {
+    if (isResizing  && e.buttons === 1) {
       const newWidth = width + e.clientX - dragStart.x;
       const newHeight = height + e.clientY - dragStart.y;
-      setWidth(newWidth > 0 ? newWidth : width);
-      setHeight(newHeight > 0 ? newHeight : height);
-      setDragStart({ x: e.clientX, y: e.clientY });
+       // Limit resizing within the container bounds
+       const containerBounds = document.querySelector('.image-product').getBoundingClientRect();
+       const maxWidth = containerBounds.width;
+       const maxHeight = containerBounds.height;
+       
+       setWidth(newWidth > 0 && newWidth < maxWidth ? newWidth : width);
+       setHeight(newHeight > 0 && newHeight < maxHeight ? newHeight : height);
+ 
+       setDragStart({ x: e.clientX, y: e.clientY });
     } else {
       if (!isResizing && e.buttons === 1 && e.target.tagName.toLowerCase() === 'img') {
+
+        const newX = e.clientX - dragStart.x;
+        const newY = e.clientY - dragStart.y;
+
+        // Limit dragging within the container bounds
+        const containerBounds = document.querySelector('.image-product').getBoundingClientRect();
+        const maxX = containerBounds.width - width;
+        const maxY = containerBounds.height - height;
+
         setPosition({
-          x: e.clientX - dragStart.x,
-          y: e.clientY - dragStart.y,
+          x: newX >= 0 && newX <= maxX ? newX : position.x,
+          y: newY >= 0 && newY <= maxY ? newY : position.y,
         });
       }
     }
@@ -49,7 +64,7 @@ function Image(){
 
   return (
     <>
-    <Navbar/>
+   
     <div style={{
         width: '100%',
         height: '100%',

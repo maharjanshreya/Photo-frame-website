@@ -1,31 +1,15 @@
-import { useContext, useState, createContext, useEffect} from "react";
+import { useContext, useState, createContext} from "react";
 
 const AuthContext = createContext();
 const AuthProvider = ({children}) =>{
-    const [auth, setAuth] = useState({
-        user: null,
-        token:"",
-    });
-    useEffect(()=>{
-        const data = localStorage.getItem("tokens");
-        if(data){
-            const parseData = JSON.parse(data);
-            setAuth({
-                ...auth,
-                user: parseData.email,
-                token: parseData.token
-            });
-        }
-    },[]);
+    const [hasToken, setHasToken] = useState(false);
     return(
-        <AuthContext.Provider value={[auth, setAuth ]}>
+        <AuthContext.Provider value={[hasToken, setHasToken]}>
             {children}
         </AuthContext.Provider>
     );
 };
 
 //custom hook
-
-const useAuth = () => useContext(AuthContext);
-  
+const useAuth =()=> useContext(AuthContext); 
 export{useAuth,AuthProvider};

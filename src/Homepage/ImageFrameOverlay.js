@@ -15,13 +15,15 @@ const ImageFrameOverlay = ({ frameSrc, photoSrc }) => {
       try {
         const frameImage = new Image();
         
-    frameImage.onload = () => console.log('Frame Image Loaded');
+    frameImage.onload = () => console.log('Frame Image Loaded:', frameImage.width, frameImage.height);
+    
         frameImage.src = frameSrc;
 
         const userPhoto = new Image();
-        userPhoto.onload = () => console.log('User Photo Loaded');
+        userPhoto.onload = () => console.log('User Photo Loaded:', userPhoto.width, userPhoto.height);
         userPhoto.src = photoSrc;
-
+        console.log('Frame Image Dimensions:', frameImage.width, frameImage.height);
+        console.log('User Photo Dimensions:', userPhoto.width, userPhoto.height);
         await Promise.all([frameImage, userPhoto]);
 
         // Set canvas size to match the frame image

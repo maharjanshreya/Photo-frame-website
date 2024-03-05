@@ -6,15 +6,18 @@ import './homepage.css';
 import { IoSearchOutline } from "react-icons/io5";
 import Button from 'react-bootstrap/Button';
 import Image from '../Images/Group 7.png';
+
 import Image2 from '../Images/Group 14.png';
 import MyProdu from '../Images/MyImageProduct.jpg';
 import Footer from './footer';
-import Frame from '../Images/product7.png';
+import Frame from '../Images/product6.png';
+import Frames from '../Images/product3_t.png';
 import Carousel from 'react-bootstrap/Carousel';
 import { FaRegHeart } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import ProductView from '../ProductView/product';
 import ImageFrameOverlay from './ImageFrameOverlay';
+import New from './new';
 import { useSearch } from '../context/search';
 import axios from 'axios';
 import Draggable from 'react-draggable';
@@ -181,6 +184,10 @@ const handleAddToWishlist = (productId) => {
 
   wishlist(productId);
 };
+const handleButtonClick = () => {
+  // Navigate to the '/upload' route when the button is clicked
+  navigate('/upload');
+};
   return (
     <div style={{ backgroundColor, transition: 'background-color 0.5s' }}>
       <Navbar />
@@ -191,7 +198,7 @@ const handleAddToWishlist = (productId) => {
             <br /><br />Whether you're seeking the timeless charm of classic frames, the sleek lines of modern designs, or the warmth of vintage-inspired styles, our diverse range caters to every taste and decor</p>
           <div className='d-flex' style={{ marginTop: '50px' }}>
             <Button variant='Secondary' className="round-button">Explore</Button>
-            <Button variant='Secondary' className="round-button-upload">Upload</Button>
+            <Button variant='Secondary' className="round-button-upload" onClick={handleButtonClick}>Upload</Button>
             {/* <form onSubmit={handleSubmit}>
               <input type="text" value={values.keyword} onChange={(e) => setValues({ ...values, keyword: e.target.value })} className='search-button' />
               <button type='submit'>Search</button>
@@ -275,12 +282,13 @@ const handleAddToWishlist = (productId) => {
         </div>
       </div>
 
-      {/* <div>
+      <div>
         
         <input type="file" onChange={handlePhotoUpload} />
         {userPhoto && <ImageFrameOverlay frameSrc={Frame} photoSrc={userPhoto} />}
-      </div> */}
+      </div>
 
+     
       
    
       <Footer />

@@ -7,11 +7,13 @@ import {SearchProvider} from './context/search';
 import { CartProvider } from './context/cart';
 import { AddCartProvider} from './context/token';
 import { AuthProvider} from './context/token';
+import { Auth2Provider} from './context/role';
 import { UserProvider } from './context/user';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthProvider>
+    <Auth2Provider>
       <UserProvider>
         <SearchProvider>
           <CartProvider>
@@ -21,6 +23,7 @@ root.render(
           </CartProvider>
         </SearchProvider>
       </UserProvider>
+     </Auth2Provider>
     </AuthProvider>
   </React.StrictMode>
   
