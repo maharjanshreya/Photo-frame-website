@@ -5,7 +5,7 @@ import Navbar from '../Navbar/navbar';
 import Frames from '../Images/product7.png';
 import Images from '../Images/product6.png';
 function Image(){
-    const [width, setWidth] = useState(300);
+  const [width, setWidth] = useState(300);
   const [height, setHeight] = useState(200);
   const [isResizing, setIsResizing] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
