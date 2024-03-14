@@ -19,9 +19,10 @@ MDBTypography,
 import { MdDelete } from "react-icons/md";
 import { FaAngleDown } from "react-icons/fa6";
 
-import { useCart } from '...context/cart';
+import { useCart } from '../context/cart';
 function Cart(){
-  const { cart, setCart } = useCart();
+    const { cart,setCart } = useCart();
+    
     const [userData, setUserData] = useState({userId:""});
     const [cartData, setCartData] = useState({ cart: { items: [] } });
     const [vat, setVa] = useState([]);
@@ -63,7 +64,7 @@ function Cart(){
         const datas = await res.json();
         setCartData(datas);
         console.log("cart data",datas);
-        
+        setCart(datas.cart.items.length);
         console.log("cart data for image",datas.cart.items[0].productId._id);
         console.log("cardData",cartData);
         console.log("Items length in cart: ",datas.cart.items.length);
@@ -127,6 +128,7 @@ function Cart(){
         console.log("Deleted successfully");
         // Update the state to remove the deleted category
         setCartData(updatedCartData);
+        setCart(updatedCartData.cart.items.length);
     } catch (error) {
         console.error('Error during product deletion', error);
         // Handle error, show a message, etc.
@@ -175,7 +177,7 @@ function Cart(){
                   <div>
                     <p className="mb-1">Shopping cart</p>
                     
-                    <p className="mb-0">You have {cartData.cart.items.length} items in your cart</p>
+                    <p className="mb-0">You have {cartData?.cart?.items.length ||0} items in your cart</p>
                   </div>
                   <div>
                     <p>
@@ -192,9 +194,9 @@ function Cart(){
                      
                 <MDBCard className="mb-3">
                   <MDBCardBody>
-                  {cartData.cart && Array.isArray(cartData.cart.items) && (
+                  {cartData?.cart && Array.isArray(cartData?.cart?.items) && (
                     <>
-                      {cartData.cart.items.map((item, index) => (
+                      {cartData?.cart?.items.map((item, index) => (
                         <div key={index}>
                     <div className="d-flex justify-content-between">
                       <div className="d-flex flex-row align-items-center">

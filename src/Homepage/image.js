@@ -5,8 +5,12 @@ import Frames from '../Images/product7.png';
 import html2canvas from 'html2canvas';
 import Button from 'react-bootstrap/Button';
 import Images from '../Images/product6.png';
+import { useLocation } from 'react-router-dom';
+
 function Image(){
-  
+  const location = useLocation();
+  const imageURL = location.state?.imageURL || null;
+
   const [width, setWidth] = useState(300);
   const [height, setHeight] = useState(200);
   const [isResizing, setIsResizing] = useState(false);
@@ -135,7 +139,7 @@ function Image(){
     <div>
     <div className='images-to-be-saved' ref={divRef}>
     
-      <img src={Frames} alt="Frames" style={{ width: '100%', height: '100%' }} />
+      <img src={imageURL} alt="Frames" style={{ width: '100%', height: '100%' }} />
     
       <div
           style={{

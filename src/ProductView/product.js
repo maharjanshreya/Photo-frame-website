@@ -13,9 +13,13 @@ import { toast } from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
 import { upload } from '@testing-library/user-event/dist/upload';
 import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/cart';
+import { useWishlist } from '../context/wishlist';
 let product_id = null;
 
 function Product(){
+  const { cart,setCart } = useCart();
+  const { wishlist,setwishlist} = useCart();
   const navigate = useNavigate();
   const { productId } = useParams();
   const [productData, setProductData] = useState([]);
@@ -99,6 +103,7 @@ function Product(){
       };
       try {
           const response = await axios.post('/add-to-cart', data);
+          setCart(prevCart => prevCart + 1);
           toast.success('Item added to cart!');
         //  console.log("cart: ",response.data);
         } catch (error) {
@@ -130,13 +135,13 @@ function Product(){
           
         }
       };
-      useEffect(() => {
-        // Ensure product_id is not null or undefined
-        if (product_id) {
-          // Use the latest state value when calling addToCart
-          addToCart();
-        }
-      }, [product_id]);
+      // useEffect(() => {
+      //   // Ensure product_id is not null or undefined
+      //   if (product_id) {
+      //     // Use the latest state value when calling addToCart
+      //     addToCart();
+      //   }
+      // }, [product_id]);
 
     useEffect(()=>{   
         productFunc();

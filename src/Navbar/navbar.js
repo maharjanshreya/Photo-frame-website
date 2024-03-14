@@ -13,9 +13,13 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useNavigate } from 'react-router-dom';
 import Warning from '../Images/warning.png';
+import { useCart } from '../context/cart';
+import { useWishlist } from '../context/wishlist';
 function Navbar(){
     const [show, setShow] = useState(false);
-    
+    const { cart } = useCart();
+    const { wishlists } = useWishlist();
+    console.log("Navbar: ",cart);
   const handleClose = () => setShow(false);
     const navigate = useNavigate();
     const location = useLocation();
@@ -105,10 +109,11 @@ function Navbar(){
                 <Nav.Link as={Link} to='/cart'  className='icon' >
                     <PiShoppingCart size={26} className='iconify'/>
                 </Nav.Link>
-                <span className="count">{cartData.cart.items.length}</span>
+                <span className="count-cart">{cart}</span>
                 <Nav.Link as={Link} to={'/wishlist'}  className='icon' >
                     <MdOutlineFavoriteBorder size={26} className='iconify'/>
                 </Nav.Link>
+                <span className="count-wishlist">{wishlists}</span>
                 <Dropdown>
                     <Dropdown.Toggle variant="success" id="dropdown-basic" style={{ backgroundColor: 'transparent',border:'0px' }}>
                         <VscAccount size={26}  style={{marginRight: '30px'}} className='iconify'/>

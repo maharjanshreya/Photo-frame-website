@@ -6,7 +6,6 @@ import React from 'react';
 import {useState,useEffect,useCallback} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/token';
-import { FaEye } from "react-icons/fa";
 import { useUser } from '../context/user';
 function Login(){
     const navigate = useNavigate();

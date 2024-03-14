@@ -4,13 +4,16 @@ import { useUser } from '../context/user';
 import axios from 'axios';
 import { toast,Toaster } from 'react-hot-toast';
 import Button from 'react-bootstrap/Button';
+import { useCart } from '../context/cart';
+import { useWishlist } from '../context/wishlist';
 function Wishlist() {
+  const { wishlists,setWishlists } = useWishlist();
   const userId = localStorage.getItem('userId');
   const [imageURL, setImageURL] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [productData, setProductData] = useState([]);
   const [loadedImages, setLoadedImages] = useState([]);
-
+  const { cart,setCart } = useCart();
   const handleCart = (p_id) => {
     addToCart(p_id);
   };
@@ -27,6 +30,7 @@ function Wishlist() {
     };
     try {
       const response = await axios.post('/add-to-cart', data);
+      setCart(prevCart => prevCart + 1);
       toast.success('Item added to cart!');
     } catch (error) {
       console.error('Error adding to cart:', error);
@@ -75,6 +79,7 @@ function Wishlist() {
 
       const data = await res.json();
       setProductData(data);
+      setWishlists(data.wishlist.products.length);
       const productIds = data.wishlist.products.map((product) => product._id);
 
       // Clear the loadedImages state before fetching images for the new set of products

@@ -24,9 +24,10 @@ import Draggable from 'react-draggable';
 import {Resizable} from 'react-resizable';
 import { useUser } from '../context/user';
 import ImagePage from './image';
+import { useWishlist } from '../context/wishlist';
 function Homepage() {
   const { userId, setUserId } = useUser();
-  
+  const { wishlists,setwishlists} = useWishlist();
   const [userPhoto, setUserPhoto] = useState(null);
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState(0);
@@ -170,7 +171,7 @@ function Homepage() {
             window.alert("Message not sent");
         } else {
             window.alert("added to favoruites");
-            
+            setwishlists(prevCart => prevCart + 1);
         }
     } catch (error) {
         console.error("Error sending contact form:", error);

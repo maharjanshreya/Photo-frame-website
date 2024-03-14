@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {SearchProvider} from './context/search';
 import { CartProvider } from './context/cart';
+import { WishlistProvider } from './context/wishlist';
 import { AddCartProvider} from './context/token';
 import { AuthProvider} from './context/token';
 import { Auth2Provider} from './context/role';
@@ -17,9 +18,10 @@ root.render(
       <UserProvider>
         <SearchProvider>
           <CartProvider>
+            <WishlistProvider>
             
               <App />
-          
+              </WishlistProvider>
           </CartProvider>
         </SearchProvider>
       </UserProvider>
