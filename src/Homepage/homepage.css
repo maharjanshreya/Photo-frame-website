@@ -296,3 +296,9 @@
   font-family: 'Gelasio';
   font-size: 20px;
 }
+.images-to-be-saved{
+  margin: 50px;
+  width: 30%;
+  height: 30%;
+  position: relative;
+}

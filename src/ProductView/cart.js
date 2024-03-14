@@ -19,12 +19,13 @@ MDBTypography,
 import { MdDelete } from "react-icons/md";
 import { FaAngleDown } from "react-icons/fa6";
 
-
+import { useCart } from '...context/cart';
 function Cart(){
+  const { cart, setCart } = useCart();
     const [userData, setUserData] = useState({userId:""});
     const [cartData, setCartData] = useState({ cart: { items: [] } });
     const [vat, setVa] = useState([]);
-     
+    
     const [imageURL, setImageURL] = useState(null);
     const userContact = async () => {
       try {

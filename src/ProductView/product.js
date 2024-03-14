@@ -11,43 +11,55 @@ import axios from 'axios';
 import Image from '../Homepage/image';
 import { toast } from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
+import { upload } from '@testing-library/user-event/dist/upload';
+import { useNavigate } from 'react-router-dom';
 let product_id = null;
 
 function Product(){
-    const { productId } = useParams();
-    const [productData, setProductData] = useState([]);
-    const [imageURL, setImageURL] = useState(null);
-    const [quantity, setQuantity] = useState(productData.quantity);
-    const productFunc = async () => {
-        try {
-          const res = await fetch(`/products/${encodeURIComponent(productId)}`,  {
-          method: 'GET',
-          credentials: 'include',
-        });
-        if (!res.ok) {
-          const error = new Error(res.statusText);
-          throw error;
-        }
-          
-        const datas = await res.json();
-        //console.log('API Response in products:', datas); 
-        setProductData(datas.product);
-        product_id = datas.product._id; // Set product_id here
-        setQuantity(datas.product.quantity); // Reset quantity
-        //console.log("Datas.data",datas.product);
+  const navigate = useNavigate();
+  const { productId } = useParams();
+  const [productData, setProductData] = useState([]);
+  const [imageURL, setImageURL] = useState(null);
+  const [quantity, setQuantity] = useState(productData.quantity);
+  const productFunc = async () => {
+    try {
+      const res = await fetch(`/products/${encodeURIComponent(productId)}`,  {
+      method: 'GET',
+      credentials: 'include',
+      });
+      if (!res.ok) {
+        const error = new Error(res.statusText);
+        throw error;
+      }
       
-        } catch (err) {
-          console.log('Error in fetching data', err);
-        }
-    };
+      const datas = await res.json();
+      //console.log('API Response in products:', datas); 
+      setProductData(datas.product);
+      product_id = datas.product._id; // Set product_id here
+      setQuantity(datas.product.quantity); // Reset quantity
+      //console.log("Datas.data",datas.product);
+  
+    } catch (err) 
+    {
+      console.log('Error in fetching data', err);
+    }
+  };
     //const [product_id, setProduct_Id] = useState(productData._id);
     
-    const handleCart = ()=>{
-      //setProduct_Id(p_id);
-      if (product_id) {
+  const handleCart = ()=>{
+    //setProduct_Id(p_id);
+    if (product_id) {
       addToCart();
     }
+  }
+
+  const handleUpload= (imageURL)=>{
+    console.log(imageURL);
+    //setProduct_Id(p_id);
+    if (product_id) {
+      navigate('/imagepage', { state: { imageURL } });
     }
+  }
     
     
     const imageFunc = async () => {
@@ -143,7 +155,7 @@ function Product(){
           <div className='image-overlay'>
             {imageURL && <img src={imageURL} alt="Product Image" style={{ width: '400px', height: '450px' }} />}
           </div>
-          <Image />
+          
         </div>
             <div>
             
@@ -170,6 +182,7 @@ function Product(){
                           {productData.quantity > 0 ? `Available(${productData.quantity})` : <span style={{color:'red', fontWeight:'800'}}>Out of Stock</span>}
                         </p>
                         <button className='add-to-cart' onClick={(e) =>{e.preventDefault();handleCart();}}>Add To Cart</button>
+                        <button className='add-to-cart' onClick={(e) =>{e.preventDefault();handleUpload(imageURL);}}>Upload</button>
                         
                     </div>
                 )}<Toaster
