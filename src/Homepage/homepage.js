@@ -199,7 +199,7 @@ const handleButtonClick = () => {
             <br /><br />Whether you're seeking the timeless charm of classic frames, the sleek lines of modern designs, or the warmth of vintage-inspired styles, our diverse range caters to every taste and decor</p>
           <div className='d-flex' style={{ marginTop: '50px' }}>
             <Button variant='Secondary' className="round-button">Explore</Button>
-            <Button variant='Secondary' className="round-button-upload" onClick={handleButtonClick}>Upload</Button>
+            <Button variant='Secondary' className="round-button" style={{borderColor:'#9C0606',backgroundColor:'#9C0606'}} onClick={handleButtonClick}>Upload</Button>
             {/* <form onSubmit={handleSubmit}>
               <input type="text" value={values.keyword} onChange={(e) => setValues({ ...values, keyword: e.target.value })} className='search-button' />
               <button type='submit'>Search</button>
