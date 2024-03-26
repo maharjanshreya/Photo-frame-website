@@ -21,6 +21,7 @@ import Upload from './Homepage/upload';
 import Footer from './Homepage/footer';
 import AdminLogin from './Admin/adminLogin';
 import ProductView from './ProductView/product';
+import Checkout from './ProductView/checkout';
 import AdminDashboard from './Admin/adminDashboard';
 import AdminOrder from './Admin/adminOrder';
 import AdminReview from './Admin/adminReview';
@@ -88,6 +89,7 @@ function App() {
         <Route path="/notification" element={<Notification />} />
         <Route path="/imagepage" element={<ImagePage />} />
         <Route path="/upload" element={<Upload />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
     </Router>
   );

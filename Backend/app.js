@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
+const stripe = require("stripe")("sk_test_51OyOhcA4uLHwNxGYSXTrDJkBBiGlWFsUQljwGqVJNSryXlNvn2AJDiHbCJT7mwdyqRDlIwMM0wpWm4KZbokMx7ap00aY9jWGyQ");
 const cookieParser = require("cookie-parser");
 dotenv.config({path:'./config.env'});
 const PORT = process.env.PORT;
@@ -11,13 +12,15 @@ const productRoutes =require("./routes/productRoutes.js");
 require('./db/conn');
 app.use(cookieParser());
 //const User =  require('./model/userModel');
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({
-    extended: true
+    limit: '50mb',
+    extended: true,
+    
   }));
   
-  
 app.use(require('./router/auth'));
+
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {

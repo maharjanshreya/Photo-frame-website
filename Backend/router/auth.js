@@ -1,5 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+
 const router = express.Router();
 const cookieParser = require("cookie-parser");
 const formidable = require('express-formidable');
@@ -15,6 +16,7 @@ const  {createProductController,getProductController,getPhotoController,getSingl
 const { useContext } = require('react');
 const { ObjectId } = require('mongodb');
 const { addToWishlistController,getWishlistController } = require('../controllers/wishlistController.js');
+const {paymentController} = require('../controllers/paymentController.js');
 const { reportController,getReportController,replyToReportController,getReplyController} = require('../controllers/reportController.js');
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
@@ -180,7 +182,7 @@ router.get('/account/:userId', authenticate, async (req, res) => {
 
 
 router.get('/getData', authenticate, (req,res)=>{
-    console.log("Contact page");
+    //console.log("Contact page");
     res.send(req.rootUser);
     
 });
@@ -232,6 +234,8 @@ router.post('/report', authenticate,reportController);
 router.post('/report/reply',authenticate, replyToReportController);
 router.get('/report',authenticate, getReportController);
 router.get('/report/reply/:userId',authenticate, getReplyController);
+
+router.post('/create-checkout-session',authenticate, paymentController);
 // Update a specific category partially using PATCH
 router.put('/category/:id', async (req, res) => {
     if(!req.body) {

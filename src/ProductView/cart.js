@@ -2,8 +2,10 @@ import Navbar from '../Navbar/navbar';
 import {React, useEffect,useState} from 'react';
 import './product.css';
 import axios from 'axios';
+import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import {loadStripe} from '@stripe/stripe-js';
 import {
 MDBBtn,
 MDBCard,
@@ -16,13 +18,15 @@ MDBInput,
 MDBRow,
 MDBTypography,
 } from "mdb-react-ui-kit";
+import {useNavigate } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
 import { FaAngleDown } from "react-icons/fa6";
 
 import { useCart } from '../context/cart';
+let total = 0;
 function Cart(){
     const { cart,setCart } = useCart();
-    
+    const navigate = useNavigate();
     const [userData, setUserData] = useState({userId:""});
     const [cartData, setCartData] = useState({ cart: { items: [] } });
     const [vat, setVa] = useState([]);
@@ -63,11 +67,11 @@ function Cart(){
           
         const datas = await res.json();
         setCartData(datas);
-        console.log("cart data",datas);
+        //console.log("cart data",datas);
         setCart(datas.cart.items.length);
-        console.log("cart data for image",datas.cart.items[0].productId._id);
-        console.log("cardData",cartData);
-        console.log("Items length in cart: ",datas.cart.items.length);
+        //console.log("cart data for image",datas.cart.items[0].productId._id);
+        //console.log("cardData",cartData);
+        //console.log("Items length in cart: ",datas.cart.items.length);
         if (datas.cart.items && datas.cart.items.length > 0) {
           const imagePromises = datas.cart.items.map(async (item) => {
           try {
@@ -102,7 +106,7 @@ function Cart(){
     };
  // Function to handle product deletion
  const handleRemoveCart = async (_id) => {
-  console.log('The product name to be deleted is ' + _id);
+ // console.log('The product name to be deleted is ' + _id);
   try {
     // Make an API call to delete the categoryuserData.userId
     const response = await fetch(`/remove-item/${encodeURIComponent(userData.userId)}/${encodeURIComponent(_id)}`, {
@@ -139,15 +143,69 @@ function Cart(){
     }
   } catch (error) {
     console.error('Error during product deletion', error);
-    // Handle error, show a message, etc.
+  }
+};
+//console.log("Cart data",cartData.cart.items)
+const [subtotal, setSubtotal] = useState(0);
+//payment integration
+const handleCheckout = async () => {
+  console.log("Checkout clicked");
+  
+  try {
+    // Load Stripe.js
+    const stripe = await loadStripe('pk_test_51OyOhcA4uLHwNxGYlwqMkbqvF6QOd73m6MqORxnhF54D3fXLO9Fz2D3ZrGd0Cc8dyQtvkZDKC6wh53uxEC0ZYiOb00xGrm5KBV');
+    
+    console.log("Cart data", cartData.cart.items);
+    
+    // Prepare request body
+    const body = {
+      products: cartData.cart.items,
+    };
+
+    // Prepare request headers
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+
+    // Send POST request to create checkout session
+    const response = await fetch('/create-checkout-session', {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: headers,
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to create checkout session');
+    }
+
+    // Parse response JSON
+    const session = await response.json();
+
+    // Redirect to Stripe Checkout
+    const result = await stripe.redirectToCheckout({
+      sessionId: session.id
+    });
+
+    if (result.error) {
+      console.log(result.error.message);
+    }
+  } catch (error) {
+    console.error('Error during checkout:', error);
   }
 };
 
-    
+
+
     useEffect(() => {
         getCart();
         userContact();
-    }, [userData.userId]); 
+        if (cartData?.cart && Array.isArray(cartData?.cart?.items)) {
+          const subtotalValue = cartData.cart.items.reduce((acc, item) => acc + (item.quantity * item.productId.price), 0);
+          setSubtotal(subtotalValue);
+      }
+      // Calculate total
+       total = 20 + subtotal;
+    }, [userData.userId,cartData]); 
 
 
   return(
@@ -250,26 +308,13 @@ function Cart(){
                   <MDBCardBody>
                     <div className="d-flex justify-content-between align-items-center mb-4">
                       <MDBTypography tag="h5" className="mb-0">
-                        Card details
+                        Order summary
                       </MDBTypography>
                       
                     </div>
 
-                    <p className="small">Card type</p>
-                    <a href="#!" type="submit" className="text-white">
-                      <MDBIcon fab icon="cc-mastercard fa-2x me-2" />
-                    </a>
-                    <a href="#!" type="submit" className="text-white">
-                      <MDBIcon fab icon="cc-visa fa-2x me-2" />
-                    </a>
-                    <a href="#!" type="submit" className="text-white">
-                      <MDBIcon fab icon="cc-amex fa-2x me-2" />
-                    </a>
-                    <a href="#!" type="submit" className="text-white">
-                      <MDBIcon fab icon="cc-paypal fa-2x me-2" />
-                    </a>
 
-                    <form className="mt-4">
+                    {/* <form className="mt-4">
                       <MDBInput className="mb-4" label="Cardholder's Name" type="text" size="lg"
                         placeholder="Cardholder's Name" contrast />
 
@@ -286,34 +331,27 @@ function Cart(){
                             maxLength="3" placeholder="&#9679;&#9679;&#9679;" contrast />
                         </MDBCol>
                       </MDBRow>
-                    </form>
+                    </form> */}
 
                     <hr />
 
                     <div className="d-flex justify-content-between">
                       <p className="mb-2">Subtotal</p>
-                      <p className="mb-2">$4798.00</p>
+                      <p className="mb-2">Rs. {subtotal}</p>
                     </div>
 
                     <div className="d-flex justify-content-between">
                       <p className="mb-2">Shipping</p>
-                      <p className="mb-2">$20.00</p>
+                      <p className="mb-2">Rs. 20.00</p>
                     </div>
 
                     <div className="d-flex justify-content-between">
-                      <p className="mb-2">Total(Incl. taxes)</p>
-                      <p className="mb-2">$4818.00</p>
+                      <p className="mb-2">Total</p>
+                      <p className="mb-2">Rs. {total}</p>
                     </div>
+                    <Button style={{backgroundColor:'#2596be'}} onClick={handleCheckout}>Checkout</Button>
+                    
 
-                    <MDBBtn color="info" block size="lg">
-                      <div className="d-flex justify-content-between">
-                        <span>$4818.00</span>
-                        <span>
-                          Checkout{" "}
-                          <i className="fas fa-long-arrow-alt-right ms-2"></i>
-                        </span>
-                      </div>
-                    </MDBBtn>
                   </MDBCardBody>
                 </MDBCard>
               </MDBCol>

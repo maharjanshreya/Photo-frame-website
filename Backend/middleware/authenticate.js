@@ -11,9 +11,7 @@ const Authenticate = async(req,res,next) =>{
         if(!rootUser){
             throw new Error("User not found");
         }
-        
-                // Inside the try block of Authenticate middleware
-        console.log("Token verified successfully");
+       // console.log("Token verified successfully");
         //console.log("Root user:", rootUser);
         req.token = token;
         req.rootUser = rootUser;

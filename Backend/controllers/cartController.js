@@ -8,11 +8,11 @@ const cartController = async (req, res) => {
     try {   
         const items = req.body.items;
     const productIdd = ( items[0].productId);
-    console.log(userId);
-    console.log(productIdd);
+    //console.log(userId);
+    //console.log(productIdd);
     const quantity=  items[0].quantity;
 
-    // Validate if productId is valid (optional step)
+    // Validate if productId is valid 
     const isValidProduct = await Product.exists({ _id: productIdd });
     if (!isValidProduct) {
       return res.status(404).json({ success: false, message: 'Invalid Product ID' });
@@ -54,7 +54,7 @@ const cartController = async (req, res) => {
 const getCartController = async (req, res) => {
     
   try {
-    const userId = req.params.id; // Assuming the user ID is in the URL parameter
+    const userId = req.params.id; 
 
     // Find the user's cart
     const userCart = await Cart.findOne({ userId }).populate('items.productId');
@@ -64,7 +64,7 @@ const getCartController = async (req, res) => {
     }
 
     res.status(200).json({ success: true, message: 'Cart retrieved successfully', cart: userCart });
-    console.log("User cart: ",userCart);
+    //console.log("User cart: ",userCart);
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, message: 'Internal Server Error' });

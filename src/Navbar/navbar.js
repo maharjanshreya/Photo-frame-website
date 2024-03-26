@@ -19,7 +19,7 @@ function Navbar(){
     const [show, setShow] = useState(false);
     const { cart } = useCart();
     const { wishlists } = useWishlist();
-    console.log("Navbar: ",cart);
+    //console.log("Navbar: ",cart);
   const handleClose = () => setShow(false);
     const navigate = useNavigate();
     const location = useLocation();
