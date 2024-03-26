@@ -6,7 +6,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { CiSearch } from "react-icons/ci";
 import { CiCalendar } from "react-icons/ci";
 import { FaReply } from "react-icons/fa";
-
+import Dropdown from 'react-bootstrap/Dropdown';
 function Contact() {
   const [reports, setReports] = useState([]);
   const [userData, setUserData] = useState([]);
@@ -17,6 +17,12 @@ function Contact() {
   const [showForm, setShowForm] = useState(false);
   const [activeFormId, setActiveFormId] = useState(null);
   const createdAt = new Date().toISOString();
+  const [toggleText, setToggleText] = useState("In-progress");
+  const [toggleColor, setToggleColor] = useState("#5d98f0");
+  const handleItemClick = (reportId,itemText, itemColor) => {
+    setToggleText({ ...toggleText, [reportId]: itemText });
+    setToggleColor({ ...toggleColor, [reportId]: itemColor });
+  };
   const handleButtonClick = (reportId) => {
    
      setActiveFormId((prevId) => (prevId === reportId ? null : reportId));
@@ -162,7 +168,30 @@ function Contact() {
                   day: 'numeric',
                   year: 'numeric',
                 })}<br/>
-                <Button variant="secondary" style={{marginTop:'6px',marginBottom:'6px'}} onClick={() => handleButtonClick(report._id)}><FaReply style={{marginRight:'6px'}} />Reply</Button>
+                <div className='d-flex'>
+                  <Button variant="secondary" style={{marginTop:'6px',marginBottom:'6px'}} onClick={() => handleButtonClick(report._id)}><FaReply style={{marginRight:'6px'}} />Reply</Button>
+                  <Dropdown
+                    style={{ marginTop: '6px', marginBottom: '6px', marginLeft: '10px' }}
+                  >
+                    <Dropdown.Toggle
+                      variant="outline-secondary"
+                      style={{
+                        backgroundColor: toggleColor[report._id] || '#fff',
+                        color: toggleColor[report._id] === 'green' ? 'white' : 'inherit',
+                      }}
+                    >
+                      {toggleText[report._id] || 'In-progress'}
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => handleItemClick(report._id, "Complete", "green")} style={{ color: 'green' }}>Complete</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleItemClick(report._id, "In-progress", "#5d98f0")} style={{ color: '#5d98f0' }}>In-progress</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleItemClick(report._id, "Incomplete", "red")} style={{ color: 'red' }}>Incomplete</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+              
+                </div>
+                
                 {activeFormId === report._id && (
                   <form>
                     <Form.Control as="textarea" rows={3} placeholder="Reply back to user" onChange={(e) => setReplyText(e.target.value)} />

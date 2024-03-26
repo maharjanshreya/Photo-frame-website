@@ -16,8 +16,9 @@ const  {createProductController,getProductController,getPhotoController,getSingl
 const { useContext } = require('react');
 const { ObjectId } = require('mongodb');
 const { addToWishlistController,getWishlistController } = require('../controllers/wishlistController.js');
-const {paymentController} = require('../controllers/paymentController.js');
+const {paymentController,handlePaymentSuccess} = require('../controllers/paymentController.js');
 const { reportController,getReportController,replyToReportController,getReplyController} = require('../controllers/reportController.js');
+
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
   });
@@ -68,11 +69,10 @@ router.get('/category', async (req, res) => {
       }
   
       const categoryData = categories.map(category => ({
-        id: category._id,  // Assuming you are using MongoDB and the ID is stored in _id
+        id: category._id,  
         name: category.name
       }));
       console.log("Category Data:", categoryData);
-      // Send an object with a property "categories"
         res.json({ categories: categoryData });
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -234,7 +234,7 @@ router.post('/report', authenticate,reportController);
 router.post('/report/reply',authenticate, replyToReportController);
 router.get('/report',authenticate, getReportController);
 router.get('/report/reply/:userId',authenticate, getReplyController);
-
+router.get('/handle-success/:session_id',authenticate, handlePaymentSuccess);
 router.post('/create-checkout-session',authenticate, paymentController);
 // Update a specific category partially using PATCH
 router.put('/category/:id', async (req, res) => {

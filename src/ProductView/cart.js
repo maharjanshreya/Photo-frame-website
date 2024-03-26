@@ -180,11 +180,12 @@ const handleCheckout = async () => {
 
     // Parse response JSON
     const session = await response.json();
-
+    
     // Redirect to Stripe Checkout
     const result = await stripe.redirectToCheckout({
       sessionId: session.id
     });
+    console.log(session);
 
     if (result.error) {
       console.log(result.error.message);
@@ -336,18 +337,23 @@ const handleCheckout = async () => {
                     <hr />
 
                     <div className="d-flex justify-content-between">
-                      <p className="mb-2">Subtotal</p>
+                      <p className="mb-2">Subtotal.</p>
                       <p className="mb-2">Rs. {subtotal}</p>
                     </div>
 
                     <div className="d-flex justify-content-between">
-                      <p className="mb-2">Shipping</p>
-                      <p className="mb-2">Rs. 20.00</p>
+                      <p className="mb-2">Shipping Cost.</p>
+                      <p className="mb-2">Rs. 75.00</p>
                     </div>
 
                     <div className="d-flex justify-content-between">
-                      <p className="mb-2">Total</p>
+                      <p className="mb-2">Total.</p>
                       <p className="mb-2">Rs. {total}</p>
+                    </div>
+                    <div className="d-flex justify-content-between">
+                      <p className="mb-2">Shipping address.</p>
+                      
+                      <p className="mb-2">Kathmandu</p>
                     </div>
                     <Button style={{backgroundColor:'#2596be'}} onClick={handleCheckout}>Checkout</Button>
                     

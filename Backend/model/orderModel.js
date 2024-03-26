@@ -1,13 +1,16 @@
 const mongoose = require('mongoose');
+const productSchema = new mongoose.Schema({
+    name: String,
+    price: Number,
+    quantity: Number
+});
+
 const orderSchema = new mongoose.Schema({
-    products: [{
-        type: mongoose.ObjectId,
-        ref: "Product", 
-    },],
+    products:[productSchema],
     payment:{},
     buyer:{
         type: mongoose.ObjectId,
-        ref: "User",
+        ref: "User",    
     },
     status:{
         type: String,

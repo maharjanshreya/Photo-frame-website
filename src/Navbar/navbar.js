@@ -109,24 +109,39 @@ function Navbar(){
                 <Nav.Link as={Link} to='/cart'  className='icon' >
                     <PiShoppingCart size={26} className='iconify'/>
                 </Nav.Link>
-                <span className="count-cart">{cart}</span>
+             
+                {userId && <span className="count-cart">{cart}</span>}
                 <Nav.Link as={Link} to={'/wishlist'}  className='icon' >
                     <MdOutlineFavoriteBorder size={26} className='iconify'/>
                 </Nav.Link>
-                <span className="count-wishlist">{wishlists}</span>
+                {userId && <span className="count-wishlist">{wishlists}</span>}
                 <Dropdown>
                     <Dropdown.Toggle variant="success" id="dropdown-basic" style={{ backgroundColor: 'transparent',border:'0px' }}>
                         <VscAccount size={26}  style={{marginRight: '30px'}} className='iconify'/>
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                        <Dropdown.Item href="#/action-1"><Nav.Link as={Link} to='/account'  className='icon' >Account</Nav.Link></Dropdown.Item>
+                    {userId ? (
+                    <>
+                        <Dropdown.Item href="#/action-1">
+                            <Nav.Link as={Link} to='/account' className='icon'>Account</Nav.Link>
+                        </Dropdown.Item>
                         <Dropdown.Item href="#/action-2" onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
                             setShow(true);
-                     
                         }}>Log out</Dropdown.Item>
+                    </>
+                     ) : (
+                    <>
+                        <Dropdown.Item href="#/action-1">
+                            <Nav.Link as={Link} to='/login' className='icon'>Login</Nav.Link>
+                        </Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">
+                            <Nav.Link as={Link} to='/register' className='icon'>Register</Nav.Link>
+                        </Dropdown.Item>
+                    </>
+                )}
                     </Dropdown.Menu>
                     </Dropdown>
                 

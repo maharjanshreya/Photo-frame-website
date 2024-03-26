@@ -31,7 +31,7 @@ import AdminNotifyUpdates from './Admin/addNotification';
 import Cart from './ProductView/cart';
 import Notification from './ProductView/notification';
 import { useAuth } from './context/token';
-
+import Success from './ProductView/success';
 // Import Homepage
 import Homepage from './Homepage/homepage';
 
@@ -90,6 +90,7 @@ function App() {
         <Route path="/imagepage" element={<ImagePage />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/success" element={<Success />} />
       </Routes>
     </Router>
   );
