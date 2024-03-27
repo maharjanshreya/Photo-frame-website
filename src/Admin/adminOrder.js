@@ -120,7 +120,7 @@ const fetchOrders = async () => {
                         </td>
                         <td>
                             <button type="button" className="btn btn-link btn-sm btn-rounded">
-                                Edit
+                                {order.payment}
                             </button>
                         </td>
                         <td>

@@ -2,15 +2,12 @@ const Product = require('../model/productModel.js');
 const fs = require('fs');
 
 const createProductController = async (req, res) => {
-    const { productName, description, category, shipping, price,quantity, size, dimension } = req.fields;
+    const { productName, description, category, shipping, price,quantity, size, dimension,minDelivery,maxDelivery } = req.fields;
     const { image } = req.files;
     try {
         // Validation
         switch (true) {
-            case !productName:
-                return res.status(500).send({ error: 'Name is Required' });
-            case !description:
-                return res.status(500).send({ error: 'Description is Required' });
+           
             case image && image.size > 1000000:
                 return res.status(500).send({ error: 'Photo size is too large' });
         }
@@ -22,7 +19,9 @@ const createProductController = async (req, res) => {
             price,
             quantity,
             size,
-            dimension, });
+            dimension,
+            minDelivery,
+            maxDelivery});
 
         // Check if image exists
         if (image) {
@@ -160,18 +159,9 @@ const updateProductController = async (req, res) =>  {
     
     try {
         const { pid } = req.params;
-        const { productName, description, category, shipping, price,quantity, size, dimension} = req.fields;
+        const { productName, description, category, shipping, price,quantity, size, dimension,minDelivery,maxDelivery} = req.fields;
         const { image } = req.files;
-        // Validation
-        switch (true) {
-            case !productName:
-                return res.status(500).send({ error: 'Name is Required' });
-            case !description:
-                return res.status(500).send({ error: 'Description is Required' });
-            case image && image.size > 1000000:
-                return res.status(500).send({ error: 'Photo size is too large' });
-        }
-
+        
         const products = await Product.findByIdAndUpdate(pid,{
             productName,
             description,
@@ -180,6 +170,9 @@ const updateProductController = async (req, res) =>  {
             quantity,
             size,
             dimension,
+            shipping,
+            minDelivery,
+            maxDelivery,
         }, { new: true });
         
        

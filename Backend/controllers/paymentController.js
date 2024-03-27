@@ -18,6 +18,26 @@ const paymentController = async (req, res) => {
             },
             quantity: product.quantity
         }));
+        const shippingOptions = products.map(ship => ({
+            shipping_rate_data: {
+                type: 'fixed_amount',
+                fixed_amount: {
+                    amount: ship.productId.shipping ||0,
+                    currency: 'NPR',
+                },
+                display_name: 'Standard Shipping',
+                delivery_estimate: {
+                    minimum: {
+                        unit: 'day',
+                        value: ship.productId.minDelivery,
+                    },
+                    maximum: {
+                        unit: 'day',
+                        value: ship.productId.maxDelivery,
+                    },
+                },
+            },
+        }));
        
         console.log(JSON.stringify(line_items, null, 2));
         const session = await stripe.checkout.sessions.create({
@@ -28,14 +48,13 @@ const paymentController = async (req, res) => {
             mode: 'payment',
             success_url: 'http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}',
             cancel_url: 'http://localhost:3000/cancel',
+            shipping_options: shippingOptions,
         });
        // Retrieve session details from Stripe
         const retrievedSession = await stripe.checkout.sessions.listLineItems(session.id);
-        // Access line items from retrieved session
-        console.log(retrievedSession);
-        console.log(retrievedSession.data);
-        console.log("Session created");
-        console.log(session.id);
+        const userID = req.userID; // Assuming userID is obtained from the request
+        await createOrder(session, userID);
+        console.log(session);
         res.json({ id: session.id });
     } catch (error) {
         console.error('Error in paymentController:', error);
@@ -47,7 +66,7 @@ const paymentController = async (req, res) => {
 const handlePaymentSuccess = async (req, res) => {
     try {
         const sessionId = req.params.session_id; // Get the session ID from the query parameters
-        console.log("Session id in backend: ",sessionId);
+        console.log("Session id: ",sessionId);
         if (!sessionId) {
             throw new Error('Session ID is missing');
         }
@@ -59,7 +78,7 @@ const handlePaymentSuccess = async (req, res) => {
             console.log("Paid payment");
             const userID = req.userID; 
             console.log("User id in backend: ",userID);
-            createOrder(session,userID);
+            //createOrder(session,userID);
             res.status(200).send('Payment successful');
         } else {
             res.status(400).send('Payment not successful');
@@ -72,7 +91,16 @@ const handlePaymentSuccess = async (req, res) => {
 // Function to create an order
 const createOrder = async (session, userID) => {
     try {
+         // Check if the order already exists for this session
+         const existingOrder = await Order.findOne({ session_id: session.id });
+         if (existingOrder) {
+             console.log('Order already exists for session:', session.id);
+             return; // Do not create a new order
+         }
         const retrievedSession = await stripe.checkout.sessions.listLineItems(session.id);
+        console.log("Session id in create order: ",session.id);
+        const shipping = session.shipping_options;
+        console.log("Shipping details: ",shipping);
         console.log("Creating order");
         
         if (retrievedSession.data) {
@@ -88,11 +116,11 @@ const createOrder = async (session, userID) => {
             price: item.price.unit_amount / 100, // Convert from cents to your currency
             quantity: item.quantity
         }))
-        
+        const amountTotal = session.amount_total / 100;
         // Create a new order entry using the Order model
         const order = new Order({
             products: products,
-            payment: session.payment_intent,
+            payment: amountTotal,
             buyer: userID,
             status: 'Processing', // Default status
         });

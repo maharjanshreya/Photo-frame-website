@@ -17,7 +17,7 @@ const productSchema = new mongoose.Schema({
 
     },
     shipping:{
-        type: Boolean
+        type: Number,
 
     },
     price:{
@@ -31,6 +31,14 @@ const productSchema = new mongoose.Schema({
     },
     dimension:{
         type: String, required: true
+    },
+    minDelivery: {
+        type: Number, // Assuming this is in days
+        required: true
+    },
+    maxDelivery: {
+        type: Number, // Assuming this is in days
+        required: true
     }
 },
 {timestamps: true}

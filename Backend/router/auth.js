@@ -236,11 +236,11 @@ router.post('/report/reply',authenticate, replyToReportController);
 router.get('/report',authenticate, getReportController);
 router.get('/report/reply/:userId',authenticate, getReplyController);
 router.get('/handle-success/:session_id',authenticate, handlePaymentSuccess);
-
+router.post('/create-checkout-session',authenticate, paymentController);
 router.get('/view-order',authenticate,getAllOrderController);
 router.put('/update-order/:orderId',authenticate,updateOrderController); 
 router.get('/view-my-orders/:buyerId',authenticate, getSingleOrderController);
-router.post('/create-checkout-session',authenticate, paymentController);
+
 // Update a specific category partially using PATCH
 router.put('/category/:id', async (req, res) => {
     if(!req.body) {

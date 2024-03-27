@@ -40,6 +40,9 @@ function PostProduct({refreshCategoryList }){
         quantity: "",
         size: "",
         dimension: "",
+        shipping: "",
+        minDelivery: "",
+        maxDelivery: "",
       });
       
       let name,value,file;
@@ -61,6 +64,9 @@ function PostProduct({refreshCategoryList }){
         formData.append("category", product.category);
         formData.append("size", product.size);
         formData.append("dimension", product.dimension);
+        formData.append("shipping", product.shipping);
+        formData.append("minDelivery", product.minDelivery);
+        formData.append("maxDelivery", product.maxDelivery);
         try {
             const res = await fetch("/products", {
                 method: "POST",
@@ -110,6 +116,11 @@ function PostProduct({refreshCategoryList }){
                       <input type='text' placeholder='stock' name="stock" className='category'  required value={category.name} onChange={handleInputs}/>*/}
                       <input type='text' placeholder='size' name="size" className='category'  required value={product.size} onChange={handleInputs}/>
                       <input type='text' placeholder='dimension' name="dimension" className='category'  required value={product.dimension} onChange={handleInputs}/>
+                      <input type='number' placeholder='Minimum Delivery time' name="minDelivery" className='category'  required value={product.minDelivery} onChange={handleInputs}/>
+                      <input type='number' placeholder='Maximum Delivery time' name="maxDelivery" className='category'  required value={product.maxDelivery} onChange={handleInputs}/>
+
+                      <input type='number' placeholder='Shipping cost' name="shipping" className='category'  value={product.shipping} onChange={handleInputs}/>
+
                       {/*<input type='text' placeholder='color options' name="dimension" className='category'  required value={category.name} onChange={handleInputs}/>
                      ratings by users
                       <input type='text' placeholder='ratings' name="ratings" className='category'  required value={category.name} onChange={handleInputs}/>
