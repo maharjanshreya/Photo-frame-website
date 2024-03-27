@@ -1,27 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AdminNavbar from './adminNavbar';
-import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import { CardTitle } from 'react-bootstrap';
 import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
+import { CardTitle } from 'react-bootstrap';
+
 function formatDate(dateString) {
-        const date = new Date(dateString);
-        return date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-        });
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
 }
 
 function Order() {
     const [orders, setOrders] = useState([]);
-    const createdAtDate = new Date("2024-03-26T14:48:46.422Z");
+    const [view, setView] = useState('all');
+    const [toggleColor, setToggleColor] = useState("red");
     const [defaultStatus, setDefaultStatus] = useState('Processing');
-    
-    const handleDelivery = async (orderId, status) => {
+    const [activeButton, setActiveButton] = useState('all');
+
+    const getColor = (status) => {
+        switch (status) {
+            case 'Processing':
+                return 'blue'; // Change to blue for Processing status
+            case 'Shipped':
+                return 'orange'; // Change to orange for Shipped status
+            case 'Delivered':
+                return 'green'; // Change to green for Delivered status
+            case 'Cancelled':
+                return 'red'; // Change to red for Cancelled status
+            default:
+                return 'black'; // Default color
+        }
+    };
+
+    const handleDelivery = async (orderId, status, color) => {
+        setToggleColor({ ...toggleColor, [orderId]: color });
         try {
             // Send a PUT request to update the order status
             const response = await fetch(`/update-order/${orderId}`, {
@@ -34,7 +51,10 @@ function Order() {
             if (!response.ok) {
                 throw new Error('Failed to update order status');
             }
-            // Refresh orders after updating status
+            const updatedOrders = orders.map(order =>
+                order._id === orderId ? { ...order, status: status } : order
+            );
+            setOrders(updatedOrders);
             fetchOrders();
             // Update default status
             setDefaultStatus(status);
@@ -42,117 +62,143 @@ function Order() {
             console.error('Error updating order status:', error);
         }
     };
-const fetchOrders = async () => {
-            try {
-                const response = await fetch('/view-order');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                setOrders(data);
-                console.log('Orders:', data);
-            } catch (error) {
-                console.error('Error fetching orders:', error);
+    let [filteredOrders, setFilteredOrders] = useState([]);
+    const fetchOrders = async () => {
+        try {
+            const response = await fetch('/view-order');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-        };
-    
-    useEffect(() => {
-        
+            const data = await response.json();
+            setOrders(data);
+            setFilteredOrders(data);
+            console.log('Orders:', data);
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+        }
+    };
 
+   
+    const handleViewChange = (status) => {
+        if (status === activeButton) {
+            // If it is, do nothing and return
+            return;
+        }
+        setActiveButton(status); // Update the active button state
+        console.log('Active Button:', status);
+        // Filter orders based on the status
+        let newFilteredOrders = [];
+        switch (status) {
+            case 'Cancelled':
+                newFilteredOrders = orders.filter(order => order.status === 'Cancelled');
+                break;
+            case 'Processing':
+                newFilteredOrders = orders.filter(order => order.status === 'Processing');
+                break;
+            case 'Delivered':
+                newFilteredOrders = orders.filter(order => order.status === 'Delivered');
+                break;
+            case 'all':
+                newFilteredOrders    = orders; // Default to all orders
+                break;
+            default:
+                break;
+        }
+        console.log('Filtered Orders:', filteredOrders);
+        //setOrders(filteredOrders); // Update the orders state with filtered orders
+        setFilteredOrders(newFilteredOrders);
+    };
+
+
+    useEffect(() => {
         fetchOrders();
     }, []);
 
     return (
         <>
             <div className='d-flex'>
-    
                 <div>
                     <AdminNavbar />
                 </div>
-                <div className="col-md-8 offset-md-2" style={{marginTop:'50px'}}>
-                    <h2>Orders </h2>
-                    <Button variant='primary' style={{marginRight:'4px'}}>All Status</Button>
-                    <Button style={{backgroundColor:'#e6e6e6',borderColor:'#e6e6e6',color:'#7d7a7a',marginRight:'4px'}}>New Order</Button>
-                    <Button style={{backgroundColor:'#e6e6e6',borderColor:'#e6e6e6',color:'#7d7a7a',marginRight:'4px'}}>On Progress</Button>
-                    <Button style={{backgroundColor:'#e6e6e6',borderColor:'#e6e6e6',color:'#7d7a7a',marginRight:'4px'}}>Delivered</Button>
-                    <div className='table-responsive' style={{marginTop:'70px'}}>
-                        <Card style={{padding:'10px'}}>
+                <div className="col-md-8 offset-md-2" style={{ marginTop: '50px' }}>
+                    <h2>Orders</h2>
+                    <Button  style={{ backgroundColor: activeButton === 'all' ? 'orange' : '#e6e6e6',color: activeButton === 'all' ? 'white' : '#7d7a7a', borderColor: '#e6e6e6',marginRight: '4px' }}  onClick={() => handleViewChange('all')}>All Status</Button>
+                    <Button style={{ backgroundColor: activeButton === 'Cancelled' ? 'blue' : '#e6e6e6', borderColor: '#e6e6e6', color: '#7d7a7a', marginRight: '4px' }} onClick={() => handleViewChange('Cancelled')}>Cancelled</Button>
+                    <Button style={{ backgroundColor: activeButton === 'Processing' ? 'blue' : '#e6e6e6', borderColor: '#e6e6e6', color: '#7d7a7a', marginRight: '4px' }} onClick={() => handleViewChange('Processing')}>On Progress</Button>
+                    <Button style={{ backgroundColor: activeButton === 'Delivered' ? 'green' : '#e6e6e6', color: activeButton === 'Delivered' ? 'white' : '#7d7a7a',borderColor: '#e6e6e6', marginRight: '4px' }} onClick={() => handleViewChange('Delivered')}>Delivered</Button>
+                    <div className='table-responsive' style={{ marginTop: '70px' }}>
+                        <Card style={{ padding: '10px' }}>
                             <CardTitle>Orders</CardTitle>
-                        
-                    <table className="table align-middle mb-0 bg-white">
-                <thead className="bg-light">
-                    <tr className='table-tt'>
-                        <th>Order Id</th>
-                        <th>Order Name</th>
-                        <th>Customer name</th>
-                        <th>Shipping Address</th>
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {orders.map(order => (
-                        <tr key={order._id}>
-                        <td>
-                        <p className="fw-normal mb-1">{order._id}</p>
-                        </td>
-                        <td>
-                        {order.products.map(product => (
-                            <div key={product._id}>
-                            <p className="fw-normal mb-1">{product.name}</p>
-                            <p className="text-muted mb-0">Qty - {product.quantity}</p>
-                            </div>))}
-                        </td>
-                        
-                        <td>
-                            {order.buyer.email}
-                        </td>
-                        <td>
-                            <p>
-                                Kathmandu
-                            </p>
-                        </td>
-                        <td>
-                            <p>
-                                {formatDate(order.createdAt)}
-                            </p>
-                        </td>
-                        <td>
-                            <button type="button" className="btn btn-link btn-sm btn-rounded">
-                                {order.payment}
-                            </button>
-                        </td>
-                        <td>
-                        <DropdownButton id={`dropdown-order-${order._id}`} title={order.status}>
-                                                    <Dropdown.Item onClick={() => handleDelivery(order._id, 'Processing')}>Processing</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => handleDelivery(order._id, 'Shipped')}>Shipped</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => handleDelivery(order._id, 'Delivered')}>Delivered</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => handleDelivery(order._id, 'Cancelled')}>Cancelled</Dropdown.Item>
-                                                </DropdownButton>
-                        </td>
-                    </tr>
-                    ))}
-
-                    {/* More table rows here */}
-                </tbody>
-            </table></Card>
+                            <table className="table align-middle mb-0 bg-white">
+                                <thead className="bg-light">
+                                    <tr className='table-tt'>
+                                        <th>Order Id</th>
+                                        <th>Order Name</th>
+                                        <th>Customer name</th>
+                                        <th>Shipping Address</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        {filteredOrders.map(order => (
+                                            <tr key={order._id}>
+                                                <td>
+                                                    <p className="fw-normal mb-1">{order._id}</p>
+                                                </td>
+                                                <td>
+                                                    {order.products.map(product => (
+                                                    <div key={product._id}>
+                                                        <p className="fw-normal mb-1">{product.name}</p>
+                                                        <p className="text-muted mb-0">Qty - {product.quantity}</p>
+                                                    </div>
+                                                ))}
+                                            </td>
+                                            <td>
+                                                {order.buyer.email}
+                                            </td>
+                                            <td>
+                                                <p>
+                                                    Kathmandu
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p>
+                                                    {formatDate(order.createdAt)}
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <button type="button" className="btn btn-link btn-sm btn-rounded">
+                                                    {order.payment}
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <Dropdown style={{ marginTop: '6px', marginBottom: '6px', marginLeft: '10px' }}>
+                                                    <Dropdown.Toggle variant="success"
+                                                        id={`dropdown-toggle-${order._id}`}
+                                                        style={{ backgroundColor: getColor(order.status), border: 'none' }}
+                                                    >
+                                                        {order.status}
+                                                    </Dropdown.Toggle>
+                                                    <Dropdown.Menu>
+                                                        <Dropdown.Item onClick={() => handleDelivery(order._id, 'Processing', "green")}>Processing</Dropdown.Item>
+                                                        <Dropdown.Item onClick={() => handleDelivery(order._id, 'Shipped', "yellow")}>Shipped</Dropdown.Item>
+                                                        <Dropdown.Item onClick={() => handleDelivery(order._id, 'Delivered', "orange")}>Delivered</Dropdown.Item>
+                                                        <Dropdown.Item onClick={() => handleDelivery(order._id, 'Cancelled', "red")}>Cancelled</Dropdown.Item>
+                                                    </Dropdown.Menu>
+                                                </Dropdown>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </Card>
                     </div>
-                   
                 </div>
-                {/* <ul>
-                    {orders.map(order => (
-                        <li key={order._id}>
-                            <p>Order ID: {order._id}</p>
-                            <p>Products: {JSON.stringify(order.products)}</p>
-                            <p>Buyer ID: {order.buyer._id}</p>
-                        </li>
-                    ))}
-                </ul> */}
-    
             </div>
-           
         </>
     );
-            }
-            export default Order;    
+}
+
+export default Order;
