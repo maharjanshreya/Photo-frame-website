@@ -5,7 +5,7 @@
   
 .navbar-wrapper {
     background-color: #fff; /* Navbar background color */
-    
+    padding: 10px; /* Add padding for better spacing */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add box shadow for a subtle effect */
   }
   
@@ -21,6 +21,7 @@
   
   .navbar-wrapper .nav-links {
     display: flex;
+    justify-content: flex-end;
   }
   
   .navbar-wrapper .nav-links a {
@@ -41,26 +42,25 @@
   }
   
   .side-navbar {
-    height: 100vh;
-    width: 220px; /* Adjust the width based on your design */
-    background-color: #FBE9A7; /* Sidebar background color */
+    
+    background-color: #FBE9A7;
     position: fixed;
     left: 0;
     top: 0;
+    bottom: 0; /* Allow the sidebar to extend to the bottom of the viewport */
+    width: 220px;
     display: flex;
     flex-direction: column;
     align-items: left;
-    padding-top: 0px;
-    color: #FBE9A7; /* Sidebar icon color */
+    padding-top: 4px; /* Add padding to avoid overlapping with navbar */
+    color: #FBE9A7;
   }
   
   .side-navbar a {
     text-decoration: none;
     color: #fff; /* Sidebar link color */
     margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: left;
+    
   }
   
   .side-navbar a:hover {
@@ -209,4 +209,24 @@ line-height: normal;
 }
 .searchBar{
   margin-right: 10px;
+}
+/* Add this media query to handle smaller screen sizes */
+@media (max-width: 768px) {
+  .col-md-3 {
+      flex: 0 0 auto; /* Fix the width of the column */
+      max-width: 100%; /* Ensure the column takes full width on smaller screens */
+  }
+  .col-md-9 {
+      flex: 0 0 100%; /* Fix the width of the column */
+      max-width: 100%; /* Ensure the column takes full width on smaller screens */
+  }
+}
+
+/* Add this style to make the table scrollable horizontally */
+.table-responsive {
+  overflow-x: auto;
+}
+.table-tt th{
+  font-family: 'Poppins';
+  font-weight: 300;
 }

@@ -18,6 +18,7 @@ const { ObjectId } = require('mongodb');
 const { addToWishlistController,getWishlistController } = require('../controllers/wishlistController.js');
 const {paymentController,handlePaymentSuccess} = require('../controllers/paymentController.js');
 const { reportController,getReportController,replyToReportController,getReplyController} = require('../controllers/reportController.js');
+const {getAllOrderController,getSingleOrderController,updateOrderController} = require('../controllers/orderController.js');
 
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
@@ -235,6 +236,10 @@ router.post('/report/reply',authenticate, replyToReportController);
 router.get('/report',authenticate, getReportController);
 router.get('/report/reply/:userId',authenticate, getReplyController);
 router.get('/handle-success/:session_id',authenticate, handlePaymentSuccess);
+
+router.get('/view-order',authenticate,getAllOrderController);
+router.put('/update-order/:orderId',authenticate,updateOrderController); 
+router.get('/view-my-orders/:buyerId',authenticate, getSingleOrderController);
 router.post('/create-checkout-session',authenticate, paymentController);
 // Update a specific category partially using PATCH
 router.put('/category/:id', async (req, res) => {
