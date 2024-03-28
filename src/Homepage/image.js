@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-
+import { Rnd } from 'react-rnd';
 import Navbar from '../Navbar/navbar';
 import Frames from '../Images/product7.png';
 import html2canvas from 'html2canvas';
@@ -8,6 +8,13 @@ import Images from '../Images/product6.png';
 import { useLocation } from 'react-router-dom';
 
 function Image(){
+  const [file, setFile] = useState(null);
+
+  // Function to handle file selection
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+  };
   const location = useLocation();
   const imageURL = location.state?.imageURL || null;
   const [rotationAngle, setRotationAngle] = useState(0);
@@ -61,32 +68,22 @@ const handleImageChange = (e) => {
   };
   const handleSaveImage = () => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-  
-    // Clear the canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
-    // Load the Frames image
-    const framesImg = new Image();
-    framesImg.src = Frames;
-    framesImg.onload = () => {
-      // Draw the Frames image
-      ctx.drawImage(framesImg, 0, 0, canvas.width, canvas.height);
-  
-      // Load the draggable image
-      const imageImg = new Image();
-      imageImg.src = image;
-      imageImg.onload = () => {
-        // Draw the draggable image
-        ctx.drawImage(imageImg, position.x, position.y, width, height);
-  
-        // Save the composite image
-        const link = document.createElement('a');
-        link.download = 'composite_image.png';
-        link.href = canvas.toDataURL();
-        link.click();
-      };
-    };
+    const imageData = canvas.toDataURL('image/png');
+
+    // Send image data to server (e.g., via fetch or Axios)
+    fetch('/uploadImage', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ imageData }),
+    })
+      .then(response => {
+        // Handle response from server
+      })
+      .catch(error => {
+        console.error('Error uploading image:', error);
+      });
   };
   const handleMouseDown = (e) => {
     e.preventDefault();
@@ -190,8 +187,50 @@ const handleRotateImage = () => {
       <div className=" " id="bg-image-edit">
         <center>
         <div className='images-to-be-saved' ref={divRef}>
-    
-          <img src={imageURL} alt="Frames" style={{ width: '100%', height: '100%',transform: `rotate(${rotationFrame}deg)`  }} />
+          
+           <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+            <img src={imageURL} alt="Frames" style={{ width: '100%', height: '100%',transform: `rotate(${rotationFrame}deg)`  }} />
+            <div>
+        
+        <Rnd
+          default={{
+            x: 0,
+            y: 0,
+            width: 200,
+            height: 200,
+          }}
+          bounds='.images-to-be-saved'
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+           
+          }}
+        >
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              background: 'rgba(0, 0, 0, 0.5)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              overflow: 'hidden',
+            }}
+          >
+            {file ? (
+              <img
+                src={URL.createObjectURL(file)}
+                alt="Uploaded"
+                style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+              />
+            ) : (
+              <span>Draggable and Resizable Component</span>
+            )}
+          </div>
+        </Rnd>
+            </div>
+          </div>
           {image && (
           <div
               style={{
@@ -238,6 +277,7 @@ const handleRotateImage = () => {
         </div>
         )}
           </div>
+
           </center>
          
           </div>
@@ -246,11 +286,14 @@ const handleRotateImage = () => {
 
       <div className="">
         <input type="file" ref={inputRef} onChange={handleImageChange} name="file" id="file" class="inputfile"/><label for="file">Choose a file</label> <br />
+        <input type="file" onChange={handleFileChange} />
+        
         <p style={{textAlign:'left',fontFamily:'inter',fontSize:'20px',fontWeight:'bold',color:'#c7522a',marginTop:'3px',marginBottom:'3px'}}>Your image preview</p>
         {image && <img src={image} alt="Preview" style={{ maxWidth: '100%', maxHeight: '300px' }} />}<br/>
         
         
-        <Button className="round-button" style={{backgroundColor:'#225931',borderColor:'#225931',marginTop:'9px'}} onClick={saveDivAsImage}>Save Image</Button>
+        <Button className="round-button" style={{backgroundColor:'#225931',borderColor:'#225931',marginTop:'9px'}} onClick={saveDivAsImage}>Download Image</Button>
+        <Button className="round-button" style={{backgroundColor:'#225931',borderColor:'#225931',marginTop:'9px'}} onClick={handleSaveImage}>Save Image</Button>
 
       </div>
 

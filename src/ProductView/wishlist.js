@@ -6,6 +6,7 @@ import { toast,Toaster } from 'react-hot-toast';
 import Button from 'react-bootstrap/Button';
 import { useCart } from '../context/cart';
 import { useWishlist } from '../context/wishlist';
+import { useNavigate } from 'react-router-dom';
 function Wishlist() {
   const { wishlists,setWishlists } = useWishlist();
   const userId = localStorage.getItem('userId');
@@ -14,11 +15,18 @@ function Wishlist() {
   const [productData, setProductData] = useState([]);
   const [loadedImages, setLoadedImages] = useState([]);
   const { cart,setCart } = useCart();
+  const navigate = useNavigate();
   const handleCart = (p_id) => {
     addToCart(p_id);
   };
   
   const addToCart = async (productId) => {
+    const userId = localStorage.getItem('userId');
+
+      if (!userId) {
+        console.error('User ID not found');
+        navigate('/login', { replace: true });
+      }
     const data = {
       userId: userId,
       items: [
@@ -33,6 +41,8 @@ function Wishlist() {
       setCart(prevCart => prevCart + 1);
       toast.success('Item added to cart!');
     } catch (error) {
+      navigate('/login', { replace: true });
+
       console.error('Error adding to cart:', error);
     }
   };
@@ -62,6 +72,12 @@ function Wishlist() {
   };
 
   const categoryFunc = async () => {
+    const userId = localStorage.getItem('userId');
+
+      if (!userId) {
+        console.error('User ID not found');
+        navigate('/login', { replace: true });
+      }
     try {
       const res = await fetch(`/add-to-wishlist/${encodeURIComponent(userId)}`, {
         method: 'GET',
@@ -94,6 +110,7 @@ function Wishlist() {
       console.log(data);
 
     } catch (err) {
+      navigate('/login', { replace: true });
       console.log('Error in fetching data', err);
     }
   };

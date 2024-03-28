@@ -34,6 +34,13 @@ function Cart(){
     const [imageURL, setImageURL] = useState(null);
     const userContact = async () => {
       try {
+        const userId = localStorage.getItem('userId');
+
+      if (!userId) {
+        console.error('User ID not found');
+        navigate('/login', { replace: true });
+      }
+
         const res = await fetch('/getData', {
           method: 'GET',
           headers: {
@@ -56,6 +63,13 @@ function Cart(){
     let va;
     const getCart = async () => {
       try {
+        const userId = localStorage.getItem('userId');
+
+        if (!userId) {
+          console.error('User ID not found');
+          navigate('/login', { replace: true });
+        }
+
         const res = await fetch(`/add-to-cart/${encodeURIComponent(userData.userId)}`,  {
         method: 'GET',
         credentials: 'include',
@@ -91,6 +105,7 @@ function Cart(){
               url: `data:image/png;base64,${base64Image}`,
             };
           } catch (error) {
+            navigate('/login', { replace: true });
             console.error(error.message);
             return null;
           }

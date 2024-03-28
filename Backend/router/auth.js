@@ -19,7 +19,7 @@ const { addToWishlistController,getWishlistController } = require('../controller
 const {paymentController,handlePaymentSuccess} = require('../controllers/paymentController.js');
 const { reportController,getReportController,replyToReportController,getReplyController} = require('../controllers/reportController.js');
 const {getAllOrderController,getSingleOrderController,updateOrderController} = require('../controllers/orderController.js');
-
+const {uploadController} = require('../controllers/uploadController.js');
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
   });
@@ -222,11 +222,9 @@ router.put('/product-update/:pid',formidable(), updateProductController);
 
 router.get('/search/:keyword', searchController);
 
-
 router.post('/add-to-cart',authenticate, cartController);
 router.get('/add-to-cart/:id',authenticate, getCartController);
 router.delete('/remove-item/:userId/:productId',authenticate, removeCartController);
-
 
 router.post('/add-to-wishlist', authenticate, addToWishlistController);
 router.get('/add-to-wishlist/:userId', authenticate, getWishlistController);
@@ -240,6 +238,7 @@ router.post('/create-checkout-session',authenticate, paymentController);
 router.get('/view-order',authenticate,getAllOrderController);
 router.put('/update-order/:orderId',authenticate,updateOrderController); 
 router.get('/view-my-orders/:buyerId',authenticate, getSingleOrderController);
+router.post('/upload',authenticate, uploadController);
 
 // Update a specific category partially using PATCH
 router.put('/category/:id', async (req, res) => {

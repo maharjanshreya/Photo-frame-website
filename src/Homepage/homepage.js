@@ -6,7 +6,7 @@ import './homepage.css';
 import { IoSearchOutline } from "react-icons/io5";
 import Button from 'react-bootstrap/Button';
 import Image from '../Images/Group 7.png';
-
+import DraggableResizableComponent from './page';
 import Image2 from '../Images/Group 14.png';
 import MyProdu from '../Images/MyImageProduct.jpg';
 import Footer from './footer';
@@ -190,8 +190,10 @@ const handleButtonClick = () => {
   navigate('/upload');
 };
   return (
+    <>
     <div style={{ backgroundColor, transition: 'background-color 0.5s' }}>
       <Navbar />
+      
       <div className='d-flex container' >
         <div className="left_align">
           <h1 className='hhh'>Shabby Chic Frames.</h1>
@@ -277,11 +279,16 @@ const handleButtonClick = () => {
         {userPhoto && <ImageFrameOverlay frameSrc={Frame} photoSrc={userPhoto} />}
       </div>
 
-     
+      
       
    
       <Footer />
     </div>
+    <div style={{width:'100%',height:'100%'}}>
+          <p>FTYsavxjas</p><DraggableResizableComponent />
+
+    </div>
+    </>
 
 
   );
