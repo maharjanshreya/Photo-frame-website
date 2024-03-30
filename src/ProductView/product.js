@@ -10,6 +10,8 @@ import Cart from '../ProductView/cart';
 import Badge from 'react-bootstrap/Badge';
 import Stack from 'react-bootstrap/Stack';
 import axios from 'axios';
+import { MdOutlineUpdate } from "react-icons/md";
+import { MdOutlinePolicy } from "react-icons/md";
 import Image from '../Homepage/image';
 import { toast } from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
@@ -18,6 +20,10 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/cart';
 import { useWishlist } from '../context/wishlist';
 import { CardBody, CardTitle } from 'react-bootstrap';
+import ReactStars from "react-rating-stars-component";
+import { MdOutlineSupervisorAccount } from "react-icons/md";
+import { formatDateString } from './time';
+import { LiaShippingFastSolid } from "react-icons/lia";
 let product_id = null;
 
 function Product() {
@@ -29,9 +35,15 @@ function Product() {
   const [productData, setProductData] = useState([]);
   const [reviewData, setReviewData] = useState([]);
   const [imageURL, setImageURL] = useState(null);
-  const [quantity, setQuantity] = useState(productData.quantity);
-  const [rating, setRating] = useState(1);
+  const [quantity, setQuantity] = useState(0);
+  const [rating, setRating] = useState(5);
   const [review, setReview] = useState('');
+
+  const ratingChanged = (newRating) => {
+    setRating(newRating);
+    console.log(newRating);
+  };
+
   const productFunc = async () => {
     try {
       const res = await fetch(`/products/${encodeURIComponent(productId)}`, {
@@ -47,7 +59,7 @@ function Product() {
       //console.log('API Response in products:', datas); 
       setProductData(datas.product);
       product_id = datas.product._id; // Set product_id here
-      setQuantity(datas.product.quantity); // Reset quantity
+      //setQuantity(datas.product.quantity); // Reset quantity
       //console.log("Datas.data",datas.product);
 
     } catch (err) {
@@ -58,7 +70,8 @@ function Product() {
   const handleCart = () => {
     //setProduct_Id(p_id);
     if (product_id) {
-      addToCart();
+      setQuantity(prevQuantity => prevQuantity + 1);
+      addToCart(quantity+1);
     }
   }
 
@@ -96,13 +109,14 @@ function Product() {
     }
   };
 
-  const addToCart = async () => {
+  const addToCart = async (quantityToAdd) => {
+    
     const data = {
       userId: userIdLS,
       items: [
         {
           productId: product_id,
-          quantity: quantity,
+          quantity: quantityToAdd,
         },
       ],
     };
@@ -122,12 +136,12 @@ function Product() {
       product: productId,
       rating: rating,
       review: review,
-      
+
     };
     try {
       const response = await axios.post('/give-review', data);
-     
-      console.log("response: ",response);
+
+      console.log("response: ", response);
     } catch (error) {
       console.error('Error adding to cart:', error);
     }
@@ -151,14 +165,36 @@ function Product() {
     }
   };
 
+  const totalCount = reviewData.filter(review => review.review && review.review.length > 0).length;     // to count the number of reviews
+
   useEffect(() => {
     productFunc();
     imageFunc();
     getReviewFunc();
-    
+
 
   }, [product_id]);
+
   const starStyle = { color: '#B8930F', size: 30, fill: '#B8930F' };
+
+  const calculateOverallRatingSum = (reviewData) => {
+    let sum = 0;
+    for (let i = 0; i < reviewData.length; i++) {
+      sum += reviewData[i].rating;
+    }
+    const averageRating = sum / reviewData.length;
+    return averageRating;
+  };
+  const maxStarCount = 5;
+  const overallRatingSum = calculateOverallRatingSum(reviewData);
+  console.log(overallRatingSum);
+  const overallRatingMapped = (overallRatingSum / maxStarCount) * 5;
+
+  const [showAllReviews, setShowAllReviews] = useState(false);
+
+  const toggleShowAllReviews = () => {
+    setShowAllReviews(!showAllReviews);
+  };
   return (<>
     <Navbar />
 
@@ -194,42 +230,102 @@ function Product() {
               </p>
               <button className='add-to-cart' onClick={(e) => { e.preventDefault(); handleCart(); }}>Add To Cart</button>
               <button className='add-to-cart' onClick={(e) => { e.preventDefault(); handleUpload(imageURL); }}>Upload</button>
-
+              
             </div>
-          )}<Toaster position="top-center" reverseOrder={true}/>
+          )}<Toaster position="top-center" reverseOrder={true} />
+        </div><br/>
+        <div className='d-flex justify-content-center ' style={{ textAlign: 'center', margin:"30px"}}>
+          <div className="row">
+            <div className="col-auto">
+              <MdOutlineUpdate />
+            </div>
+            <div className="col mb-0">
+              <p>Delivery Time</p>
+              <p>{productData.minDelivery}-{productData.maxDelivery} days</p>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-auto">
+            <LiaShippingFastSolid />
+            </div>
+            <div className="col mb-0" style={{textAlign:'left'}}>
+            <p>Shipping Cost</p>
+            <p className='text-center'> Rs. {productData.shipping} </p>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-auto">
+            <MdOutlinePolicy />
+            </div>
+            <div className="col mb-0" style={{textAlign:'left'}}>
+            <p>Return Policy</p>
+            <p className='text-center'>Nonreturnable</p>
+            </div>
+          </div>
+          
         </div>
+
         <hr />
-        <div>
+        <div><h1 className='m-1'>Overall Rating</h1>
+          <h1 style={{ fontFamily: 'Gelasio' }}>{overallRatingSum}</h1>
+          <ReactStars
+            size={30}
+
+            value={overallRatingMapped} edit={false}
+          />
           <div className='d-flex'>
 
-          <h3 className='m-1'>Reviews</h3> <Stack direction="horizontal" gap={2} className='m-1'><Badge bg="secondary">157</Badge> </Stack></div>
+
+            <h3 className='m-1'>Reviews</h3> <Stack direction="horizontal" gap={2} className='m-1'><Badge bg='warning'>{totalCount > 0 && <span>{totalCount}</span>}</Badge> </Stack></div>
           <>
-          
-              {reviewData.map(review => (
-                    <div key={review._id} className="review">
-                        <Card>
-                          <CardBody>
-                            <CardTitle> Rating</CardTitle>
-                                    <p>Rating: {review.rating}</p>
-                                    <p> {review.review}</p>
-                                    <p>User: {review.user.email}</p>
-                                    <p>Created At: {review.createdAt}</p> </CardBody>
-                        </Card>
-                    </div>
-                ))}
-            
-            
-            <p>Show less</p>
-            <p>Show More</p>
             <p>Leave a review:</p>
-            
-                <div>
-                  <label>Rating</label>
-                  <input type="number" min="1" max="5" value={rating} onChange={(e) => setRating(e.target.value)} /><br/>
-                  <textarea value={review} onChange={(e) => setReview(e.target.value)} placeholder='write review on the product' rows="4" cols="60"></textarea><br/>
-                  <Button onClick={(e) => { e.preventDefault(); postReviewFunc(); }}>Submit Review</Button>
+
+            <div>
+              <label>Rating</label>
+              <ReactStars
+                count={5}
+                onChange={ratingChanged}
+                size={24}
+                activeColor="#ffd700"
+                value={5}
+              />
+
+              <textarea value={review} onChange={(e) => setReview(e.target.value)} placeholder='Write review on this product' rows="4" cols="80" style={{ borderRadius: '6px', padding: '5px 5px' }}></textarea><br />
+              <Button variant="warning" style={{ color: 'white' }} onClick={(e) => { e.preventDefault(); postReviewFunc(); }}>Submit Review</Button>
+            </div><br /><hr/>
+            <h4>View Comments</h4>
+            {reviewData.slice(0, showAllReviews ? reviewData.length : 3).map(review => (
+              review.review && (
+                <div key={review._id} className="review">
+                  <Card style={{ backgroundColor: '#fafafa', margin: '15px 0px' }}>
+                    <CardBody style={{paddingBottom:"0px"}}>
+                      <div className="row">
+                        <div className="col-auto">
+                          <MdOutlineSupervisorAccount />
+                        </div>
+                        <div className="col">
+                          <p>{review.user.email}</p>
+                          <ReactStars size={24} edit={false} value={review.rating} />
+                          <p> {review.review}</p>
+                          <p style={{color:"#808080",fontSize:'17px'}}>{formatDateString(review.createdAt)}</p>
+                        </div>
+                      </div>
+                      
+                      
+                       </CardBody>
+                  </Card>
                 </div>
-             
+              )))}
+
+
+            {reviewData.length > 3 && (
+              <p onClick={toggleShowAllReviews}>
+                {showAllReviews ? "Show Less" : "Show More"}
+              </p>
+            )}
+
           </>
         </div>
       </div>

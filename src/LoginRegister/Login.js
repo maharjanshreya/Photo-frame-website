@@ -75,8 +75,31 @@ function Login(){
                 
                 localStorage.setItem('status', 'true');
                 localStorage.setItem('tokens', JSON.stringify(data));
+                const apiUrl = 'account'; 
+                
+                // Fetch the data from the API
+                fetch(apiUrl)
+                .then((response) => {
+                    if (!response.ok) {
+                      throw new Error('An unknown error occurred.');
+                    }
+                    return response.json();
+                  })
+                .then((data) => {
+                    // Update the state with the fetched data
+                    setUserData(data);
+                    setUserId(data._id);
+                    localStorage.setItem('userId', data._id);
+                    console.log("userId in login :",userId);
+                    navigate("/adminDashboard");
+                })
+
+                .catch((error) => {
+                    window.alert(error.message);
+                  console.log('Error fetching data:', error.message);
+                });
                 checkUserRole();
-                navigate("/adminDashboard");
+                
             }
             else{
                 

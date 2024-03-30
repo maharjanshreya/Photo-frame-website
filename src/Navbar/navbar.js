@@ -27,6 +27,7 @@ function Navbar(){
     const [cartData, setCartData] = useState({ cart: { items: [] } });
     const [activeLink, setActiveLink] = useState(location.pathname);
     const handleLogout = async () => {
+        console.log('Logging out');
         try {
           const response = await fetch('/logout', {
             method: 'GET',
@@ -110,11 +111,11 @@ function Navbar(){
                     <PiShoppingCart size={26} className='iconify'/>
                 </Nav.Link>
              
-                {userId && <span className="count-cart">{cart}</span>}
+                {userId ? <span className="count-cart">{cart}</span>:null}
                 <Nav.Link as={Link} to={'/wishlist'}  className='icon' >
                     <MdOutlineFavoriteBorder size={26} className='iconify'/>
                 </Nav.Link>
-                {userId && <span className="count-wishlist">{wishlists}</span>}
+                {userId ? <span className="count-wishlist">{wishlists}</span>:null}
                 <Dropdown>
                     <Dropdown.Toggle variant="success" id="dropdown-basic" style={{ backgroundColor: 'transparent',border:'0px' }}>
                         <VscAccount size={26}  style={{marginRight: '30px'}} className='iconify'/>

@@ -7,6 +7,7 @@ import { CiSearch } from "react-icons/ci";
 import { CiCalendar } from "react-icons/ci";
 import { FaReply } from "react-icons/fa";
 import Dropdown from 'react-bootstrap/Dropdown';
+import { formatDateString } from '../ProductView/time';
 function Contact() {
   const [reports, setReports] = useState([]);
   const [userData, setUserData] = useState([]);
@@ -163,11 +164,9 @@ function Contact() {
                   ))}
                 </div>
               )}
-                <CiCalendar /> {new Date(report.createdAt).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric',
-                })}<br/>
+                <CiCalendar /> 
+                {formatDateString(report.createdAt)}
+                <br/>
                 <div className='d-flex'>
                   <Button variant="secondary" style={{marginTop:'6px',marginBottom:'6px'}} onClick={() => handleButtonClick(report._id)}><FaReply style={{marginRight:'6px'}} />Reply</Button>
                   <Dropdown

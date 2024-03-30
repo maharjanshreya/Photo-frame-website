@@ -25,6 +25,7 @@ function Image(){
   const handleRotateFrame = () => {
     setRotationFrame(rotationFrame + 90); // Rotate by 90 degrees clockwise
   };
+  const userId = localStorage.getItem('userId');
   const [width, setWidth] = useState(300);
   const [height, setHeight] = useState(200);
   const [isResizing, setIsResizing] = useState(false);
@@ -67,23 +68,37 @@ const handleImageChange = (e) => {
       });
   };
   const handleSaveImage = () => {
-    const canvas = canvasRef.current;
-    const imageData = canvas.toDataURL('image/png');
-
-    // Send image data to server (e.g., via fetch or Axios)
-    fetch('/uploadImage', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ imageData }),
-    })
-      .then(response => {
-        // Handle response from server
+    const divElement = divRef.current;
+    if (!divElement) return;
+    html2canvas(divElement)
+    .then((canvas) => {
+      // Convert canvas to data URL
+      const imageData = canvas.toDataURL('image/png');
+      if (/^data:image\/(png|jpeg);base64,/.test(imageData)) {
+        console.log('Image data:', imageData);
+      fetch('/upload', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ imageData,userId}),
       })
-      .catch(error => {
-        console.error('Error uploading image:', error);
-      });
+        .then(response => {
+          // Handle response from server
+          console.log("Image uplaod: ",response);
+        })
+        .catch(error => {
+          console.error('Error uploading image:', error);
+        }); 
+      } else {
+          console.error('Invalid imageData format:', imageData);
+      }
+    })
+    .catch((error) => {
+      console.error('Error capturing div as image:', error);
+    });
+    // Send image data to server (e.g., via fetch or Axios)
+    
   };
   const handleMouseDown = (e) => {
     e.preventDefault();

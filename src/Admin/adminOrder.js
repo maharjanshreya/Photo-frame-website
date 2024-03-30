@@ -5,15 +5,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { CardTitle } from 'react-bootstrap';
-
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    });
-}
+import { formatDateString } from '../ProductView/time';
 
 function Order() {
     const [orders, setOrders] = useState([]);
@@ -165,7 +157,7 @@ function Order() {
                                             </td>
                                             <td>
                                                 <p>
-                                                    {formatDate(order.createdAt)}
+                                                    {formatDateString(order.createdAt)}
                                                 </p>
                                             </td>
                                             <td>

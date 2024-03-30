@@ -3,7 +3,7 @@ import Navbar from '../Navbar/navbar';
 import { CiCalendar } from "react-icons/ci";
 import { FaCircle } from "react-icons/fa";
 import { IoTimeOutline } from "react-icons/io5";
-
+import { formatDateString } from './time';
 import { useNavigate } from 'react-router-dom';
 function Notification() {
   const [reports, setReports] = useState([]);
@@ -50,10 +50,7 @@ function Notification() {
     fetchReportData();
   }, []);
 
-  const formatDateString = (dateString) => {
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-US', options);
-  };
+ 
 
   // Separate reports into two arrays: today's and older based on adminReply creation date
   const today = new Date().toISOString().split('T')[0];
