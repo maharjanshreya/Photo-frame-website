@@ -6,7 +6,7 @@
 .navbar-wrapper {
     background-color: #fff; /* Navbar background color */
     padding: 10px; /* Add padding for better spacing */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add box shadow for a subtle effect */
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  */
   }
   
   .navbar-wrapper .navbar {

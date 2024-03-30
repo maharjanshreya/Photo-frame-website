@@ -98,7 +98,7 @@ function Login(){
                     window.alert(error.message);
                   console.log('Error fetching data:', error.message);
                 });
-                checkUserRole();
+                //checkUserRole();
                 
             }
             else{

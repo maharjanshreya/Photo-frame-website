@@ -112,7 +112,7 @@ function Order() {
                 <div>
                     <AdminNavbar />
                 </div>
-                <div className="col-md-8 offset-md-2" style={{ marginTop: '50px' }}>
+                <div className="col-md-8 offset-md-2" style={{ marginTop: '50px' ,marginLeft:'250px'}}>
                     <h2>Orders</h2>
                     <Button  style={{ backgroundColor: activeButton === 'all' ? 'orange' : '#e6e6e6',color: activeButton === 'all' ? 'white' : '#7d7a7a', borderColor: '#e6e6e6',marginRight: '4px' }}  onClick={() => handleViewChange('all')}>All Status</Button>
                     <Button style={{ backgroundColor: activeButton === 'Cancelled' ? 'blue' : '#e6e6e6', borderColor: '#e6e6e6', color: '#7d7a7a', marginRight: '4px' }} onClick={() => handleViewChange('Cancelled')}>Cancelled</Button>

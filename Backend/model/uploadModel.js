@@ -7,7 +7,7 @@ const uploadSchema = new mongoose.Schema({
         required: true
       },
     uploadDate: { type: Date, default: Date.now },
-    // Other fields related to the upload
+  
 });
 const Upload = mongoose.model('Upload', uploadSchema);
 

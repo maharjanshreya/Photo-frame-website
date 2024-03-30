@@ -18,8 +18,9 @@ import { useWishlist } from '../context/wishlist';
 function Navbar(){
     const [show, setShow] = useState(false);
     const { cart } = useCart();
-    const { wishlists } = useWishlist();
+   // const { wishlists } = useWishlist();
     //console.log("Navbar: ",cart);
+    const [wishlist, setWishlist] = useState([]);
   const handleClose = () => setShow(false);
     const navigate = useNavigate();
     const location = useLocation();
@@ -53,8 +54,9 @@ function Navbar(){
         }
       };
     const getCart = async () => {
+        const userIdl = localStorage.getItem('userId');
         try {
-          const res = await fetch(`/add-to-cart/${encodeURIComponent(userId)}`,  {
+          const res = await fetch(`/add-to-cart/${encodeURIComponent(userIdl)}`,  {
           method: 'GET',
           credentials: 'include',
           });
@@ -71,8 +73,28 @@ function Navbar(){
             console.log('Error in fetching data', err);
         }
     };  
+    const getWishlist = async () => {
+        const userIdl = localStorage.getItem('userId');
+        try {
+          const res = await fetch(`/add-to-wishlist/${encodeURIComponent(userIdl)}`,  {
+          method: 'GET',
+          credentials: 'include',
+          });
+          if (!res.ok) {
+            const error = new Error(res.statusText);
+            throw error;
+          }
+            
+          const datas = await res.json();
+          setWishlist(datas.wishlist.products.length);
+         
+        } catch (err) {
+            console.log('Error in fetching data', err);
+        }
+    };
     useEffect(() => {
         getCart();
+        getWishlist();
       }, [userId]);
     return(
         <>
@@ -115,7 +137,7 @@ function Navbar(){
                 <Nav.Link as={Link} to={'/wishlist'}  className='icon' >
                     <MdOutlineFavoriteBorder size={26} className='iconify'/>
                 </Nav.Link>
-                {userId ? <span className="count-wishlist">{wishlists}</span>:null}
+                {userId ? <span className="count-wishlist">{wishlist}</span>:null}
                 <Dropdown>
                     <Dropdown.Toggle variant="success" id="dropdown-basic" style={{ backgroundColor: 'transparent',border:'0px' }}>
                         <VscAccount size={26}  style={{marginRight: '30px'}} className='iconify'/>

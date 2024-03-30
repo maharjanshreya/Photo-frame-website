@@ -20,7 +20,7 @@ const {paymentController,handlePaymentSuccess} = require('../controllers/payment
 const { reportController,getReportController,replyToReportController,getReplyController} = require('../controllers/reportController.js');
 const {getAllOrderController,getSingleOrderController,updateOrderController} = require('../controllers/orderController.js');
 const {uploadController,getImageByUserId} = require('../controllers/uploadController.js');
-const {createReviewController,getReviewController} = require('../controllers/reviewController.js');
+const {createReviewController,getReviewController,getAllReviewController} = require('../controllers/reviewController.js');
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
   });
@@ -243,6 +243,7 @@ router.post('/upload',authenticate, uploadController);
 router.get('/getImage/:userId', getImageByUserId);
 router.post('/give-review', createReviewController);
 router.get('/get-review/:productId', getReviewController);
+router.get('/get-all-review', getAllReviewController);
 // Update a specific category partially using PATCH
 router.put('/category/:id', async (req, res) => {
     if(!req.body) {

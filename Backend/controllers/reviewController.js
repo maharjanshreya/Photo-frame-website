@@ -55,6 +55,23 @@ const getReviewController = async (req, res) => {
         });
     }
 };
+const getAllReviewController = async (req, res) => {
+    try {
+        
+        const reviews = await Review.find().populate('user', 'name email'); 
+        
+        res.status(200).json({
+            success: true,
+            reviews: reviews
+        });
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).json({
+            success: false,
+            message: 'Error in fetching reviews',
+            error: err.message
+        });
+    }
+};
 
-
-module.exports = { createReviewController, getReviewController};
+module.exports = { createReviewController, getReviewController,getAllReviewController};
