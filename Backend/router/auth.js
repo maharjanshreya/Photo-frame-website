@@ -21,7 +21,7 @@ const { reportController,getReportController,replyToReportController,getReplyCon
 const {getAllOrderController,getSingleOrderController,updateOrderController} = require('../controllers/orderController.js');
 const {uploadController,getImageByUserId} = require('../controllers/uploadController.js');
 const {createReviewController,getReviewController,getAllReviewController,getHighestRatedProduct} = require('../controllers/reviewController.js');
-const { userController } = require('../controllers/userController.js');
+const { userController, deleteUserController, updateUserController } = require('../controllers/userController.js');
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
   });
@@ -223,12 +223,13 @@ router.post('/contact', authenticate, async (req,res)=>{
   
 });
 
-router.post('/products',formidable(), createProductController);
+router.post('/products',authenticate,formidable(), createProductController);
 router.get('/products', getProductController);
 router.get('/products/:id', getSingleProductController);
 router.get('/product-image/:pid', getPhotoController);
-router.delete('/deleteproduct/:id', deleteProductController);
+router.delete('/deleteproduct/:id',authenticate, deleteProductController);
 router.put('/product-update/:pid',formidable(), updateProductController);
+router.put('/user-update/:userId',authenticate,isAdmin, updateUserController);
 
 
 router.get('/search/:keyword', searchController);
@@ -256,6 +257,7 @@ router.get('/get-review/:productId', getReviewController);
 router.get('/get-all-review', getAllReviewController);
 router.get('/getUser',authenticate,isAdmin, userController);
 router.get('/highest-rate-product', getHighestRatedProduct);
+router.delete('/delete-user/:userId',authenticate,isAdmin, deleteUserController);
 
 // Update a specific category partially using PATCH
 router.put('/category/:id', async (req, res) => {

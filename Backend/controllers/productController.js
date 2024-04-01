@@ -154,6 +154,8 @@ const deleteProductController = async (req, res) => {
     }
 };
 
+
+
 // Update a specific product partially using put
 const updateProductController = async (req, res) =>  {
     

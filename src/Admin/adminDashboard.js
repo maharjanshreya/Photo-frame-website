@@ -7,6 +7,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { FaRegImage } from "react-icons/fa6";
 import UpdateCategory from './updateCategory';
 import UpdateProduct from './updateProduct';
+import UpdateUsers from './updateUsers';
 import ViewDetails from './viewDetails';
 import Button from 'react-bootstrap/Button';
 import PostProduct from './postProduct';
@@ -20,18 +21,28 @@ function Dashboard() {
   const [show3, setShow3] = useState(false); // for edit product
   const [show4, setShow4] = useState(false); // for delete category
   const [show5, setShow5] = useState(false); // for delete product
+  const [show6, setShow6] = useState(false); // for delete user
+  const [show7, setShow7] = useState(false); // for edit user
   const [activeOption, setActiveOption] = useState('Create Category');
   const [editId, setEditId] = useState(null);
   const [deleteIdCategory, setDeleteIdCategory] = useState(null);
   const [deleteIdProduct, setDeleteIdProduct] = useState(null);
+  const [deleteIdUser, setDeleteIdUser] = useState(null);
   const [defaultName, setDefaultName] = useState(null);
   const [editProductId, setEditProductId] = useState(null);
+  const [editFirstname, setEditFirstname] = useState('');
+  const [editLastname, setEditLastname] = useState('');
+  const [editEmail, setEditEmail] = useState('');
+  const [editContact, setEditContact] = useState('');
+  const [editUserId, setEditUserId] = useState('');
   const [productId, setProductId] = useState(null);
   const handleClose = () => setShow(false);
   const handleClose2 = () => setShow2(false);
   const handleClose3 = () => setShow3(false);
   const handleClose4 = () => setShow4(false);
   const handleClose5 = () => setShow5(false);
+  const handleClose6 = () => setShow6(false);
+  const handleClose7 = () => setShow7(false);
 
   const handleShow = (deleteIdCategory) => {
 
@@ -45,10 +56,25 @@ function Dashboard() {
     setShow5(true);
     setDeleteIdProduct(deleteIdProduct);
   };
+  const handleShow3 = (deleteIdUser) => {
+
+    setShow6(true);
+    setDeleteIdUser(deleteIdUser);
+  };
   const [category, setCategory] = useState({
     name: ""
   });
 
+  const handleEditClick = (row) => {
+    console.log(row._id);
+    setEditUserId(row._id);
+    console.log("Edit user id: ",editUserId);
+    setEditFirstname(row.firstname);
+    setEditLastname(row.lastname);
+    setEditEmail(row.email);
+    setEditContact(row.contact);
+    setShow7(true);
+};
   let name, value;
   const handleInputs = (e) => {
     console.log(e);
@@ -147,6 +173,37 @@ function Dashboard() {
     }
   };
 
+   // Function to handle user deletion
+   const handleDeleteUser = async (_id) => {
+    console.log('The user id to be deleted is ' + _id);
+    try {
+      
+      const response = await fetch(`/delete-user/${encodeURIComponent(_id)}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          // Add any other headers as needed (e.g., authentication token)
+        },
+      });
+
+      if (response.ok) {
+        // If deletion is successful, update the state to reflect the changes
+        try {
+          // Update the state to remove the deleted category
+          setUserData(prevUser => prevUser.filter(user => user._id !== _id));
+        } catch (error) {
+          console.error('Error during product deletion', error);
+          
+        }
+      } else {
+        console.error('Failed to delete product messafe');
+        
+      }
+    } catch (error) {
+      console.error('Error during product deletion', error);
+      
+    }
+  };
 
   const [categoryData, setCategoryData] = useState([]);
   const [productData, setProductData] = useState([]);
@@ -254,7 +311,7 @@ function Dashboard() {
                     Create Product
                   </div>
                   <div
-                    className={`p-2 ${selectedOption === ' Create Users' ? 'active' : ''}`}
+                    className={`p-2 ${selectedOption === 'Create Users' ? 'active' : ''}`}
                     onClick={() => {
                       setSelectedOption('Create Users');
                       setActiveOption('Create Users');
@@ -410,24 +467,25 @@ function Dashboard() {
                     {userData.map((row, index) => (
                       <tr key={index}>
                         <td>{row?.firstname}{' '}
-                        {row?.lastname}</td>
+                            {row?.lastname}</td>
                         <td>{row?.email}</td>
                         <td>{row?.contact}</td>
+                        
 
                         <td>
                           <form >
                             <FiEdit size={18} alt="Edit Meter Reader" className="edit-icon" style={{ marginRight: '6px' }} onClick={(e) => {
-                              setEditProductId(row._id);
-                              setShow3(true);
+                              handleEditClick(row);
+                              setShow7(true);
                             }} />
                             <MdDeleteOutline style={{ marginRight: '6px' }}
                               size={21}
-                              alt="Delete Meter Reader"
+                              alt="Delete User"
                               className="delete-icon"
                               onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                handleShow2(row?._id);
+                                handleShow3(row?._id);
                               }}
 
                             />
@@ -440,7 +498,7 @@ function Dashboard() {
                   </tbody>
                 </table>
               ) : (
-                <p>No categories available.</p>
+                <p>No user available.</p>
               ))}
           </div>
         </div>
@@ -564,6 +622,61 @@ function Dashboard() {
         </div>
 
       </Modal>
+
+       {/*pop up for delete of user */}
+       <Modal show={show6} onHide={handleClose6} centered >
+        <div className="modal show" style={{ display: 'block', position: 'initial', padding: 0 }} >
+
+          <Modal.Dialog style={{ margin: 0 }} centered>
+            <Modal.Header closeButton className="d-flex align-items-center justify-content-center" centered>
+
+
+            </Modal.Header>
+
+            <Modal.Body style={{ padding: '30px 40px' }}><div className='text-center'>
+              <img src={Alert} width={40} height={40} /><br />
+              <b>Are you sure?</b>
+            </div>
+
+              <p className='text-center'>This action cannot be undone. All values related to this User will be deleted permanently!</p><br />
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Button variant="secondary" onClick={handleClose6} style={{ backgroundColor: '#6c757d', width: 'auto', borderColor: '#6c757d', marginRight: '8px' }}>Close</Button>
+                <Button variant="danger" onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleDeleteUser(deleteIdUser);
+                  handleClose6();
+                }}>Delete</Button>
+              </div>
+            </Modal.Body>
+
+
+          </Modal.Dialog>
+        </div>
+
+      </Modal>
+
+      {/*pop up for updates of user */}
+      <Modal show={show7} onHide={handleClose7} centered >
+
+
+        <div className="modal show" style={{ display: 'block', position: 'initial', padding: 0 }} >
+
+          <Modal.Dialog style={{ margin: 0 }}>
+            <Modal.Header closeButton >
+              <Modal.Title >Edit </Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+              <b><p>Change the user details:</p></b>
+              <UpdateUsers userId={editUserId} firstname={editFirstname} lastname={editLastname} email={editEmail} contact={editContact} onClose={handleClose7} refreshUserList={userFunc} />
+            </Modal.Body>
+
+
+          </Modal.Dialog>
+        </div>
+      </Modal>
+
 
     </>
   );
