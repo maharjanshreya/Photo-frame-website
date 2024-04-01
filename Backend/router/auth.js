@@ -20,10 +20,20 @@ const {paymentController,handlePaymentSuccess} = require('../controllers/payment
 const { reportController,getReportController,replyToReportController,getReplyController} = require('../controllers/reportController.js');
 const {getAllOrderController,getSingleOrderController,updateOrderController} = require('../controllers/orderController.js');
 const {uploadController,getImageByUserId} = require('../controllers/uploadController.js');
-const {createReviewController,getReviewController,getAllReviewController} = require('../controllers/reviewController.js');
+const {createReviewController,getReviewController,getAllReviewController,getHighestRatedProduct} = require('../controllers/reviewController.js');
+const { userController } = require('../controllers/userController.js');
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
   });
+
+  const isAdmin = (req, res, next) => {
+    // Assuming you have a 'role' field in your User model
+    if (req.rootUser.role === 'admin') {
+        next(); // Allow access to the next middleware
+    } else {
+        res.status(403).send("Forbidden: User is not an administrator");
+    }
+}
 router.post('/register', async(req, res)=>{
     const { firstname, lastname,username,email,password,cpassword,contact,role} = req.body;
     const userRole = role || "consumer";
@@ -244,6 +254,9 @@ router.get('/getImage/:userId', getImageByUserId);
 router.post('/give-review', createReviewController);
 router.get('/get-review/:productId', getReviewController);
 router.get('/get-all-review', getAllReviewController);
+router.get('/getUser',authenticate,isAdmin, userController);
+router.get('/highest-rate-product', getHighestRatedProduct);
+
 // Update a specific category partially using PATCH
 router.put('/category/:id', async (req, res) => {
     if(!req.body) {

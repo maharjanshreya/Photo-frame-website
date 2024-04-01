@@ -37,8 +37,8 @@ import Homepage from './Homepage/homepage';
 
 function App() {
   const [hasToken, setHasToken]= useState(false);
-
-  const checkUserRole = useCallback(() => {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
     const token = localStorage.getItem('tokens');
     if (token) {
       const parsedData = JSON.parse(token);
@@ -47,11 +47,12 @@ function App() {
         setHasToken(true);
       }
     }
+    setLoading(false);
   }, []);
-
-  useEffect(() => {
-    checkUserRole();
-  }, [checkUserRole]);
+  if (loading) {
+    // Render loading indicator or skeleton component
+    return <div>Loading...</div>;
+  }
 
   return (
     <Router>
