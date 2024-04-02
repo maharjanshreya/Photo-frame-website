@@ -22,6 +22,7 @@ const {getAllOrderController,getSingleOrderController,updateOrderController} = r
 const {uploadController,getImageByUserId} = require('../controllers/uploadController.js');
 const {createReviewController,getReviewController,getAllReviewController,getHighestRatedProduct} = require('../controllers/reviewController.js');
 const { userController, deleteUserController, updateUserController } = require('../controllers/userController.js');
+const { forgotController, resetController, postResetController } = require('../controllers/resetController.js');
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
   });
@@ -231,7 +232,9 @@ router.delete('/deleteproduct/:id',authenticate, deleteProductController);
 router.put('/product-update/:pid',formidable(), updateProductController);
 router.put('/user-update/:userId',authenticate,isAdmin, updateUserController);
 
-
+router.post('/forgot-password', forgotController);
+router.get('/reset-password/:id/:token', resetController);
+router.post('/reset-password/:id/:token', postResetController);
 router.get('/search/:keyword', searchController);
 
 router.post('/add-to-cart',authenticate, cartController);

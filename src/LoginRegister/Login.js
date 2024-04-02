@@ -167,6 +167,7 @@ function Login(){
                 <input type="submit" value="Login" onClick={loginUser}/>
                 </form>
                 <p>Don't have an account?<Link to='/register' > <u className='register-color'>Register Now </u></Link></p>
+                <p>Forgot Password?<Link to='/reset' > <u className='register-color'>Forgot Password </u></Link></p>
                 <Link to='/'><button>Cancel</button></Link>
                 
             </div>

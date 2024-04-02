@@ -6,6 +6,7 @@ const app = express();
 const cors = require('cors');
 const stripe = require("stripe")("sk_test_51OyOhcA4uLHwNxGYSXTrDJkBBiGlWFsUQljwGqVJNSryXlNvn2AJDiHbCJT7mwdyqRDlIwMM0wpWm4KZbokMx7ap00aY9jWGyQ");
 const cookieParser = require("cookie-parser");
+
 dotenv.config({path:'./config.env'});
 const PORT = process.env.PORT;
 const productRoutes =require("./routes/productRoutes.js");
@@ -20,7 +21,7 @@ app.use(bodyParser.urlencoded({
   }));
   
 app.use(require('./router/auth'));
-
+app.set("view engine", "ejs");
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {

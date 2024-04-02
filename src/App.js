@@ -32,6 +32,7 @@ import Cart from './ProductView/cart';
 import Notification from './ProductView/notification';
 import { useAuth } from './context/token';
 import Success from './ProductView/success';
+import Reset from './LoginRegister/Reset';
 // Import Homepage
 import Homepage from './Homepage/homepage';
 
@@ -64,6 +65,7 @@ function App() {
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/products" element={<Products />} />
         <Route path="/account" element={<Account />} />
+        <Route path="/reset" element={<Reset />} />
         <Route path="/search" element={<Search />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/adminLogin" element={<AdminLogin />} />
