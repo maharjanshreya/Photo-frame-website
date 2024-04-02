@@ -14,6 +14,7 @@ import PostProduct from './postProduct';
 import GetUserDetails from './getUserDetails';
 import Alert from '../Images/alert.png';
 import { ModalBody } from 'react-bootstrap';
+import PostUsers from './postUsers';
 function Dashboard() {
   const [selectedOption, setSelectedOption] = useState('Create Category');
   const [show, setShow] = useState(false); // for edit category
@@ -345,8 +346,7 @@ function Dashboard() {
                   (
                     <div>
                       <h4 className='header-text' style={{ color: '#444141' }}>Manage Users</h4>
-                      <GetUserDetails refreshProductList={productFunc} />
-
+                      <PostUsers refreshUserList={userFunc} />
                     </div>
                   )}
 
