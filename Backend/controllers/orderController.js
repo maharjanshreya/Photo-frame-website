@@ -12,6 +12,7 @@ const getAllOrderController = async (req, res) => {
 };
 const getSingleOrderController = async (req, res) => {
     const buyerId = req.params.buyerId;
+    console.log(buyerId);
     try {
         const orders = await Order.find({ 'buyer': buyerId });
         res.status(200).json(orders);

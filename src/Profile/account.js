@@ -10,14 +10,17 @@ import { TbLogout2 } from "react-icons/tb";
 import { useUser } from '../context/user';
 import Modal from 'react-bootstrap/Modal';
 import Warning from '../Images/warning.png';
+import OrderPage from '../Profile/myOrders';
+import Footer from '../Homepage/footer';
+import { MdOutlineSupervisorAccount } from "react-icons/md";
+import Report from '../Homepage/report';
 function Account(){
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const [userData, setUserData] = useState({});
-  const { userId, setUserId } = useUser();
+  const userId = localStorage.getItem('userId');
   const handleClose = () => setShow(false);
 
-  console.log("account user id",userId);
   const callMyAccount = async () => {
     try {
        const res = await fetch('/account', {
@@ -36,8 +39,6 @@ function Account(){
       
       const data = await res.json();
       setUserData(data);
-      setUserId(data._id);
-      console.log("user issss",userId);
       //console.log(data);
       
     } catch (err) {
@@ -45,12 +46,7 @@ function Account(){
       navigate('/login', { replace: true });
     }
       };
-      const [updates, setUpdates] = useState({
-        firstname: userData.firstname || '',
-        lastname: userData.lastname || '',
-        email: userData.email || '',
-        contact: userData.contact || '',
-    });
+      
     useEffect(()=>{
         callMyAccount();
 
@@ -80,25 +76,45 @@ function Account(){
         console.error('Error during logout:', error);
       }
     };
+    const [updates, setUpdates] = useState({
+        firstname: userData.firstname ||  '',
+        lastname: userData.lastname || '',
+        email: userData.email || '',
+        contact: userData.contact || '',
+    });
     let name, value;
     const handleInputChange = (e) => {
-      name = e.target.name;
-      value = e.target.value;
-      setUpdates({
-          ...updates,
-          [name]: value,
-      });
-  };
-  const handleFormSubmit = async (event) => {
+        name = e.target.name;
+        value = e.target.value;
+        setUpdates({
+            ...updates,
+            [name]: value,
+        });
+    };
+    const handleFormSubmit = async (event) => {
     event.preventDefault();
+    let updatedUpdates = { ...updates };
 
+    // Check if any field is left empty and set default values
+    if (!updatedUpdates.firstname) {
+      updatedUpdates.firstname = userData.firstname || '';
+    }
+    if (!updatedUpdates.lastname) {
+      updatedUpdates.lastname = userData.lastname || '';
+    }
+    if (!updatedUpdates.email) {
+      updatedUpdates.email = userData.email || '';
+    }
+    if (!updatedUpdates.contact) {
+      updatedUpdates.contact = userData.contact || '';
+    }
     try {
         const response = await fetch(`/user-update/${encodeURIComponent(userId)}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(updates),
+            body: JSON.stringify(updatedUpdates),
         });
 
         if (!response.ok) {
@@ -106,7 +122,6 @@ function Account(){
         }
 
         const updatedUser = await response.json();
-        console.log('User updated:', updatedUser);
         // Call refreshCategoryList to fetch the updated category list
         callMyAccount();
         
@@ -125,7 +140,14 @@ function Account(){
               <Accordion.Item eventKey="0">
                 <Accordion.Header>Your Profile</Accordion.Header>
                 <Accordion.Body>
-                  <p>General Info</p>
+                <div className="row">
+                                                <div className="col-auto">
+                                                    <MdOutlineSupervisorAccount color='green' />
+                                                </div>
+                                                <div className="col">
+                                                    <p>General Info</p>
+                                                    </div>
+                                            </div>
                   <form onSubmit={handleFormSubmit}>
                   <div className="row">
                       <div className="col-md-6 mb-3">
@@ -164,21 +186,17 @@ function Account(){
               <Accordion.Item eventKey="1">
                 <Accordion.Header>Your orders</Accordion.Header>
                 <Accordion.Body>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                  nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-                  anim id est laborum.
+                  <OrderPage/>
+                 
                 </Accordion.Body>
               </Accordion.Item>
               <Accordion.Item eventKey="2">
                 <Accordion.Header>Report a problem</Accordion.Header>
                 <Accordion.Body>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                  nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-                  anim id est laborum.
+                  <div id="report">
+                    <Report />
+                  </div>
+                  
                 </Accordion.Body>
               </Accordion.Item>
               <Accordion.Item eventKey="3">
@@ -231,91 +249,20 @@ function Account(){
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>
-            
-          </div>
-          <h2 className="text-center" style={{ color: '#ECB800', fontFamily: 'Poppins', fontWeight: 'bolder' }}>
-            Welcome to your profile
-          </h2>
-          <br />
-          {userData && (
-            <h3 className="text-center" style={{ color: '#ECB800', fontFamily: 'Poppins', fontWeight: 'bolder' }}>
-              {userData.firstname}!
-            </h3>
-          )}
-          <div>
-            <p
-              style={{
-                color: '#8B8787',
-                marginLeft: '80px',
-                fontFamily: 'Gelasio, serif',
-                fontSize: '20px',
-              }}
-            >
-              Your information
-            </p>
-            <div className="d-flex user-information">
-              <div className="profilepic">
-                <img src={User} alt="profilepic" width="150px" height="150px" />
-              </div>
-              <div className="profilepic">
-                {userData && (
-                  <p
-                    className=""
-                    style={{
-                      color: '#097D96',
-                      fontFamily: 'Poppins',
-                      fontWeight: 'lighter',
-                      fontSize: '32px',
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    {userData.firstname} {userData.lastname}
-                  </p>
-                )}
-                <br />
-                <span className="profile-bold-text">Email: </span> {userData && (
-                  <span className="text-center profile-text">{userData.email} </span>
-                )}{' '}
-                <Button variant="primary" style={{ backgroundColor: '#DB6611', borderColor: '#DB6611' }}>
-                  <RiEditLine /> Edit
-                </Button>
-                <br />
-                <span className="profile-bold-text"> Contact: </span> {userData && (
-                  <span className="text-center profile-text">{userData.contact} </span>
-                )}
-                <br />
-                <Button
+            <Button
                   variant="primary"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     setShow(true);
                   }}
-                  style={{ marginTop: '20px' }}
+                  style={{ marginTop: '20px' ,marginBottom:'30px'}}
                 >
                   <TbLogout2 /> Log out
                 </Button>
-              </div>
-            </div>
-          </div>{' '}
-          {/*your information ended */}
-          <div>
-            <div>
-              <p
-                style={{
-                  color: '#8B8787',
-                  marginLeft: '80px',
-                  fontFamily: 'Gelasio, serif',
-                  fontSize: '20px',
-                  marginTop: '40px',
-                }}
-              >
-                Your Purchase
-              </p>
-            </div>
-            <div className="purchase-information"></div>
           </div>
+         
+          <Footer />
         </div>
         <Modal show={show} onHide={handleClose} centered>
           <div className="modal show" style={{ display: 'block', position: 'initial', padding: 0 }}>
@@ -346,7 +293,7 @@ function Account(){
                       e.stopPropagation();
                       handleLogout();
                       handleClose();
-                    }}
+                    }} 
                   >
                     Log out
                   </Button>

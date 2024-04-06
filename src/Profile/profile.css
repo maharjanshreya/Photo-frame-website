@@ -15,7 +15,9 @@
 
     color:#625f5f;
 }
-
+.order-item p{
+    font-family: 'fenix';
+}
 .profile-text{
     color: #097D96 ;
     font-family: Poppins ;

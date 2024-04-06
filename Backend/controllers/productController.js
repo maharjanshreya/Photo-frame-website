@@ -109,6 +109,7 @@ const getSingleProductController = async (req, res) => {
 const getPhotoController = async (req, res) => {
     
     try {
+        console.log("PID",req.params.pid);
        const products = await Product.findById(req.params.pid).select("image");
        if(products.image.data){
         res.set('Content-type', products.image.contentType);

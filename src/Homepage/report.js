@@ -2,7 +2,7 @@ import Navbar from '../Navbar/navbar';
 import { useUser } from '../context/user';
 import {React,useState,useEffect} from 'react';
 import { toast } from 'react-hot-toast';
-
+import { TbMessageReport } from "react-icons/tb";
 import { Toaster } from 'react-hot-toast';
 function Report(){
   const userId = localStorage.getItem('userId');
@@ -51,6 +51,11 @@ function Report(){
           if (response.ok) {
             toast.success('Report submitted successfully');
             console.log('Report submitted successfully');
+            setFormData({
+              title: '',
+              description: '',
+              userId: userId || '',
+            });
             // Handle success (e.g., show a success message to the user)
           } else {
             toast.error('Failed to submit report');
@@ -65,20 +70,19 @@ function Report(){
       };
     return(
         <>
-        <Navbar/>
-        <div className='mt-5'>
-            <h1 className='text-center'>Report a bug or request for new features</h1>
-            <div className="row justify-content-center">
+        
+        <div className=''>
+            <p><TbMessageReport color='#e38502'/> Report a bug or request for new features</p><hr/>
+            <div className="row ">
                 <form className="col-md-6" >
                     <div className="mb-3">
-                    <p>User ID: {userId}</p>
                         <label htmlFor="title" className="form-label">Title</label>
-                        <input type="text" name="title" className="form-control" id="title" value={formData.title} onChange={handleChange} />
+                        <input type="text" name="title" className="form-control" id="title" value={formData.title} onChange={handleChange} placeholder='Enter the title for the report'/>
                     </div>
                     
                     <div className="mb-3">
                         <label htmlFor="exampleFormControlTextarea1" className="form-label">Description</label>
-                        <textarea name="description" className="form-control" id="exampleFormControlTextarea1" rows="3" value={formData.description} onChange={handleChange}></textarea>
+                        <textarea name="description" className="form-control" placeholder='Describe your problem' id="exampleFormControlTextarea1" rows="3" value={formData.description} onChange={handleChange}></textarea>
                     </div>
                     <input type='submit' onClick={handleSubmit}/>
                     <Toaster position="top-center" reverseOrder={true}/>

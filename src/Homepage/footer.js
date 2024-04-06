@@ -81,7 +81,7 @@ function Footer() {
                 </a>
               </p>
               <p>
-              <Link to="/report">report a problem</Link>
+              <Link to="/account#report">report a problem</Link>
               </p>
             </MDBCol>
 

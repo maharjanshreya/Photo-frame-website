@@ -169,7 +169,7 @@ router.post('/signin',async(req,res)=> {
 
 
 router.get('/account', authenticate, (req,res)=>{
-    console.log("Hello my account");
+    
     res.send(req.rootUser);
     
 });
