@@ -21,7 +21,6 @@ import Upload from './Homepage/upload';
 import Footer from './Homepage/footer';
 import AdminLogin from './Admin/adminLogin';
 import ProductView from './ProductView/product';
-import Checkout from './ProductView/checkout';
 import AdminDashboard from './Admin/adminDashboard';
 import AdminOrder from './Admin/adminOrder';
 import AdminReview from './Admin/adminReview';
@@ -39,21 +38,33 @@ import Homepage from './Homepage/homepage';
 function App() {
   const [hasToken, setHasToken]= useState(false);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const token = localStorage.getItem('tokens');
-    if (token) {
-      const parsedData = JSON.parse(token);
-      const userRole = parsedData.userData.role;
-      if (userRole === 'admin') {
-        setHasToken(true);
-      }
-    }
-    setLoading(false);
-  }, []);
-  if (loading) {
-    // Render loading indicator or skeleton component
-    return <div>Loading...</div>;
-  }
+ 
+  
+  const role = localStorage.getItem('role');
+  const cuurent_user_type= role;
+  // const checkUserRole = useCallback(() => {
+  //   const role = localStorage.getItem('role');
+  //   if (token) {
+  //     const parsedData = JSON.parse(token);
+  //     const userRole = parsedData[0]?.role;
+  //     if (userRole === 'admin') {
+  //       setHasToken(true);
+  //     } else {
+  //       setHasToken(false); // Reset hasToken if the user's role is not admin
+  //     }
+  //   } else {
+  //     setHasToken(false); // Reset hasToken if there is no token
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   checkUserRole();
+  //   setLoading(false);
+  // }, [checkUserRole]);
+  // if (loading) {
+  //   // Render loading indicator or skeleton component
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <Router>
@@ -69,7 +80,7 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/adminLogin" element={<AdminLogin />} />
-        <Route
+        {/* <Route
           path="/adminDashboard"
           element={
             hasToken ? (
@@ -78,7 +89,10 @@ function App() {
               <Navigate to="/login" />
             )
           }
-        />
+        /> */}
+         <Route element={<ProtectedRoute />}>
+                <Route element={<AdminDashboard/>} path="/adminDashboard" exact/>
+            </Route>
         <Route path="/productView/:productId" element={<ProductView />} />
         <Route path="/adminOrder" element={<AdminOrder />} />
         <Route path="/notify" element={<AdminNotifyUpdates />} />
@@ -92,7 +106,6 @@ function App() {
         <Route path="/notification" element={<Notification />} />
         <Route path="/imagepage" element={<ImagePage />} />
         <Route path="/upload" element={<Upload />} />
-        <Route path="/checkout" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
       </Routes>
     </Router>

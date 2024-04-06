@@ -7,6 +7,15 @@
 .profilepic{
     padding: 40px;
 }
+.privacy h4 p{
+
+    color: rgb(125, 122, 122);
+}
+.privacy h4{
+
+    color:#625f5f;
+}
+
 .profile-text{
     color: #097D96 ;
     font-family: Poppins ;

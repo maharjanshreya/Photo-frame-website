@@ -1,6 +1,8 @@
 import Navbar from '../Navbar/navbar';
 import { React, useEffect, useState } from 'react';
 import './product.css';
+
+import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { loadStripe } from '@stripe/stripe-js';
 import {MDBCard,MDBCardBody,MDBCardImage,MDBCol,MDBContainer,MDBIcon,MDBRow,MDBTypography,} from "mdb-react-ui-kit";
@@ -8,15 +10,18 @@ import { useNavigate } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
 import { FaAngleDown } from "react-icons/fa6";
 import { useCart } from '../context/cart';
-
+import Map from '../ProductView/map';
 let total = 0;
 function Cart() {
+ 
+  const [error, setError] = useState('');
   const { cart, setCart } = useCart();
   const navigate = useNavigate();
   const [cartData, setCartData] = useState({ cart: { items: [] } });
   const [imageURL, setImageURL] = useState(null);
   const userId = localStorage.getItem('userId');
   const [subtotal, setSubtotal] = useState(0);
+  
 
   const getCart = async () => {
     try {
@@ -116,10 +121,11 @@ function Cart() {
   };
  
   //payment integration
-  const handleCheckout = async () => {
-    console.log("Checkout clicked");
-
+  const handleCheckout = async () => { 
+    
     try {
+      
+      
       // Load Stripe.js
       const stripe = await loadStripe('pk_test_51OyOhcA4uLHwNxGYlwqMkbqvF6QOd73m6MqORxnhF54D3fXLO9Fz2D3ZrGd0Cc8dyQtvkZDKC6wh53uxEC0ZYiOb00xGrm5KBV');
 
@@ -128,6 +134,7 @@ function Cart() {
       // Prepare request body
       const body = {
         products: cartData.cart.items,
+        
       };
 
       // Prepare request headers
@@ -291,10 +298,11 @@ function Cart() {
                           </div>
                           <div className="d-flex justify-content-between">
                             <p className="mb-2">Shipping address.</p>
-
-                            <p className="mb-2">Kathmandu</p>
+                            {/* <Map /> */}
+                            
                           </div>
                           <Button style={{ backgroundColor: '#2596be' }} onClick={handleCheckout}>Checkout</Button>
+                          {error && <div style={{ color: 'red', fontWeight: '500' }}>{error}</div>}
                         </MDBCardBody>
                       </MDBCard>
                     </MDBCol>
@@ -305,6 +313,8 @@ function Cart() {
           </MDBRow>
         </MDBContainer>
       </section>
+
+     
     </>
   );
 }

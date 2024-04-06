@@ -3,6 +3,16 @@
 <html>
 <head>
     <title>My Form</title>
+    <script>
+        var status = '<%- JSON.stringify(status) %>';
+        if(JSON.parse(status).status=="verified"){
+            if(confirm("Do you want to login now?")){
+            window.location.href = "/login";
+        }
+           
+        }
+        
+    </script>
 </head>
 <body>
    <h1><%= email%></h1>

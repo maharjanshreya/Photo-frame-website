@@ -63,7 +63,7 @@ const resetController = async (req, res) => {
         const secret  = process.env.SECRET + oldUser.password;
         try {
             const verify = jwt.verify(token, secret);
-            res.render("index",{email:verify.email});
+            res.render("index",{email:verify.email,status:'Not Verified'});
             
         } catch (error) {
             res.send("Not verified");
@@ -89,6 +89,7 @@ const postResetController = async (req, res) => {
                 {_id:id} ,{ $set:  {
                  password : encryptedPassword },});
             res.json({status:"Password updated"});
+            res.render("index",{email:verify.email,status:'verified'})
             
             
         } catch (error) {

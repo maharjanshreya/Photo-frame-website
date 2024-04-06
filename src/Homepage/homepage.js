@@ -26,8 +26,8 @@ import { useUser } from '../context/user';
 import ImagePage from './image';
 import { useWishlist } from '../context/wishlist';
 function Homepage() {
-  const { userId, setUserId } = useUser();
-  const { wishlists,setwishlists} = useWishlist();
+  const userId = localStorage.getItem('userId');
+  //const { wishlists,setwishlists} = useWishlist();
   const [userPhoto, setUserPhoto] = useState(null);
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState(0);
@@ -131,7 +131,10 @@ function Homepage() {
   const changeBackgroundColor = () => {
     setBackgroundColor((prevColor) => (prevColor === 'white' ? '#FFEDAF' : 'white'));
   };
-  const [values, setValues] = useSearch();
+  const searchResult = useSearch();
+   // Check if searchResult is defined and values is not null before accessing its properties
+   const values = searchResult && searchResult.values !== null ? searchResult.values : { keyword: '' };
+   const setValues = searchResult ? searchResult.setValues : null;
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -171,7 +174,7 @@ function Homepage() {
             window.alert("Message not sent");
         } else {
             window.alert("added to favoruites");
-            setwishlists(prevCart => prevCart + 1);
+            //setwishlists(prevCart => prevCart + 1);
         }
     } catch (error) {
         console.error("Error sending contact form:", error);
@@ -210,7 +213,7 @@ const handleButtonClick = () => {
                <form onSubmit={handleSubmit}>
               <input className="round-button-search" type="text" placeholder="Search" value={values.keyword} onChange={(e) => setValues({ ...values, keyword: e.target.value })}
                 aria-label="Search" />
-                <IoSearchOutline class="fas fa-search" aria-hidden="true" type='submit'/>
+                <IoSearchOutline className="fas fa-search" aria-hidden="true" type='submit'/>
             </form>
             </div>
            
@@ -223,7 +226,7 @@ const handleButtonClick = () => {
 
       </div>
       <div className='contain'>
-        <p className='text-center' style={{ color: '#287D90', fontFamily: 'Poppins', fontWeight: 'bolder' }}> Start framing your journey with us today</p>
+        <p className='text-center' style={{ color: '#287D90', fontFamily: 'Poppins', fontWeight: 'bolder' }}> learn react framing your journey with us today</p>
         <Carousel>
           <Carousel.Item>
             <img src={Image} />

@@ -35,6 +35,14 @@ router.get('/', (req, res) => {
         res.status(403).send("Forbidden: User is not an administrator");
     }
 }
+const isConsumer = (req, res, next) => {
+    // Assuming you have a 'role' field in your User model
+    if (req.rootUser.role === 'consumer') {
+        next(); // Allow access to the next middleware
+    } else {
+        res.status(403).send("unauthorized");
+    }
+}
 router.post('/register', async(req, res)=>{
     const { firstname, lastname,username,email,password,cpassword,contact,role} = req.body;
     const userRole = role || "consumer";
@@ -136,11 +144,12 @@ router.post('/signin',async(req,res)=> {
             
             });
             if(!isMatch){
-                res.status(400).json({error: "invalid credentials "});
+                res.status(400).json({ error: "invalid_credentials", message: "Invalid credentials" });
     
             }else{
                 res.json({message: "user sign in successfully",userData: {
                     // Include any additional properties you want to send
+                    userId: userLogin._id,
                     email: userLogin.email,
                     role: userLogin.role,
                     // Add other properties as needed
@@ -148,13 +157,13 @@ router.post('/signin',async(req,res)=> {
             }
         }
         else{
-            res.status(400).json({message: "No user id"});
+            res.status(400).json({ error: "no_user_found", message: "No user found with provided email" });
   
         }
         
     }catch(err){
         console.log(err);
-
+        res.status(500).json({ error: "server_error", message: "Please try again  later." });
     }
 });
 
@@ -230,7 +239,7 @@ router.get('/products/:id', getSingleProductController);
 router.get('/product-image/:pid', getPhotoController);
 router.delete('/deleteproduct/:id',authenticate, deleteProductController);
 router.put('/product-update/:pid',formidable(), updateProductController);
-router.put('/user-update/:userId',authenticate,isAdmin, updateUserController);
+router.put('/user-update/:userId',authenticate, updateUserController);
 
 router.post('/forgot-password', forgotController);
 router.get('/reset-password/:id/:token', resetController);
@@ -242,7 +251,7 @@ router.get('/add-to-cart/:id',authenticate, getCartController);
 router.delete('/remove-item/:userId/:productId',authenticate, removeCartController);
 
 router.post('/add-to-wishlist', authenticate, addToWishlistController);
-router.get('/add-to-wishlist/:userId', authenticate, getWishlistController);
+router.get('/add-to-wishlist/:userId', authenticate,isConsumer, getWishlistController);
 
 router.post('/report', authenticate,reportController);
 router.post('/report/reply',authenticate, replyToReportController);

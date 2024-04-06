@@ -7,7 +7,6 @@ import './homepage.css';
 import { useUser } from '../context/user';
 import { Link } from "react-router-dom";
 function Footer() {
-  const { userId, setUserId } = useUser();
   
   return (
     <MDBFooter bgColor='light' className='text-center text-lg-start text-muted'>

@@ -17,9 +17,10 @@ import { useCart } from '../context/cart';
 import { useWishlist } from '../context/wishlist';
 function Navbar(){
     const [show, setShow] = useState(false);
-    const { cart } = useCart();
+    //const { cart } = useCart();
    // const { wishlists } = useWishlist();
     //console.log("Navbar: ",cart);
+    const [cart, setCart] = useState([]);
     const [wishlist, setWishlist] = useState([]);
   const handleClose = () => setShow(false);
     const navigate = useNavigate();
@@ -81,9 +82,16 @@ function Navbar(){
           credentials: 'include',
           });
           if (!res.ok) {
+            if (res.status === 404) {
+              // Handle case when wishlist is not found
+              setWishlist(0);
+              console.log('No wishlist found');
+              return;
+            }
             const error = new Error(res.statusText);
             throw error;
           }
+        
             
           const datas = await res.json();
           setWishlist(datas.wishlist.products.length);

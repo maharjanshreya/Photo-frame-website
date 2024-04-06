@@ -1,19 +1,15 @@
 // ProtectedRoute.js
 import React from 'react';
-import { Route, Navigate } from 'react-router-dom';
+import {Outlet, Route,Routes, Navigate } from 'react-router-dom';
 
-const ProtectedRoute = ({ element, adminOnly, ...rest }) => {
-  const token = localStorage.getItem('tokens');
-  const parsedData = token ? JSON.parse(token) : null;
-  const userRole = parsedData?.userData?.role;
+const ProtectedRoute = ({ element: Component, ...rest }) => {
+  const userRole = localStorage.getItem('role'); // Adjust this to your actual implementation
+  const isAdmin = userRole === 'admin';
 
-  if (adminOnly && userRole !== 'admin') {
-    // Redirect to login if not an admin
-    return <Navigate to="/login" />;
-  }
-
-  // Render the original element for authorized users
-  return <Route {...rest} element={element} />;
+  return(
+    isAdmin? <Outlet/> : <Navigate to="/login"/>
+)
 };
+
 
 export default ProtectedRoute;

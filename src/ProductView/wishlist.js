@@ -88,10 +88,17 @@ function Wishlist() {
         credentials: 'include',
       });
 
-      if (!res.ok) {
-        const error = new Error(res.statusText);
-        throw error;
-      }
+     
+  if (!res.ok) {
+    if (res.status === 404) {
+      // Handle case when wishlist is not found
+      setWishlists(0);
+      console.log('No wishlist found');
+      return;
+    }
+    const error = new Error(res.statusText);
+    throw error;
+  }
 
       const data = await res.json();
       setProductData(data);
@@ -124,7 +131,11 @@ function Wishlist() {
       <Navbar />
       <div className='wishlist'>
         <h1>Favorites</h1>
-        <p className="mb-0">You have {wishlist.products} items in your cart</p>
+        {wishlist ? (
+        <p className="mb-0">You have {wishlist.products ? wishlist.products.length : 0} items in your wishlist</p>
+    ) : (
+        <p className="mb-0">You don't have any items in your wishlist</p>
+    )}
         <div className="row text-center" style={{ marginTop: '30px' }}>
           <div className="image-container" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
             {productData && productData.wishlist && productData.wishlist.products.map((product, index) => (

@@ -294,7 +294,7 @@ function Dashboard() {
                 <h4 className="header-text" style={{ color: '#426751' }}>Admin Panel</h4>
                 <Stack gap={0} className='stack'>
                   <div
-                    className={`p-2 ${selectedOption === 'Create Category' ? 'active' : ''}`}
+                    className={`p-2 ${selectedOption === 'Create Category' ? 'active-admin' : ''}`}
                     onClick={() => {
                       setSelectedOption('Create Category');
                       setActiveOption('Create Category');
@@ -303,7 +303,7 @@ function Dashboard() {
                     Create Category
                   </div>
                   <div
-                    className={`p-2 ${selectedOption === 'Create Product' ? 'active' : ''}`}
+                    className={`p-2 ${selectedOption === 'Create Product' ? 'active-admin' : ''}`}
                     onClick={() => {
                       setSelectedOption('Create Product');
                       setActiveOption('Create Product');
@@ -312,7 +312,7 @@ function Dashboard() {
                     Create Product
                   </div>
                   <div
-                    className={`p-2 ${selectedOption === 'Create Users' ? 'active' : ''}`}
+                    className={`p-2 ${selectedOption === 'Create Users' ? 'active-admin' : ''}`}
                     onClick={() => {
                       setSelectedOption('Create Users');
                       setActiveOption('Create Users');

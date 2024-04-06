@@ -51,7 +51,46 @@
   border-radius: 4px;
   box-sizing: border-box;
 }
+.submit{
+  background-color: #225838;
+  color: white;
+  border-color: #225838;
+}
+.submit:hover{
+  background-color: #1d452d;
+  border-color: #1d452d;
+  color: white;
+ 
+}
+/* Remove or customize the focus state for input fields */
+input[type="email"]:focus, input[type="password"]:focus {
+  outline: none; /* Remove the default focus outline */
+  box-shadow: none; /* Remove any box shadow */
+  /* Add any additional styling as needed */
+}
+#formControlLg{
+  border-color: #225838;
+}
+.input-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.btn:focus:not(:focus-visible),
+.btn:active {
+    outline: none !important;
+    box-shadow: none !important; /* Optional: Remove any box-shadow */
+}
+.submit:focus {
+  outline: none;
+  box-shadow: none;
+}
 
+@media (max-width: 768px) {
+  .col-md-8 {
+    max-width: 100%;
+  }
+}
 
 input[type=submit] {
   width: 50%;
@@ -82,3 +121,8 @@ input[type=submit]:hover {
 .resend-button:hover{
   color: #5797ba;
 }
+@media (min-width: 1025px) {
+  .h-custom-2 {
+    height: 100%;
+    }
+  }
