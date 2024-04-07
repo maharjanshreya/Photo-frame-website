@@ -5,10 +5,9 @@ import axios from 'axios';
 import { toast,Toaster } from 'react-hot-toast';
 import Button from 'react-bootstrap/Button';
 import { useCart } from '../context/cart';
-import { useWishlist } from '../context/wishlist';
 import { useNavigate } from 'react-router-dom';
 function Wishlist() {
-  const { wishlists,setWishlists } = useWishlist();
+  const [wishlists,setWishlists] = useState([]);
   const userId = localStorage.getItem('userId');
   const [imageURL, setImageURL] = useState([]);
   const [wishlist, setWishlist] = useState([]);
@@ -103,6 +102,7 @@ function Wishlist() {
       const data = await res.json();
       setProductData(data);
       setWishlists(data.wishlist.products.length);
+      console.log("length",wishlists);
       const productIds = data.wishlist.products.map((product) => product._id);
 
       // Clear the loadedImages state before fetching images for the new set of products
@@ -131,8 +131,9 @@ function Wishlist() {
       <Navbar />
       <div className='wishlist'>
         <h1>Favorites</h1>
-        {wishlist ? (
-        <p className="mb-0">You have {wishlist.products ? wishlist.products.length : 0} items in your wishlist</p>
+        
+        {wishlists!==0 ? (
+        <p className="mb-0">You have {wishlists} items in your wishlist</p>
     ) : (
         <p className="mb-0">You don't have any items in your wishlist</p>
     )}

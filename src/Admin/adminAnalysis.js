@@ -112,7 +112,7 @@ function Anaylsis(){
     
           // Set the base64 string as the image source
           setImageURL(`data:image/png;base64,${base64Image}`);
-    console.log('Image URL:', imageURL);
+   
     
         } catch (err) {
           console.log('Error in fetching image data', err);

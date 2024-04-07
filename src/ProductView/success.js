@@ -35,6 +35,8 @@ function Success(){
                 console.log('Payment success:', data);
                 setPayment(data.orderDetails);
                 // Handle successful response from backend
+                const newUrl = window.location.href.split('?')[0];
+                window.history.replaceState({}, document.title, newUrl);
             } else {
                 console.error('Error handling payment success:', response.statusText);
                 // Handle error response from backend

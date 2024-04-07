@@ -21,7 +21,8 @@ function Cart() {
   const [imageURL, setImageURL] = useState(null);
   const userId = localStorage.getItem('userId');
   const [subtotal, setSubtotal] = useState(0);
-  
+  const [total, setTotal] = useState(0);
+  const [shipping, setShipping] = useState(0);
 
   const getCart = async () => {
     try {
@@ -45,6 +46,7 @@ function Cart() {
       setCartData(datas);
      // console.log("cart data quantity ", datas);
       setCart(datas.cart.items.length);
+      console.log(datas.cart);
       //console.log("cart data for image",datas.cart.items[0].productId._id);
       //console.log("cardData",cartData);
       //console.log("Items length in cart: ",datas.cart.items.length);
@@ -175,8 +177,17 @@ function Cart() {
       const subtotalValue = cartData.cart.items.reduce((acc, item) => acc + (item.quantity * item.productId.price), 0);
       setSubtotal(subtotalValue);
     }
-    // Calculate total
-    total = 20 + subtotal;
+    // Calculate shipping cost
+    let shippingCost = 0;
+    cartData.cart.items.forEach(item => {
+        // Add shipping cost of each item to the total
+        shippingCost += item.productId.shipping;
+    });
+    
+    // Calculate total (subtotal + shipping cost)
+    const totalValue = subtotal + shippingCost; // Adding 20 for additional costs
+    setTotal(totalValue);
+    setShipping(shippingCost);
   }, [userId, cartData]);
 
 
@@ -254,7 +265,6 @@ function Cart() {
 
                                           Rs. {item.quantity * item.productId.price}
 
-
                                         </MDBTypography>
                                       </div>
 
@@ -289,7 +299,7 @@ function Cart() {
 
                           <div className="d-flex justify-content-between">
                             <p className="mb-2">Shipping Cost.</p>
-                            <p className="mb-2">Rs. 75.00</p>
+                            <p className="mb-2">Rs. {shipping}</p>
                           </div>
 
                           <div className="d-flex justify-content-between">

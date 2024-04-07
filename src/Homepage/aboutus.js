@@ -58,7 +58,6 @@ function Aboutus(){
                 </div>
 
             </div>
-            <GetUserDetails />
             <Footer/>
         </div>
     );

@@ -1,12 +1,14 @@
-const Order = require('../model/orderModel'); 
-const postNotification = async (req, res) => {
+const Notification = require('../model/notificationModel'); 
+const getNotification = async (req, res) => {
+    const userId = req.params.userId;
     try {
         
-        const orders = await Order.find().populate('buyer');
-        res.status(200).json(orders);
+        const notification = await Notification.find({ userId });
+        res.json(notification);
     } catch (err) {
      
         console.error(err);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ message: 'Internal server error' });
     }
 };
+module.exports = {getNotification};

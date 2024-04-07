@@ -66,8 +66,6 @@ const getWishlistController = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Wishlist not found' });
         }
 
-        // Log the current state of the wishlist
-        console.log('Current Wishlist:', userWishlist);
 
         return res.status(200).json({ success: true, wishlist: userWishlist });
     } catch (error) {

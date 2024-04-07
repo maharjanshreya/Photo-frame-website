@@ -23,6 +23,7 @@ const {uploadController,getImageByUserId} = require('../controllers/uploadContro
 const {createReviewController,getReviewController,getAllReviewController,getHighestRatedProduct} = require('../controllers/reviewController.js');
 const { userController, deleteUserController, updateUserController } = require('../controllers/userController.js');
 const { forgotController, resetController, postResetController } = require('../controllers/resetController.js');
+const { getNotification } = require('../controllers/notificationController.js');
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
   });
@@ -93,7 +94,6 @@ router.get('/category', async (req, res) => {
         id: category._id,  
         name: category.name
       }));
-      console.log("Category Data:", categoryData);
         res.json({ categories: categoryData });
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -133,7 +133,7 @@ router.post('/signin',async(req,res)=> {
         let token;
         const {email,password} = req.body;
         const userLogin = await User.findOne({email:email});
-        console.log(userLogin);
+        
         
         if(userLogin){
             const isMatch = await bcrypt.compare(password, userLogin.password);
@@ -269,6 +269,7 @@ router.get('/get-review/:productId', getReviewController);
 router.get('/get-all-review', getAllReviewController);
 router.get('/getUser',authenticate,isAdmin, userController);
 router.get('/highest-rate-product', getHighestRatedProduct);
+router.get('/notification/:userId',authenticate, getNotification);
 router.delete('/delete-user/:userId',authenticate,isAdmin, deleteUserController);
 
 // Update a specific category partially using PATCH

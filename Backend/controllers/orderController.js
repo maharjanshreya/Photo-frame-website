@@ -1,4 +1,5 @@
 const Order = require('../model/orderModel'); 
+const Notification = require('../model/notificationModel');
 const getAllOrderController = async (req, res) => {
     try {
         
@@ -24,13 +25,29 @@ const getSingleOrderController = async (req, res) => {
 const updateOrderController =  async (req, res) => {
     const orderId = req.params.orderId;
     const { status } = req.body;
-
     try {
         // Find the order by ID and update its status
         const updatedOrder = await Order.findByIdAndUpdate(orderId, { status }, { new: true });
         if (!updatedOrder) {
             return res.status(404).json({ message: 'Order not found' });
         }
+        let message;
+        if (status === 'Delivered') {
+            message = 'Your parcel has been delivered.';
+        } else if (status === 'Shipped') {
+            message = 'Your parcel has been shipped.';
+        }
+        else if (status === 'Cancelled') {
+            message = 'Your parcel is cancelled.';
+        }
+        else{
+            message = 'Your parcel is in process.';
+        }
+        const notification = new Notification({
+            userId: updatedOrder.buyer,
+            message: message
+        });
+        await notification.save();
         // Return the updated order
         res.json(updatedOrder);
     } catch (error) {

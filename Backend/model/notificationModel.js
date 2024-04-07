@@ -1,8 +1,17 @@
 const mongoose = require('mongoose');
 const notificationSchema = new mongoose.Schema({
-    name: {
-        type: String, required: true 
-    }
+    userId: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+    },
+    message: {
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
 });
 
 //collection creation
