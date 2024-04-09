@@ -5,25 +5,44 @@
     <title>My Form</title>
     <script>
         var status = '<%- JSON.stringify(status) %>';
-        if(JSON.parse(status).status=="verified"){
-            if(confirm("Do you want to login now?")){
-            window.location.href = "/login";
+        if (JSON.parse(status).status == "verified") {
+            if (confirm("Do you want to login now?")) {
+                window.location.href = "/login";
+            }
         }
-           
+
+        function validateForm() {
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirm-password').value;
+            var errorDiv = document.getElementById('error-message');
+
+            if (password !== confirmPassword) {
+                errorDiv.innerHTML = "Password and Confirm Password do not match";
+                return false;
+            } else {
+                errorDiv.innerHTML = "";
+                return true;
+            }
         }
         
     </script>
 </head>
 <body>
-   <h1><%= email%></h1>
-    <form action="" method="POST">
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
+    <div class="container">
+        <h1>
+            <%= email%>
+        </h1>
+        <form action="" method="POST" onsubmit="return validateForm()">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br><br>
         
-        <label for="confirm-password">Confirm Password:</label>
-        <input type="password" id="confirm-password" name="confirm-password" required><br><br>
+            <label for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" name="confirm-password" required><br><br>
         
-        <input type="submit" value="Submit">
-    </form>
+            <input type="submit" value="Submit">
+            <div id="error-message" style="color: red;"></div>
+        </form>
+    </div>
+   
 </body>
 </html>

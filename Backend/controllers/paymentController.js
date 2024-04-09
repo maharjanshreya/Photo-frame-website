@@ -106,13 +106,14 @@ const handlePaymentSuccess = async (req, res) => {
     try {
         // Assuming you have the session ID and user ID from the request
         const sessionID = req.params.session_id;
+        console.log("Session id",sessionID);
         const userID = req.userID;
 
         // Retrieve the session from Stripe to get the order details
-        const session = await stripe.checkout.sessions.retrieve(sessionID);
-
+        const sessionData = await stripe.checkout.sessions.retrieve(sessionID);
+        
         // Create the order and get the specific order details
-        const orderDetails = await createOrder(session, userID);
+        const orderDetails = await createOrder(sessionData, userID);
         console.log(orderDetails);
         // Render the success page with the specific order details
         res.json({ orderDetails });
@@ -122,17 +123,17 @@ const handlePaymentSuccess = async (req, res) => {
     }
 };
 // Function to create an order
-const createOrder = async (session, userID) => {
+const createOrder = async (sessionData, userID) => {
     try {
          // Check if the order already exists for this session
-         const existingOrder = await Order.findOne({ session_id: session.id });
+         const existingOrder = await Order.findOne({ session_id: sessionData.id });
          if (existingOrder) {
-             console.log('Order already exists for session:', session.id);
+             console.log('Order already exists for session:', sessionData.id);
              return; // Do not create a new order
          }
-        const retrievedSession = await stripe.checkout.sessions.listLineItems(session.id);
-        console.log("Session id in create order: ",session.id);
-        const shipping = session.shipping_options;
+        const retrievedSession = await stripe.checkout.sessions.listLineItems(sessionData.id);
+        console.log("Session id in create order: ",sessionData.id);
+        const shipping = sessionData.shipping_options;
         console.log("Shipping details: ",shipping);
         console.log("Creating order");
          
@@ -143,17 +144,29 @@ const createOrder = async (session, userID) => {
             console.log('Invoice or line items not found in session');
         }
         // Extract product data from the session
-        const lineItems =retrievedSession.data;
+        const lineItems = retrievedSession.data;
         const products = lineItems.map(item => ({
            
             name:  item.description,  // Product name or description
             price: item.price.unit_amount / 100, // Convert from cents to your currency
             quantity: item.quantity
         }))
-        const amountTotal = session.amount_total / 100;
+        const amountTotal = sessionData.amount_total / 100;
+        const shippingDetails = sessionData.shipping_details;
         // Create a new order entry using the Order model
         const order = new Order({
             products: products,
+            shippingAddress: {
+                address: {
+                    city: shippingDetails.address.city,
+                    country: shippingDetails.address.country,
+                    line1: shippingDetails.address.line1,
+                    line2: shippingDetails.address.line2,
+                    postal_code: shippingDetails.address.postal_code,
+                    state: shippingDetails.address.state
+                },
+                name: shippingDetails.name
+            },
             payment: amountTotal,
             buyer: userID,
             status: 'Processing', // Default status
@@ -169,7 +182,6 @@ const createOrder = async (session, userID) => {
         throw error;
     }
 };
-
 
 
 module.exports = { paymentController,handlePaymentSuccess };

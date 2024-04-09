@@ -24,6 +24,7 @@ const {createReviewController,getReviewController,getAllReviewController,getHigh
 const { userController, deleteUserController, updateUserController } = require('../controllers/userController.js');
 const { forgotController, resetController, postResetController } = require('../controllers/resetController.js');
 const { getNotification } = require('../controllers/notificationController.js');
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
   });
@@ -272,6 +273,7 @@ router.get('/highest-rate-product', getHighestRatedProduct);
 router.get('/notification/:userId',authenticate, getNotification);
 router.delete('/delete-user/:userId',authenticate,isAdmin, deleteUserController);
 
+   
 // Update a specific category partially using PATCH
 router.put('/category/:id', async (req, res) => {
     if(!req.body) {
