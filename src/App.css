@@ -63,3 +63,6 @@ body {
       margin: 5px;
   }
 }
+.text-muted:hover{
+  color: #61dafb;
+}

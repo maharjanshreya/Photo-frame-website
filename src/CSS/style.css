@@ -113,6 +113,9 @@ input[type=submit]:hover {
 .register-color:hover{
   color: #860303;
 }
+.text-muted:hover{
+  color: #07a0ff;
+}
 .resend-button {
   color: #73c7f5;
   font-weight: 500;

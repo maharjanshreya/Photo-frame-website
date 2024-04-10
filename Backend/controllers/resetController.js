@@ -67,6 +67,7 @@ const resetController = async (req, res) => {
             
         } catch (error) {
             res.send("Not verified");
+            console.log(error);
             
         }
  
@@ -88,7 +89,8 @@ const postResetController = async (req, res) => {
             await User.updateOne(
                 {_id:id} ,{ $set:  {
                  password : encryptedPassword },});
-            res.json({status:"Password updated"});
+                 console.log("Password Updated");
+            //res.json({status:"Password updated"});
             res.render("index",{email:verify.email,status:'verified'})
             
             
@@ -99,8 +101,6 @@ const postResetController = async (req, res) => {
         }
  
 };
-const verifiedController = async (req, res) => {
-    res.render('verified');
-};
 
-module.exports = { forgotController,resetController,postResetController,verifiedController};
+
+module.exports = { forgotController,resetController,postResetController};

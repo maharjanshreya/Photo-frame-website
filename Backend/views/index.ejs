@@ -63,9 +63,10 @@
 }
     </style>
     <script>
-        var status = '<%- JSON.stringify(status) %>';
-        if (JSON.parse(status).status == "verified") {
-            res.render("verified");
+        var status =  '<%- JSON.stringify(status) %>';
+        if (JSON.parse(status) == "verified") {
+            console.log("verified");
+            window.location.href = '/verified-password';
         }
 
         function validateForm() {
@@ -92,7 +93,7 @@
             Reset password <br/></h1>
           <p style="color: rgb(57, 57, 57); font-size: 18px;">  <%= email%></p>
         
-        <form action="/verified-password" method="POST" onsubmit="return validateForm()">
+        <form action="" method="POST" onsubmit="return validateForm()">
             <label for="password" style="font-family: Arial;" >Password</label><br>
             <input type="password" id="password" name="password" required placeholder="Your new password"><br><br>
         

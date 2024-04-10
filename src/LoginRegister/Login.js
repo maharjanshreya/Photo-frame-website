@@ -16,8 +16,8 @@ import {
     MDBCol,
     MDBIcon,
     MDBInput
-  }
-  from 'mdb-react-ui-kit';
+}
+    from 'mdb-react-ui-kit';
 function Login() {
     const navigate = useNavigate();
     const [userData, setUserData] = useState([]);
@@ -40,7 +40,7 @@ function Login() {
     }, [checkUserRole]);
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [ userId, setUserId ] = useState([]);
+    const [userId, setUserId] = useState([]);
 
     const handleTogglePassword = () => {
         setShowPassword(!showPassword);
@@ -71,7 +71,7 @@ function Login() {
             if (data.error) {
                 throw new Error(data.message); // If server sends error, throw an error with the error message
             }
-            console.log("data",data);
+            console.log("data", data);
             console.log(data.userData.role);
             console.log(data.userData.userId);
             const role = data.userData?.role;
@@ -85,7 +85,7 @@ function Login() {
                 console.log(data.message);
                 throw new Error(data.message || "An unknown error occurred.");
             }
-            
+
 
             if (role === 'admin') {
                 navigate("/adminDashboard");
@@ -108,7 +108,7 @@ function Login() {
     }, [userId]);
     return (
         <>
-        {/* <div className="full-screen-image">
+            {/* <div className="full-screen-image">
             <div className="left-column">
                 <img src={sideImage} alt="logout" className="full-height-image" />
             </div>
@@ -143,45 +143,45 @@ function Login() {
         </div> */}
 
 
-        <MDBContainer fluid>
-  <MDBRow>
+            <MDBContainer fluid>
+                <MDBRow>
 
-  <MDBCol sm='7' className='d-none d-sm-block px-0'>
-  <img src={sideImage} alt="Login image" className="w-100" style={{ height: '100vh', objectFit: 'cover', objectPosition: 'left' }} />
-</MDBCol>
-    <MDBCol sm='5'>
-    <div  style={{marginBottom:'48px'}} className='d-flex justify-content-center'>
-<div className='d-flex flex-row ps-5 pt-5 align-items-center'>
-  <MDBIcon fas icon="crow fa-3x me-3" style={{ color: '#709085' }}/>
-  <div>
-    <center><p className='text mb-0'>Login and <br />Design your frames with</p>
-    <img src={Logo} alt="logout" className="" /></center>
-  </div>
-</div></div>
-<div className='row justify-content-center'>
-  <div className='col-md-8'>
-    <div className='d-flex flex-column justify-content-center w-100 pt-2 pt-md-4 form-outline'>
-      <form method='POST' onSubmit={loginUser} className='input-form'>
-        
-        <MDBInput wrapperClass='mb-4 mx-5 w-100' id='formControlLg' type='email' size="lg" name="username" placeholder="Username" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        
-        <MDBInput wrapperClass='mb-4 mx-5 w-100' type='password'id='formControlLg' size="lg" name="password" placeholder="Password" value={password} required onChange={(e) => setPassword(e.target.value)} />
-        {error && <div style={{ color: 'red', fontWeight: '500', textAlign: 'left' }}>{error}</div>}
-        <input type="submit" className="mb-4 px-5 mx-5 w-100" value="Login" />
-      </form>
-      
-      <p className="small mb-5 pb-lg-3 text-left"><Link to='/reset' className="text-muted" >Forgot password?</Link></p>
-      <p className='text-center'>Don't have an account? <Link to='/register' className="link-info">Register here</Link></p>
-    </div>
-  </div>
-</div>
+                    <MDBCol sm='7' className='d-none d-sm-block px-0'>
+                        <img src={sideImage} alt="Login image" className="w-100" style={{ height: '100vh', objectFit: 'cover', objectPosition: 'left' }} />
+                    </MDBCol>
+                    <MDBCol sm='5'>
+                        <div style={{ marginBottom: '48px' }} className='d-flex justify-content-center'>
+                            <div className='d-flex flex-row ps-5 pt-5 align-items-center'>
+                                <MDBIcon fas icon="crow fa-3x me-3" style={{ color: '#709085' }} />
+                                <div>
+                                    <center><p className='text mb-0'>Login and <br />Design your frames with</p>
+                                        <img src={Logo} alt="logout" className="" /></center>
+                                </div>
+                            </div></div>
+                        <div className='row justify-content-center'>
+                            <div className='col-md-8'>
+                                <div className='d-flex flex-column justify-content-center w-100 pt-2 pt-md-4 form-outline'>
+                                    <form method='POST' onSubmit={loginUser} className='input-form'>
 
+                                        <MDBInput wrapperClass='mb-4 mx-5 w-100' id='formControlLg' type='email' size="lg" name="username" placeholder="Username" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
-</MDBCol>
+                                        <MDBInput wrapperClass='mb-4 mx-5 w-100' type='password' id='formControlLg' size="lg" name="password" placeholder="Password" value={password} required onChange={(e) => setPassword(e.target.value)} />
+                                        {error && <div style={{ color: 'red', fontWeight: '500', textAlign: 'left' }}>{error}</div>}
+                                        <input type="submit" className="mb-4 px-5 mx-5 w-100" value="Login" />
+                                    </form>
+
+                                    <p className="small mb-5 pb-lg-3 text-left"><Link to='/reset' className='link-info' >Forgot password?</Link></p>
+                                    <p className='text-center'>Don't have an account? <Link to='/register' className="link-info">Register here</Link></p>
+                                </div>
+                            </div>
+                        </div>
 
 
-  </MDBRow>
-</MDBContainer>
+                    </MDBCol>
+
+
+                </MDBRow>
+            </MDBContainer>
 
         </>
     );
