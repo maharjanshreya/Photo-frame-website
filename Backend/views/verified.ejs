@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verified</title>
+    <style>
+         .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container img {
+            max-width: 100%;
+            height: auto;
+        }
+        .button{
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 auto; /* Center the button */
+            display: block;
+        }
+        
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="/Rectangle 1.png" alt="Image">
+        <h1 style="color: green; font-family: Poppins;">Verified!</h1>
+        <p style="font-family: Poppins; text-align: center; color: rgb(125, 125, 125);">You have successfully change<br/>
+        password. Please use your new password when<br> logging in.</p>
+        <button onclick="redirectToLogin()" class="button">Log in to continue</button>
+        
+        
+    </div>
+
+    <script>
+        function redirectToLogin() {
+            window.location.href = "http://localhost:3000/login";
+        }
+    </script>
+
+
+</body>
+</html>

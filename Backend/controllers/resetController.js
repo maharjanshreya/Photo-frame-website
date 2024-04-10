@@ -59,7 +59,7 @@ const resetController = async (req, res) => {
         if (!oldUser){ 
             console.log("User doesn't exist");
             return res.status(404).json({ message: "User doesn't exist" });
-        }
+        }   
         const secret  = process.env.SECRET + oldUser.password;
         try {
             const verify = jwt.verify(token, secret);
@@ -99,4 +99,8 @@ const postResetController = async (req, res) => {
         }
  
 };
-module.exports = { forgotController,resetController,postResetController};
+const verifiedController = async (req, res) => {
+    res.render('verified');
+};
+
+module.exports = { forgotController,resetController,postResetController,verifiedController};

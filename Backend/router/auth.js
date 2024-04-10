@@ -22,7 +22,7 @@ const {getAllOrderController,getSingleOrderController,updateOrderController} = r
 const {uploadController,getImageByUserId} = require('../controllers/uploadController.js');
 const {createReviewController,getReviewController,getAllReviewController,getHighestRatedProduct} = require('../controllers/reviewController.js');
 const { userController, deleteUserController, updateUserController } = require('../controllers/userController.js');
-const { forgotController, resetController, postResetController } = require('../controllers/resetController.js');
+const { forgotController, resetController, postResetController, verifiedController } = require('../controllers/resetController.js');
 const { getNotification } = require('../controllers/notificationController.js');
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 router.get('/', (req, res) => {
@@ -244,7 +244,10 @@ router.put('/user-update/:userId',authenticate, updateUserController);
 
 router.post('/forgot-password', forgotController);
 router.get('/reset-password/:id/:token', resetController);
+
+router.post('/verified-password', verifiedController);
 router.post('/reset-password/:id/:token', postResetController);
+
 router.get('/search/:keyword', searchController);
 
 router.post('/add-to-cart',authenticate, cartController);
