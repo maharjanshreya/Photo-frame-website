@@ -3,7 +3,7 @@ const Order = require('../model/orderModel');
 const paymentController = async (req, res) => {
     try {
         const {products} = req.body; // Access the 'products' array directly
-       
+       console.log("Products:",products);
         if (!products || !Array.isArray(products)) {
             throw new Error('Invalid products data');
         }
@@ -12,13 +12,18 @@ const paymentController = async (req, res) => {
             price_data: {
                 currency: "NPR",
                 product_data: {
-                    name: product.productId.productName
+                    name: `${product.productId.productName} - Size: ${product.size}`,
+                   
                 },
+                
                 unit_amount: product.productId.price * 100,
             },
-            quantity: product.quantity
+            quantity: product.quantity,
+            
+            
             
         }));
+        const sizeString = products.map(item => item.size).join(', ');
         const shippingOptions = products.map(ship => ({
             shipping_rate_data: {
                 type: 'fixed_amount',
@@ -41,7 +46,7 @@ const paymentController = async (req, res) => {
             
         }));
         
-       
+       console.log("Size:",products.size);
         console.log(JSON.stringify(line_items, null, 2));
         const session = await stripe.checkout.sessions.create({
             line_items: line_items,
@@ -111,6 +116,7 @@ const handlePaymentSuccess = async (req, res) => {
 
         // Retrieve the session from Stripe to get the order details
         const sessionData = await stripe.checkout.sessions.retrieve(sessionID);
+        // Access line items in the session
         
         // Create the order and get the specific order details
         const orderDetails = await createOrder(sessionData, userID);
@@ -133,27 +139,33 @@ const createOrder = async (sessionData, userID) => {
          }
         const retrievedSession = await stripe.checkout.sessions.listLineItems(sessionData.id);
         console.log("Session id in create order: ",sessionData.id);
+        console.log("retrievedSession, ",retrievedSession.data);
         const shipping = sessionData.shipping_options;
-        console.log("Shipping details: ",shipping);
-        console.log("Creating order");
          
- 
+       
         if (retrievedSession.data) {
-            console.log(retrievedSession.data);
+            console.log("ok");
         } else {
             console.log('Invoice or line items not found in session');
         }
         // Extract product data from the session
         const lineItems = retrievedSession.data;
-        const products = lineItems.map(item => ({
-           
-            name:  item.description,  // Product name or description
-            price: item.price.unit_amount / 100, // Convert from cents to your currency
-            quantity: item.quantity
-        }))
+        console.log("line uitems data: ",lineItems);
+        
+        const products = lineItems.map(item => {
+            // Parse size from description
+            const size = item.description.includes('Size:') ? item.description.split('Size: ')[1] : ''; // Extract size from description
+            console.log('Extracted size:', size); // Log the extracted size
+            return {
+                name: item.description,
+                price: item.price.unit_amount / 100,
+                quantity: item.quantity,
+                size: size // Assign the extracted size to the product
+            };
+        });
         const amountTotal = sessionData.amount_total / 100;
         const shippingDetails = sessionData.shipping_details;
-        // Create a new order entry using the Order model
+       // Create a new order entry using the Order model
         const order = new Order({
             products: products,
             shippingAddress: {
@@ -169,7 +181,7 @@ const createOrder = async (sessionData, userID) => {
             },
             payment: amountTotal,
             buyer: userID,
-            status: 'Processing', // Default status
+            status: 'Processing', 
         });
 
         // Save the order to the database

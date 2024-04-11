@@ -108,15 +108,24 @@ function Product() {
       console.log('Error in fetching image data', err);
     }
   };
+  
+  const [width, setWidth] = useState(productData.size || '');
+
+
+  const handleWidthChange = (event) => {
+    setWidth(event.target.value);
+  };
+  console.log("width",width);
 
   const addToCart = async (quantityToAdd) => {
-    
+    console.log("width = ",width);
     const data = {
       userId: userIdLS,
       items: [
         {
           productId: product_id,
           quantity: quantityToAdd,
+          size: width,
         },
       ],
     };
@@ -186,8 +195,9 @@ function Product() {
     return averageRating;
   };
   const maxStarCount = 5;
-  const overallRatingSum = calculateOverallRatingSum(reviewData);
+  const overallRatingSum = parseInt(calculateOverallRatingSum(reviewData).toFixed(1)) || 0;
   console.log(overallRatingSum);
+  
   const overallRatingMapped = (overallRatingSum / maxStarCount) * 5;
 
   const [showAllReviews, setShowAllReviews] = useState(false);
@@ -195,6 +205,8 @@ function Product() {
   const toggleShowAllReviews = () => {
     setShowAllReviews(!showAllReviews);
   };
+  
+  
   return (<>
     <Navbar />
 
@@ -223,7 +235,7 @@ function Product() {
                 <p> <span style={{ fontWeight: '600' }}>Category: </span>{productData.category.name}</p>
               )}
               <p style={{ fontWeight: '600' }}>Size: {productData.size}</p>
-
+              <input type="text" value={width} onChange={handleWidthChange} />
               <p style={{ fontWeight: '600' }}>Dimension: {productData.dimension}</p>
               <p style={{ fontWeight: '600' }}>
                 {productData.quantity > 0 ? `Available(${productData.quantity})` : <span style={{ color: 'red', fontWeight: '800' }}>Out of Stock</span>}
@@ -270,11 +282,10 @@ function Product() {
         <hr />
         <div><h1 className='m-1'>Overall Rating</h1>
           <h1 style={{ fontFamily: 'Gelasio' }}>{overallRatingSum}</h1>
+        {console.log("jsncsj",overallRatingSum)}
           <ReactStars
             size={30}
-
-            value={overallRatingMapped} edit={false}
-          />
+            value={overallRatingSum} edit={false}/>
           <div className='d-flex'>
 
 

@@ -48,7 +48,6 @@ const updateOrderController =  async (req, res) => {
             message: message
         });
         await notification.save();
-        // Return the updated order
         res.json(updatedOrder);
     } catch (error) {
         console.error('Error updating order:', error);

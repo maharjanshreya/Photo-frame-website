@@ -126,8 +126,7 @@ function Cart() {
   const handleCheckout = async () => { 
     
     try {
-      
-      
+       
       // Load Stripe.js
       const stripe = await loadStripe('pk_test_51OyOhcA4uLHwNxGYlwqMkbqvF6QOd73m6MqORxnhF54D3fXLO9Fz2D3ZrGd0Cc8dyQtvkZDKC6wh53uxEC0ZYiOb00xGrm5KBV');
 
@@ -249,7 +248,7 @@ function Cart() {
                                         <MDBTypography tag="h5">
                                           {item.productId.productName}
                                         </MDBTypography>
-                                        <p className="small mb-0">1TB, Graphite</p>
+                                        <p className="small mb-0">Size: {item.size}</p>
                                       </div>
                                     </div>
                                     <div className="d-flex flex-row align-items-center">

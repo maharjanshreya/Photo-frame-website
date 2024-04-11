@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const productSchema = new mongoose.Schema({
     name: String,
     price: Number,
-    quantity: Number
+    quantity: Number,
+    size: String,
 });
 const shippingDetailsSchema = new mongoose.Schema({
     address: {

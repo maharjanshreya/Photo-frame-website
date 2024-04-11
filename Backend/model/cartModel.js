@@ -11,6 +11,10 @@ const mongoose = require('mongoose');
         required: true,
         default: 1, // Default quantity is 0
     },
+    size: {
+        type: String, 
+        required: true,
+    },
     });
 
     const cartSchema = new mongoose.Schema({

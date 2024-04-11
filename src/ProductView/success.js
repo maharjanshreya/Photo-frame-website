@@ -70,38 +70,38 @@ function Success(){
     return(
         <>
             <Navbar />
-            <div style={{display: 'flex', justifyContent:'center' }}> 
-                {payment && payment.products &&(
-                    <div id="card-container">
-                <Card style={{ width: '25rem' ,textAlign:'center' }}>
-                    <Card.Body>
-                    {payment.products.map((product, index) => (
-                            <li key={index}>
-                    <Card.Title><img src= {Check} width={70}/></Card.Title>
-                        <Card.Title>Payment Successful</Card.Title>
-                        
-                        <Card.Text style={{marginBottom:'25px',color:'grey'}}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+    {payment && payment.products &&  payment.shippingAddress &&(
+        <div id="card-container">
+            <Card style={{ width: '25rem', textAlign: 'center' }}>
+                <Card.Body>
+                    <Card.Title><img src={Check} width={70} /></Card.Title>
+                    <Card.Title>Payment Successful</Card.Title>
+                    <Card.Text style={{ marginBottom: '25px', color: 'grey' }}>
                         Thank you for your purchase! Your order is now being processed and will be shipped soon.
-                        </Card.Text>
-                        <Card.Subtitle className="mb-2 text-muted" style={{ textAlign:'left',paddingLeft:'10px' }}>Order Details</Card.Subtitle>
-                        
-                        <Card.Text  style={{ textAlign:'left',paddingLeft:'10px',color:'gray' }}>
-                        {product.name}  ( Qty - {product.quantity}  )
-                        </Card.Text>
-                        <Card.Subtitle className="mb-2 text-muted" style={{ textAlign:'left',paddingLeft:'10px' }}>Total Amount</Card.Subtitle>
-                        <Card.Text  style={{ textAlign:'left',paddingLeft:'10px' ,color:'gray'}}>
-                        {payment.payment}
-                        </Card.Text>
-                        <Card.Subtitle className="mb-2 text-muted" style={{ textAlign:'left',paddingLeft:'10px' }}>Delivery Address</Card.Subtitle>
-                        <Card.Text  style={{ textAlign:'left',paddingLeft:'10px',color:'gray' }}>
-                        Kathmandu
-                        </Card.Text>
-                       
-                        
+                    </Card.Text>
+                    <Card.Subtitle className="mb-2 text-muted" style={{ textAlign: 'left', paddingLeft: '10px' }}>Order Details</Card.Subtitle>
+                    {payment.products.map((product, index) => (
+                        <li key={index}>
+                            <Card.Text style={{ textAlign: 'left', paddingLeft: '10px', color: 'gray' }}>
+                                {product.name} ( Qty - {product.quantity} )
+                            </Card.Text>
                         </li>
-                        ))}</Card.Body>
-                    </Card> </div>)}
-            </div>
+                    ))}
+                    <Card.Subtitle className="mb-2 text-muted mt-4" style={{ textAlign: 'left', paddingLeft: '10px' }}>Total Amount</Card.Subtitle>
+                    <Card.Text style={{ textAlign: 'left', paddingLeft: '10px', color: 'gray' }}>
+                        {payment.payment}
+                    </Card.Text>
+                    <Card.Subtitle className="mb-2 text-muted" style={{ textAlign: 'left', paddingLeft: '10px' }}>Delivery Address</Card.Subtitle>
+                    <Card.Text style={{ textAlign: 'left', paddingLeft: '10px', color: 'gray' }}>
+                    {`${payment.shippingAddress.address.line1}, ${payment.shippingAddress.address.line2}, ${payment.shippingAddress.address.city}, ${payment.shippingAddress.address.postal_code}`}
+                   </Card.Text>
+                </Card.Body>
+            </Card>
+        </div>
+    )}
+</div>
+
             <center><Link to='/'><Button variant="success" style={{margin:'20px'}}>Home page</Button></Link><br/>   
             <Button variant="success" onClick={handleDownload}>Download Product Details</Button></center>
         </>

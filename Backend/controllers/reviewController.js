@@ -114,7 +114,6 @@ const getHighestRatedProduct = async (req, res) => {
     ]);
 
     const overallRating = overallRatingAggregate.length > 0 ? overallRatingAggregate[0].averageRating : null;
-
     // Include both highest rated product details and overall rating in response
     res.status(200).json({ productDetails, overallRating });
   } catch (error) {
@@ -123,6 +122,47 @@ const getHighestRatedProduct = async (req, res) => {
   }
 };
 
-  
+const getAllHighestRatedProducts = async (req, res) => {
+  try {
+    const aggregateResult = await Review.aggregate([
+      {
+        $group: {
+          _id: '$product',
+          averageRating: { $avg: '$rating' }
+        }
+      },
+      {
+        $sort: { averageRating: -1 } // Sort products by average rating in descending order
+      },
+      {
+        $limit: 10 // Limit to the top 10 highest rated products
+      }
+    ]);
 
-module.exports = { createReviewController, getReviewController,getAllReviewController,getHighestRatedProduct};
+    if (aggregateResult.length === 0) {
+      return res.status(404).json({ message: 'No products found.' });
+    }
+
+    // Array to hold details of top 10 highest rated products
+    const topRatedProducts = [];
+
+    // Loop through the aggregate result to fetch details of each product
+    for (const product of aggregateResult) {
+      const productDetails = await Product.findById(product._id);
+
+      // Push product details along with average rating to the array
+      topRatedProducts.push({
+        productDetails,
+        averageRating: product.averageRating
+      });
+    }
+    // Send the array of top rated products as the response
+    res.status(200).json({ topRatedProducts });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+};
+
+
+module.exports = { createReviewController, getReviewController,getAllReviewController,getHighestRatedProduct,getAllHighestRatedProducts};

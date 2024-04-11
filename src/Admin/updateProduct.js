@@ -55,15 +55,32 @@ const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
           productFunc();
     
         }, []);
-    const [updates, setUpdates] = useState({
+        useEffect(() => {
+          // Initialize updates state after productData is set
+          setUpdates({
+              productName: productData.productName || '',
+              description: productData.description || '',
+              category: productData.category || '',
+              shipping: productData.shipping || '',
+              price: productData.price || '',
+              quantity: productData.quantity || '',
+              size: productData.size || '',
+              dimension: productData.dimension || '',
+              minDelivery: productData.minDelivery || '',
+              maxDelivery: productData.maxDelivery || '',
+          });
+      }, [productData]);
+      const [updates, setUpdates] = useState({
         productName: '',
         description: '',
-        image: '',
+        category: '',
+        shipping: '',
         price: '',
         quantity: '',
-        category: '',
         size: '',
-        dimension: ''
+        dimension: '',
+        minDelivery: '',
+        maxDelivery: '',
     });
     let name,value,file;
     const handleInputChange = (e) => {
@@ -108,16 +125,16 @@ const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
         <div className='formedit'>
             <form onSubmit={handleFormSubmit} >
               <label>Product name:</label>
-                <input type='text' placeholder='Enter product name' name="productName" className='category'  required value={updates.productName || productData.productName} onChange={handleInputChange}/>
+                <input type='text' placeholder='Enter product name' name="productName" className='category'   value={updates.productName} onChange={handleInputChange}/>
                 <label>Description:</label>
-                <input type='text' placeholder='Product Description' name="description" className='category'  required value={updates.description || productData.description} onChange={handleInputChange}/>
+                <input type='text' placeholder='Product Description' name="description" className='category'   value={updates.description || '' } onChange={handleInputChange}/>
                 <label>Select image:</label>
-                <input type='file' placeholder='Image' name="image" className='category'  required  onChange={handleInputChange}/>
+                <input type='file' placeholder='Image' name="image" className='category'    onChange={handleInputChange}/>
                 <label>Quantity:</label>
-                <input type='number' placeholder='Enter the product quantity' name="quantity" className='category'  required value={updates.quantity || productData.quantity} onChange={handleInputChange}/>
+                <input type='number' placeholder='Enter the product quantity' name="quantity" className='category'   value={updates.quantity || ''} onChange={handleInputChange}/>
                 <label>Price:</label>
-                <input type='number' placeholder='Enter the product price' name="price" className='category'  required value={updates.price || productData.price} onChange={handleInputChange}/>
-                <select className='category' name='category' required style={{marginRight:'10px'}} onChange={handleInputChange} >
+                <input type='number' placeholder='Enter the product price' name="price" className='category'   value={updates.price || ''} onChange={handleInputChange}/>
+                <select className='category' name='category'  style={{marginRight:'10px'}} onChange={handleInputChange} >
                                         <option>Select the category name</option>
                                         {/* fetch the data */}
                                         {
@@ -128,11 +145,18 @@ const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
                                         ))}
                                     </select>
                       {/*Dropdown menu : out of stock or stock
-                      <input type='text' placeholder='stock' name="stock" className='category'  required value={category.name} onChange={handleInputChange}/>*/}
+                      <input type='text' placeholder='stock' name="stock" className='category'   value={category.name} onChange={handleInputChange}/>*/}
                        <label>Size:</label>
-                      <input type='text' placeholder='size' name="size" className='category'  required value={updates.size || productData.size} onChange={handleInputChange}/>
+                      <input type='text' placeholder='size' name="size" className='category'   value={updates.size || '' } onChange={handleInputChange}/>
                       <label>Dimension:</label>
-                      <input type='text' placeholder='dimension' name="dimension" className='category'  required value={updates.dimension || productData.dimension} onChange={handleInputChange}/>
+                      <input type='text' placeholder='dimension' name="dimension" className='category'   value={updates.dimension || ''} onChange={handleInputChange}/>
+                      <label>Shipping:</label>
+                      <input type='number' placeholder='Shipping' name="shipping" className='category'   value={updates.shipping || ''} onChange={handleInputChange}/>
+                      <label>Min delivery date:</label>
+                      <input type='number' placeholder='Min delivery date' name="minDelivery" className='category'   value={updates.minDelivery || ''} onChange={handleInputChange}/>
+                      <label>Max delivery date:</label>
+                      <input type='number' placeholder='Max delivery date' name="maxDelivery" className='category'   value={updates.maxDelivery || ''} onChange={handleInputChange}/>
+               
                 <Button type='submit' className='meterButtons' style={{backgroundColor: '#0d6efd', width:'100%'}}>Save details</Button><br/>
             </form>
         </div>
