@@ -47,6 +47,7 @@ function Cart() {
      // console.log("cart data quantity ", datas);
       setCart(datas.cart.items.length);
       console.log(datas.cart);
+      
       //console.log("cart data for image",datas.cart.items[0].productId._id);
       //console.log("cardData",cartData);
       //console.log("Items length in cart: ",datas.cart.items.length);

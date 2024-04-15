@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
-
+import { toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 const UpdateCategory = ({ categoryName,categoryId, onClose, refreshCategoryList }) => {
     console.log("update category: ", categoryId);
     console.log("categroy nemae: ", categoryName);
@@ -34,6 +35,7 @@ const UpdateCategory = ({ categoryName,categoryId, onClose, refreshCategoryList 
             }
 
             const updatedCategory = await response.json();
+            toast.success('Category Updated Successfully.');
             console.log('Category updated:', updatedCategory);
             // Call refreshCategoryList to fetch the updated category list
          refreshCategoryList();
@@ -55,7 +57,7 @@ const UpdateCategory = ({ categoryName,categoryId, onClose, refreshCategoryList 
                 </Button>
                 <Button type='submit' className='meterButtons' style={{ backgroundColor: '#0d6efd', width: 'auto' }}>
                     Save changes
-                </Button>
+                </Button> <Toaster position="top-center" reverseOrder={true} />
                 </div></form>
         </div>
         </>

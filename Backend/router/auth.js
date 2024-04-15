@@ -12,7 +12,7 @@ const Category = require("../model/categoryModel");
 const { useContext } = require('react');
 const { ObjectId } = require('mongodb');
 const { searchController } = require('../controllers/searchController.js');
-const { getNotification } = require('../controllers/notificationController.js');
+const { getNotification, createNotification } = require('../controllers/notificationController.js');
 const { uploadController, getImageByUserId } = require('../controllers/uploadController.js');
 const { paymentController, handlePaymentSuccess } = require('../controllers/paymentController.js');
 const { addToWishlistController, getWishlistController } = require('../controllers/wishlistController.js');
@@ -146,6 +146,7 @@ router.get('/report', authenticate, getReportController);
 router.get('/report/reply/:userId', authenticate, getReplyController);
 
 //route for notification
+router.post('/create-notification', authenticate, createNotification);
 router.get('/notification/:userId', authenticate, getNotification);
 router.put('/update-order/:orderId', authenticate, updateOrderController);
 

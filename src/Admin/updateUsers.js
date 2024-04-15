@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
-
+import { toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 const UpdateUsers = ({ userId,firstname,lastname,email,contact, onClose, refreshUserList }) => {
     console.log(firstname);
     console.log(userId);

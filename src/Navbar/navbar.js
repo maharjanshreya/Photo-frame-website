@@ -20,8 +20,8 @@ function Navbar(){
     //const { cart } = useCart();
    // const { wishlists } = useWishlist();
     //console.log("Navbar: ",cart);
-    const [cart, setCart] = useState([]);
     const [wishlist, setWishlist] = useState([]);
+    const [cart, setCart] = useState([]);
   const handleClose = () => setShow(false);
     const navigate = useNavigate();
     const location = useLocation();
@@ -68,8 +68,7 @@ function Navbar(){
             
           const datas = await res.json();
           setCartData(datas);
-         
-          console.log("Items length in cartin navbar:  ",datas.cart.items.length);
+          setCart(datas.cart.items.length);
         } catch (err) {
             console.log('Error in fetching data', err);
         }
@@ -110,25 +109,25 @@ function Navbar(){
         <Nav className='d-flex justify-content-between' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'  }}>
             <div>
                 <Nav.Link as={Link} to='/'className='navbar-nav ms-auto' >
-                <img src={Logo} alt="Wave Billing System" className="my-specific-image" style={{ paddingLeft: '40px', color: '#426751', display: 'inline-block' }} />
+                <img src={Logo} alt="Saman Photo Frame" className="my-specific-image" style={{ paddingLeft: '55px', color: '#426751', display: 'inline-block' }} />
             </Nav.Link>
             </div>
             
             <div className="d-flex text-center">
                 <Nav.Link as={Link} to='/'  className='' >
-                    <p style={{ fontFamily: 'Poppins', fontSize: '16px', paddingLeft: '20px', color: '#426751', fontWeight: '700', display: 'inline-block', verticalAlign: 'middle' }} className="text">Home</p>
+                    <p style={{ fontFamily: 'Poppins', fontSize: '16px', paddingLeft: '20px', color: '#795F49', fontWeight: '700', display: 'inline-block', verticalAlign: 'middle' }} className="text">Home</p>
                 </Nav.Link>
         
                 <Nav.Link as={Link} to='/aboutus'  className='' >
-                    <p style={{ fontFamily: 'Poppins', fontSize: '16px', paddingLeft: '20px', color: '#426751', fontWeight: '700', display: 'inline-block', verticalAlign: 'middle' }} className="text">About Us</p>
+                    <p style={{ fontFamily: 'Poppins', fontSize: '16px', paddingLeft: '20px', color: '#795F49', fontWeight: '700', display: 'inline-block', verticalAlign: 'middle' }} className="text">About Us</p>
                 </Nav.Link>
         
                 <Nav.Link as={Link} to='/products'  className='' >
-                    <p style={{ fontFamily: 'Poppins', fontSize: '16px', paddingLeft: '20px', color: '#426751', fontWeight: '700', display: 'inline-block', verticalAlign: 'middle' }} className="text">Products</p>
+                    <p style={{ fontFamily: 'Poppins', fontSize: '16px', paddingLeft: '20px', color: '#795F49', fontWeight: '700', display: 'inline-block', verticalAlign: 'middle' }} className="text">Products</p>
                 </Nav.Link>
         
                 <Nav.Link as={Link} to='/contact' className='' >
-                    <p style={{ fontFamily: 'Poppins', fontSize: '16px', paddingLeft: '20px', color: '#426751', fontWeight: '700', display: 'inline-block', verticalAlign: 'middle' }} className="text">Contact Us</p>
+                    <p style={{ fontFamily: 'Poppins', fontSize: '16px', paddingLeft: '20px', color: '#795F49', fontWeight: '700', display: 'inline-block', verticalAlign: 'middle' }} className="text">Contact Us</p>
                 </Nav.Link>
             </div>
 

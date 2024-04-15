@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import { MDBFooter, MDBContainer, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
 import { TiSocialFacebook } from "react-icons/ti";
 import { BiLogoInstagramAlt } from "react-icons/bi";
@@ -7,7 +7,34 @@ import './homepage.css';
 import { useUser } from '../context/user';
 import { Link } from "react-router-dom";
 function Footer() {
-  
+  const [categoryData, setCategoryData] = useState([]);
+  const categoryFunc = async () => {
+    try {
+      const res = await fetch('/category', {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+      if (!res.ok) {
+        const error = new Error(res.statusText);
+        throw error;
+      }
+
+      const datas = await res.json();
+      console.log('API Response:', datas);
+      setCategoryData(datas.categories);
+      console.log("Datas.data", datas.categories);
+
+    } catch (err) {
+      console.log('Error in fetching data', err);
+    }
+  };
+  useEffect(() => {
+    categoryFunc();
+  }, []);
   return (
     <MDBFooter bgColor='light' className='text-center text-lg-start text-muted'>
       <section className='d-flex justify-content-center justify-content-lg-between p-4 border-bottom'>
@@ -17,10 +44,10 @@ function Footer() {
 
         <div>
           <a href='' className='me-4 text-reset'>
-            <TiSocialFacebook color='secondary' fab icon='facebook-f' className='facebook' size={26}/>
+            <TiSocialFacebook color='secondary' fab="true" icon='facebook-f' className='facebook' size={26}/>
           </a>
           <a href='https://www.instagram.com/samanphotoframe/' className='me-4 text-reset'>
-            <BiLogoInstagramAlt color='secondary' fab icon='twitter' className='instagram' size={26}/>
+            <BiLogoInstagramAlt color='secondary' fab="true" icon='twitter' className='instagram' size={26}/>
           </a>
           
         </div>
@@ -41,26 +68,15 @@ function Footer() {
 
             <MDBCol md='2' lg='2' xl='2' className='mx-auto mb-4'>
               <h6 className='text-uppercase fw-bold mb-4'>Category</h6>
-              <p>
-                <a href='#!' className='text-reset'>
-                  Frames
-                </a>
-              </p>
-              <p>
-                <a href='#!' className='text-reset'>
-                  Borders
-                </a>
-              </p>
-              <p>
-                <a href='#!' className='text-reset'>
-                  Gifts
-                </a>
-              </p>
-              <p>
-                <a href='#!' className='text-reset'>
-                  Laravel
-                </a>
-              </p>
+              {categoryData.map((row) => (
+                <p>
+                  <Link to={`/category/${row._id}`} className='text-reset'>
+                    {row.name}
+                  </Link>
+                </p>
+              ))}
+             
+           
             </MDBCol>
 
             <MDBCol md='3' lg='2' xl='2' className='mx-auto mb-4'>
@@ -71,8 +87,8 @@ function Footer() {
                 </a>
               </p>
               <p>
-                <a href='#!' className='text-reset'>
-                  Settings
+                <a href='/account' className='text-reset'>
+                  Account
                 </a>
               </p>
               <p>

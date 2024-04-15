@@ -1,5 +1,6 @@
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 const Order = require('../model/orderModel');
+const Product = require('../model/productModel');
 const paymentController = async (req, res) => {
     try {
         const {products} = req.body; // Access the 'products' array directly
@@ -62,6 +63,7 @@ const paymentController = async (req, res) => {
             },
             shipping_options: shippingOptions,
         });
+        
        // Retrieve session details from Stripe
         const retrievedSession = await stripe.checkout.sessions.listLineItems(session.id);
         const userID = req.userID; // Assuming userID is obtained from the request
@@ -75,45 +77,18 @@ const paymentController = async (req, res) => {
 };
 
 
-// const handlePaymentSuccess = async (req, res) => {
-//     try {
-//         const sessionId = req.params.session_id; // Get the session ID from the query parameters
-//         console.log("Session id: ",sessionId);
-//         if (!sessionId) {
-//             throw new Error('Session ID is missing');
-//         }
-//         // Fetch the session details from Stripe to verify payment success
-//         const session = await stripe.checkout.sessions.retrieve(sessionId);
-//         // Check if payment was successful
-//         if (session.payment_status === 'paid') {
-            
-//         const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
-            
-//         const shipping = session.shipping_options;
-//             const orderDetails = {
-                
-//                 productDetails: productDetails,
-//                 totalAmount: totalAmount,
-//                 currency: session.currency,
-//             };
-//             console.log('Payment successful:', orderDetails);
-//             res.status(200).json(orderDetails);
-//         } else {
-//             res.status(400).send('Payment not successful');
-//         }
-//     } catch (error) {
-//         console.error('Error in handlePaymentSuccess:', error);
-//         res.status(500).send('Internal server error');
-//     }
-// };
-
 const handlePaymentSuccess = async (req, res) => {
     try {
         // Assuming you have the session ID and user ID from the request
         const sessionID = req.params.session_id;
         console.log("Session id",sessionID);
         const userID = req.userID;
-
+        // const { productIds } = req.body;
+        // console.log("Product ids handle: ",productIds);
+        // Make sure productIds is an array
+        // if (!Array.isArray(productIds)) {
+        //     throw new Error('Invalid productIds data');
+        // }
         // Retrieve the session from Stripe to get the order details
         const sessionData = await stripe.checkout.sessions.retrieve(sessionID);
         // Access line items in the session
@@ -130,6 +105,7 @@ const handlePaymentSuccess = async (req, res) => {
 };
 // Function to create an order
 const createOrder = async (sessionData, userID) => {
+    //console.log("Product ids in create order: ",productIds);
     try {
          // Check if the order already exists for this session
          const existingOrder = await Order.findOne({ session_id: sessionData.id });
@@ -156,6 +132,7 @@ const createOrder = async (sessionData, userID) => {
             // Parse size from description
             const size = item.description.includes('Size:') ? item.description.split('Size: ')[1] : ''; // Extract size from description
             console.log('Extracted size:', size); // Log the extracted size
+            //const product = await Product.findById(item.price.product);
             return {
                 name: item.description,
                 price: item.price.unit_amount / 100,
@@ -186,7 +163,7 @@ const createOrder = async (sessionData, userID) => {
 
         // Save the order to the database
         await order.save();
-
+        //await subtractProductQuantity(productIds);
         console.log('Order created successfully:', order);
         return order;
     } catch (error) {
@@ -194,6 +171,26 @@ const createOrder = async (sessionData, userID) => {
         throw error;
     }
 };
-
+// const subtractProductQuantity = async (productIds) => {
+//     console.log("Product ids: ",productIds);
+//     try {
+//         // Iterate through line items and subtract the quantity from the product in the database
+//         for (const productId of productIds) {
+            
+//             console.log("Subsstract product id: ", productId);
+//             // Assuming product IDs in your database are stored as strings
+//             const product = await Product.findOne({ productId: productId });
+//             if (product) {
+//                 product.quantity -= 1;
+//                 await product.save();
+//             } else {
+//                 console.log('Product not found:', productId);
+//             }
+//         }
+//     } catch (error) {
+//         console.error('Error subtracting product quantity:', error);
+//         throw error;
+//     }
+// };
 
 module.exports = { paymentController,handlePaymentSuccess };

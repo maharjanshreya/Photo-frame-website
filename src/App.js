@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Cookies from 'js-cookie';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute'; // Ensure correct import path
 
 // Import your components
@@ -31,17 +31,19 @@ import Cart from './ProductView/cart';
 import Notification from './ProductView/notification';
 import { useAuth } from './context/token';
 import Success from './ProductView/success';
+import Cancel from './ProductView/cancel';
 import Reset from './LoginRegister/Reset';
+import { BrowserRouter as Router } from 'react-router-dom';
 // Import Homepage
 import Homepage from './Homepage/homepage';
 
 function App() {
-  const [hasToken, setHasToken]= useState(false);
+  const [hasToken, setHasToken] = useState(false);
   const [loading, setLoading] = useState(true);
- 
-  
+
+
   const role = localStorage.getItem('role');
-  const cuurent_user_type= role;
+  const cuurent_user_type = role;
   // const checkUserRole = useCallback(() => {
   //   const role = localStorage.getItem('role');
   //   if (token) {
@@ -71,7 +73,7 @@ function App() {
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<Login />}/>
+        <Route path="/login" element={<Login />} />
         <Route path="/navbar" element={<Navbar />} />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/products" element={<Products />} />
@@ -80,25 +82,19 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/adminLogin" element={<AdminLogin />} />
-        {/* <Route
-          path="/adminDashboard"
-          element={
-            hasToken ? (
-              <AdminDashboard />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        /> */}
-         <Route element={<ProtectedRoute />}>
-                <Route element={<AdminDashboard/>} path="/adminDashboard" exact/>
-            </Route>
+       
+        <Route element={<ProtectedRoute />}>
+          <Route element={<AdminDashboard />} path="/adminDashboard" exact />
+          <Route element={<AdminOrder />} path="/adminOrder" exact />
+          <Route element={<AdminReview />} path="/adminReview" exact />
+          <Route element={<AdminAnalysis />} path="/adminAnalysis" exact />
+          <Route element={<AdminNotifyUpdates />} path="/notify" exact />
+          <Route element={<AdminContact />} path="/adminContact" exact />
+        </Route>
         <Route path="/productView/:productId" element={<ProductView />} />
-        <Route path="/adminOrder" element={<AdminOrder />} />
-        <Route path="/notify" element={<AdminNotifyUpdates />} />
-        <Route path="/adminReview" element={<AdminReview />} />
-        <Route path="/adminAnalysis" element={<AdminAnalysis />} />
-        <Route path="/adminContact" element={<AdminContact />} />
+
+
+
         <Route path="/cart" element={<Cart />} />
         <Route path="/footer" element={<Footer />} />
         <Route path="/wishlist" element={<Wishlist />} />
@@ -107,6 +103,7 @@ function App() {
         <Route path="/imagepage" element={<ImagePage />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/success" element={<Success />} />
+        <Route path="/cancel" element={<Cancel />} />
       </Routes>
     </Router>
   );

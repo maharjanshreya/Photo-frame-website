@@ -280,7 +280,7 @@ function Product() {
         </div>
 
         <hr />
-        <div><h1 className='m-1'>Overall Rating</h1>
+        <div><h4 className='m-1'>Overall Rating</h4>
           <h1 style={{ fontFamily: 'Gelasio' }}>{overallRatingSum}</h1>
         {console.log("jsncsj",overallRatingSum)}
           <ReactStars

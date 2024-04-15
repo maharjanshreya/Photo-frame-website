@@ -22,15 +22,17 @@
 }
 
 .hhh{
-    font-family: 'Abril Fatface', serif;
+    font-family: 'Recoleta,Georgia,serif';
     font-size: 65px;
     letter-spacing: 2px;
-    color: #3A654B;
+   color: #795F49;
     margin-bottom: 20px;
 }
 .paragraph{
-    color: #8B8B89;
-    font-weight: 700;
+    color: #795F49;
+    margin-bottom: 50px;
+    font-family: 'Recoleta,Georgia,serif';
+    padding-right: 10px;
 }
 
 /* Buttons */
@@ -46,8 +48,6 @@
     color: #ffffff; 
     cursor: pointer;
    
-
-
   }
   
   .round-button-search{
@@ -83,7 +83,7 @@
     margin-right: 70px;
   }
   .product-name{
-    font-family: 'Gelasio';
+   
     font-size: 20px;
     color: #838383;
     padding-top: 10px;
@@ -91,8 +91,8 @@
 
   }
   .price{
-    font-family: 'fenix';
-    color: #B4B4B4;
+    font-family: 'Segoe UI';
+    color: #323232;
     font-size: 20px;
   }
   .heading-title{
@@ -119,8 +119,68 @@
     opacity: 0;
   }
 
-
-
+  .container-slide {
+    position: relative;
+    width: 300px; /* Adjust according to your layout */
+    height: 400px; /* Adjust according to your layout */
+    display: inline-block;
+    margin-left: 50px;
+    margin-bottom: 80px;
+ 
+  }
+  
+  .image-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%; /* Ensure the container takes up the full width of its parent */
+  height: 100%;
+  }
+  
+  .image-container img {
+    
+    display: block;
+    transition: transform 0.6s ease;
+    max-width: 100%; /* Ensure the image does not exceed the container width */
+  max-height: 100%;
+  width: auto; /* Ensure the image width adjusts to fit the container */
+  
+  }
+  
+  .text-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.8); /* Adjust background color and opacity */
+    padding: 20px;
+    transform: translateY(100%);
+    text-align: justify;
+    transition: transform 0.6s ease, background-color 0.6s ease;
+  }
+  .title-text{
+    font-family: 'Fenix';
+    font-size: 16px;
+    font-weight: 600;
+    color: #ece7d6;
+  }
+  .text-container .title-text {
+    margin-bottom: 10px; /* Adjust bottom margin as needed */
+    opacity: 1; /* Ensure the title text is visible initially */
+  }
+  
+  .text-container .description-text {
+    opacity: 0; /* Ensure the description text is hidden initially */
+  }
+  
+  .container-slide:hover  .text-container  {
+    transform: translateY(0); /* Slide the text container upwards when hovered */
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .container-slide:hover .text-container .description-text {
+    opacity: 1; /* Make the description text visible when hovered */
+  }
   
 /* about us section */
   .header-aboutus{
@@ -132,18 +192,24 @@
     font-size: 17px;
   }
   .image-height{
-    height: 400px;
+    height: 800px;
     
   }
+  .sub-heading{
+    font-family: 'Graphik,Helvetica,sans-serif';
+    margin: 0px 0px 10px;
+    color: #323232;
+    font-size: 25px;
+  }
   .para-about{
-    color: #000;
+    color: #323232;
 
     text-align: justify;
-    font-family: Poppins;
+    font-family: 'Graphik,Helvetica,sans-serif';
     font-size: 19px;
     font-style: normal;
     font-weight: 300;
-    line-height: normal;
+    line-height: 1.4;
   }
   .vision{
     margin-top: 57px;
@@ -153,12 +219,12 @@
    
   }
   .vision1{
-    font-family: 'Gelasio';
-    font-style: italic;
+    font-family: 'Georgia,serif';
+   
     font-size: 39px;
-    color: #A40C0C;
+    color: #323232;
     font-weight: 200;
-    margin-bottom: 40px;
+    margin: 0px 0px 20px;
     line-height: normal;
   }
   .mission{
@@ -298,8 +364,17 @@
   border: 1px dashed #3c3939;
   
 }
+.active-button-t{
+  border-bottom: 1px solid #000;
+}
 .round-button{
   margin: 3px;
+}
+.image-height-about {
+  height: 500px; /* Set the desired height */
+  width: 400px; /* Ensure the image spans the entire width of its container */
+  object-fit: cover; /* Ensure the image covers the entire space without distortion */
+  margin: 2px 5px;
 }
 .container-left {
   padding: 47px;
@@ -354,10 +429,16 @@
   padding: 10px;
   box-sizing: border-box;
 }
-
+.custom-col{
+  padding:0px;
+}
 .product-name {
   margin: 0;
-  font-weight: bold;
+}
+.product-name p {
+ font-family: 'Segoe UI';
+ font-size: 18px;
+ color: #4b4b4b;
 }
 
 .product-price {
@@ -367,4 +448,12 @@
 .price-rating {
   display: flex;
   justify-content: space-between;
+}
+
+
+
+.minimal{
+  font-family:'Recoleta,Georgia,serif';
+  padding:0px 30px;
+  color:#795F49;
 }

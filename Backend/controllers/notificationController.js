@@ -1,4 +1,6 @@
 const Notification = require('../model/notificationModel'); 
+const User = require('../model/userModel'); 
+const notifier = require('node-notifier');
 const getNotification = async (req, res) => {
     const userId = req.params.userId;
     try {
@@ -11,4 +13,35 @@ const getNotification = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
-module.exports = {getNotification};
+const createNotification =  async (req, res) => {
+    const { userId, message } = req.body;
+    try {
+       
+        if (!userId) {
+            return res.status(404).json({ success: false, message: 'User not found. Please select a user' });
+        }
+
+        const notification = new Notification({
+            userId: userId,
+            message: message
+        });
+        await notification.save();
+        sendSoundNotification();
+        res.status(201).json({ success: true, message: 'Notification sent Successfully' });
+
+    } catch (error) {
+        console.error('Error updating order:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+const sendSoundNotification = () => {
+    // Code to trigger the sound notification
+    // For example, using a package like node-notifier or electron-notification
+    // Here, I'm using node-notifier as an example
+    notifier.notify({
+        title: 'New Notification',
+        message: 'You have a new notification!',
+        sound: true // Plays the default system notification sound
+    });
+};
+module.exports = {getNotification,createNotification};

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-function PostProduct({ refreshCategoryList }) {
+import { toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
+function PostProduct({ refreshProductList }) {
   const [categoryData, setCategoryData] = useState([]);
 
   const categoryFunc = async () => {
@@ -75,27 +77,24 @@ function PostProduct({ refreshCategoryList }) {
 
       });
 
-      if (!res.ok) {
-        console.log(`HTTP error! Status: ${res.status}`);
-        return;
-      }
 
       const data = await res.json();
 
-      if (res.status === 422 || !data) {
-        window.alert("Product already exists");
+      if (res.status === 500 || !data) {
+        toast.error(data.error);
         console.log("Product already exists");
       } else {
-        window.alert("Product Valid");
+        toast.success("Product added successfully");
         console.log("Product Valid");
-        refreshCategoryList();
+        refreshProductList();
       }
     } catch (error) {
+      toast.error(error.message);
       console.error('Error during fetch:', error);
     }
   }
   return (<>
-    <form>
+    <form onSubmit={handleSubmit}>
       <input type='text' placeholder='Enter product name' name="productName" className='category' required value={product.productName} onChange={handleInputs} />
       <input type='text' placeholder='Product Description' name="description" className='category' required value={product.description} onChange={handleInputs} />
       <input type='file' placeholder='Image' name="image" className='category' required onChange={handleInputs} />
@@ -113,8 +112,8 @@ function PostProduct({ refreshCategoryList }) {
       </select>
       {/*Dropdown menu : out of stock or stock
                       <input type='text' placeholder='stock' name="stock" className='category'  required value={category.name} onChange={handleInputs}/>*/}
-      <input type='text' placeholder='size' name="size" className='category' required value={product.size} onChange={handleInputs} />
-      <input type='text' placeholder='dimension' name="dimension" className='category' required value={product.dimension} onChange={handleInputs} />
+      <input type='text' placeholder='Enter size' name="size" className='category' required value={product.size} onChange={handleInputs} />
+      <input type='text' placeholder='Enter dimension' name="dimension" className='category' required value={product.dimension} onChange={handleInputs} />
       <input type='number' placeholder='Minimum Delivery time' name="minDelivery" className='category' required value={product.minDelivery} onChange={handleInputs} />
       <input type='number' placeholder='Maximum Delivery time' name="maxDelivery" className='category' required value={product.maxDelivery} onChange={handleInputs} />
 
@@ -125,7 +124,7 @@ function PostProduct({ refreshCategoryList }) {
                       <input type='text' placeholder='ratings' name="ratings" className='category'  required value={category.name} onChange={handleInputs}/>
                     */}<hr />
 
-      <input type='submit' value="Add" onClick={handleSubmit} />
+      <input type='submit' value="Add Product"  /><Toaster position="top-center" reverseOrder={true} />
     </form>
   </>);
 }

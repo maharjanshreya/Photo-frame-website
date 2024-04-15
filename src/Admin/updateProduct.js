@@ -1,5 +1,7 @@
 import React, { useState,useEffect} from 'react';
 import Button from 'react-bootstrap/Button';
+import { toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
     console.log("update product: ", productId);
     const [categoryData, setCategoryData] = useState([]);
@@ -43,7 +45,7 @@ const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
             const datas = await res.json();
             console.log('API Response in products:', datas); 
             setProductData(datas.product);
-            console.log("Hello product data",datas.product);
+            
           
             } catch (err) {
               console.log('Error in fetching data', err);
@@ -111,6 +113,7 @@ const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
             }
     
             const updatedProduct = await response.json();
+            toast.success('Product Updated Successfully.');
             console.log('Product updated:', updatedProduct);
             // Call refreshCategoryList to fetch the updated product list
             refreshProductList();

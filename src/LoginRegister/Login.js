@@ -163,9 +163,9 @@ function Login() {
                                 <div className='d-flex flex-column justify-content-center w-100 pt-2 pt-md-4 form-outline'>
                                     <form method='POST' onSubmit={loginUser} className='input-form'>
 
-                                        <MDBInput wrapperClass='mb-4 mx-5 w-100' id='formControlLg' type='email' size="lg" name="username" placeholder="Username" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                                        <MDBInput  wrapperClass='mb-4 mx-5 w-100' id='formControlLg' type='email' size="lg" name="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
-                                        <MDBInput wrapperClass='mb-4 mx-5 w-100' type='password' id='formControlLg' size="lg" name="password" placeholder="Password" value={password} required onChange={(e) => setPassword(e.target.value)} />
+                                        <MDBInput  wrapperClass='mb-4 mx-5 w-100' type='password' id='formControlLg' size="lg" name="password" placeholder="Password" value={password} required onChange={(e) => setPassword(e.target.value)} />
                                         {error && <div style={{ color: 'red', fontWeight: '500', textAlign: 'left' }}>{error}</div>}
                                         <input type="submit" className="mb-4 px-5 mx-5 w-100" value="Login" />
                                     </form>

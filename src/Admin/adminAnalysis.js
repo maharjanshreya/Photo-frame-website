@@ -4,11 +4,16 @@ import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS } from 'chart.js/auto';
 import { Chart } from 'react-chartjs-2';
 import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import { FaPlus } from "react-icons/fa6";
+import { toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 function Anaylsis() {
   const [highestProduct, setHighestProduct] = useState([]);
   const [overall, setOverall] = useState([]);
   const [image, setImage] = useState([]);
   const [imageURL, setImageURL] = useState(null);
+  const [userData, setUserData] = useState([]);
   const options = {
     scales: {
       yAxes: [{
@@ -20,6 +25,7 @@ function Anaylsis() {
     },
 
   };
+
   const [orderData, setOrderData] = useState({
     labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
 
@@ -34,10 +40,12 @@ function Anaylsis() {
       },
     ],
   });
+
   useEffect(() => {
     fetchOrderData();
     getHighestRatedProduct();
     imageFunc();
+    userFunc();
   }, []);
 
   const fetchOrderData = async () => {
@@ -54,6 +62,7 @@ function Anaylsis() {
       console.error('Error fetching order data:', error);
     }
   };
+
   const getHighestRatedProduct = async () => {
     try {
       const response = await fetch('/highest-rate-product');
@@ -68,6 +77,7 @@ function Anaylsis() {
       console.error('Error fetching order data:', error);
     }
   };
+
   const processData = (data) => {
     const orderCounts = [0, 0, 0, 0, 0, 0, 0];
     data.forEach(order => {
@@ -80,6 +90,7 @@ function Anaylsis() {
     });
     return orderCounts;
   };
+
   const updateOrderData = (ordersPerDay) => {
     // Update the orderData state with the processed data
     setOrderData((prevData) => ({
@@ -118,6 +129,66 @@ function Anaylsis() {
       console.log('Error in fetching image data', err);
     }
   };
+
+  const userFunc = async () => {
+    try {
+      const res = await fetch('/getUser', {
+        method: 'GET',
+        credentials: 'include',
+      });
+      if (!res.ok) {
+        const error = new Error(res.statusText);
+        throw error;
+      }
+
+      const userInfo = await res.json();
+      setUserData(userInfo);
+
+    } catch (err) {
+      console.log('Error in fetching data', err);
+    }
+  };
+  const [messages, setMessage] = useState({
+    userId: "", message: "",
+  });
+  let name, value;
+  const handleInputs = (e) => {
+    console.log(e);
+    name = e.target.name;
+    value = e.target.value;
+    setMessage({ ...messages, [name]: value });
+  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const{userId,message} =messages;
+    const res = await fetch("/create-notification", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            userId,message
+        })
+    });
+    const data = await res.json();
+    if(res.status=== 422 || !data){
+        window.alert("Invalid Notification");
+        console.log("Invalif notification");
+      
+    }
+    else if(res.status=== 404 || !data){
+      toast.error(data.message);
+     
+      console.log("valid notification");
+
+  }
+    else{
+        window.alert("valid notification");
+       
+        console.log("valid notification");
+
+    }
+}
   return (
     <>
       <div className='d-flex'>
@@ -125,16 +196,22 @@ function Anaylsis() {
           <AdminNavbar />
         </div>
         <div style={{ marginLeft: '250px' }}>
-          <h2 style={{ marginTop: '20px', color: '#b3b7b8' }}>Analytics</h2><hr />
+          <h2 style={{ marginTop: '20px', color: 'black' }}>Dashboard</h2><hr />
+          <div className='d-flex flex-column align-items-center'>
+            <Button variant='warning' className='mb-3 align-self-start'>Add notification</Button>
+            <div className='d-flex justify-content-center'>
+              <Card style={{ padding: "20px", backgroundColor: "#f5f5f5", marginTop: '50px', marginRight: '10px' }}>
+                <Card.Title style={{ color: '#33bcde', fontSize: '16px' }}>Number of Orders per Day</Card.Title>
+                {orderData.datasets[0].data.length > 0 ? (
+                  <Line data={orderData} options={options} style={{ width: '600px', height: '400px' }} />
+                ) : (
+                  <p>Loading...</p>
+                )}
+              </Card>
+            </div>
+          </div>
 
-          <Card style={{ padding: "20px", backgroundColor: "#f5f5f5", marginTop: '50px' }}>
-            <Card.Title style={{ color: '#33bcde', fontSize: '16px' }}>Number of Orders per Day</Card.Title>
-            {orderData.datasets[0].data.length > 0 ? (
-              <Line data={orderData} options={options} style={{ width: '600px', height: '400px' }} />
-            ) : (
-              <p>Loading...</p>
-            )}
-          </Card>
+
           <div>
             {highestProduct ? (
               <div>
@@ -148,6 +225,30 @@ function Anaylsis() {
               <p>Loading highest rated product...</p>
             )}
           </div>
+
+          <div>
+            <p>Send notification</p>
+            <form method='POST' onSubmit={handleSubmit}>
+              <select className='' name='userId' required style={{ marginRight: '10px' }} onChange={handleInputs} >
+                <option>Select the user name</option>
+                {
+                  userData.map((row) => (
+                    <option key={row._id} value={row._id}>
+                      {row.firstname}{row.lastname}
+                    </option>
+                  ))}
+              </select>   <br/>
+              <textarea
+                name="message"
+                id="notification"
+                cols="30"
+                rows="10" required 
+                placeholder="Enter notification message" onChange={handleInputs}
+              ></textarea>   <br/>
+              <Button type='submit'>Send Notification</Button></form>
+              <Toaster position="top-center" reverseOrder={true} />
+          </div>
+
         </div>
       </div>
     </>

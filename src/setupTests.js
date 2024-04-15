@@ -3,3 +3,18 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+class MockIntersectionObserver {
+    constructor(callback, options) {}
+    observe() {
+      // Do nothing
+    }
+    unobserve() {
+      // Do nothing
+    }
+    disconnect() {
+      // Do nothing
+    }
+  }
+  
+  // Assign the mock IntersectionObserver to the window object
+  window.IntersectionObserver = MockIntersectionObserver;

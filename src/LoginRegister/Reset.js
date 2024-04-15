@@ -43,7 +43,7 @@ function Reset(){
         if(res.status=== 404|| !data){
             setLoading(false);
             setError(data.message);
-            console.log("Invalif res");
+            console.log(data.message);
             
         }else{
             setLoading(false);
@@ -63,10 +63,10 @@ function Reset(){
             <div className="right-column">
                 <p className='text'>Reset your password</p>
                 <img src={Logo} alt="logout" className=""  />
-                <form method='POST' className='input-text'>
+                <form method='POST' className='input-text' onSubmit={handleSubmit}>
                 <input type="text" id="username" name="email" placeholder="Your Email"  required value={user.email} onChange={handleInputs}/><br/>
-                <input type="submit" value="Send" onClick={handleSubmit} /><br/>
-                <input type="submit" value="Resend the link" onClick={handleSubmit} />
+                <input type="submit" value="Send"  /><br/>
+                <input type="submit" value="Resend the link"  />
                 {response && <div>{response}</div>}
                 {error && <div style={{color:'red',fontWeight:'500'}}>{error}</div>}<br/>
                 </form>

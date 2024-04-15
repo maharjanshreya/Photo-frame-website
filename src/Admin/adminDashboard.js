@@ -15,6 +15,8 @@ import GetUserDetails from './getUserDetails';
 import Alert from '../Images/alert.png';
 import { ModalBody } from 'react-bootstrap';
 import PostUsers from './postUsers';
+import { toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 function Dashboard() {
   const [selectedOption, setSelectedOption] = useState('Create Category');
   const [show, setShow] = useState(false); // for edit category
@@ -100,12 +102,12 @@ function Dashboard() {
     }
     const data = await res.json();
     if (res.status === 200 || !data) {
-      window.alert("already exists category");
-      console.log("Category akready exists");
+      toast.error("Category already exists.");
+      console.log("Category already exists");
 
     } else {
-      window.alert("valid Category");
-      console.log("valid Category");
+      toast.success('Category Added Successfully.');
+      console.log("Category Added Successfully.");
       categoryFunc();
     }
   }
@@ -128,12 +130,14 @@ function Dashboard() {
         try {
           // Update the state to remove the deleted category
           setCategoryData(prevCategories => prevCategories.filter(category => category.id !== _id));
+          toast.success('Category Deleted Successfully.');
         } catch (error) {
           console.error('Error during category deletion', error);
+          toast.error(error);
           // Handle error, show a message, etc.
         }
       } else {
-        console.error('Failed to delete category messafe');
+        console.error('Failed to delete category message');
         // Handle error, show a message, etc.
       }
     } catch (error) {
@@ -160,7 +164,9 @@ function Dashboard() {
         try {
           // Update the state to remove the deleted category
           setProductData(prevProduct => prevProduct.filter(product => product._id !== _id));
+          toast.success("Product Deleted Successfully");
         } catch (error) {
+          toast.error(error);
           console.error('Error during product deletion', error);
           // Handle error, show a message, etc.
         }
@@ -209,6 +215,7 @@ function Dashboard() {
   const [categoryData, setCategoryData] = useState([]);
   const [productData, setProductData] = useState([]);
   const [userData, setUserData] = useState([]);
+  
   const productFunc = async () => {
     try {
       const res = await fetch('/products', {
@@ -327,10 +334,10 @@ function Dashboard() {
                 {selectedOption === 'Create Category' && (
                   <div>
                     <h4 className='header-text' style={{ color: '#444141' }}>Manage Category</h4>
-                    <form method='POST'>
+                    <form method='POST' onSubmit={handleSubmit} >
                       <input type='text' placeholder='Enter your category' name="name" className='category' required value={category.name} onChange={handleInputs} />
-                      <input type='submit' value="Add" onClick={handleSubmit} />
-                    </form>
+                      <input type='submit' value="Add"  />
+                    </form><Toaster position="top-center" reverseOrder={true} />
 
                   </div>
 
