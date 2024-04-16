@@ -35,13 +35,14 @@ const getImageByUserId = async (req, res) => {
   const userId = req.params.userId;
 
   try {
-      const upload = await Upload.findOne({ user: userId });
+      const upload = await Upload.find({ user: userId });
 
       if (!upload) {
           return res.status(404).json({ error: 'Image data not found for the user' });
       }
-      res.set('Content-Type', 'image/png'); 
-      res.send(upload.imageData);
+      
+      const imageDataArray = upload.map(upload => upload.imageData);
+      res.status(200).json({ imageDataArray });
   } catch (error) {
       console.error('Error retrieving image data:', error);
       res.status(500).json({ error: 'Failed to retrieve image data' });

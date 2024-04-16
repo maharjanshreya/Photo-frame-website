@@ -5,8 +5,8 @@ import Frames from '../Images/product7.png';
 import html2canvas from 'html2canvas';
 import Button from 'react-bootstrap/Button';
 import Images from '../Images/product6.png';
-import { useLocation } from 'react-router-dom';
-
+import { useLocation,useNavigate } from 'react-router-dom';
+import ViewPage from './ImageGallery';
 function Image(){
   const [file, setFile] = useState(null);
 
@@ -16,6 +16,7 @@ function Image(){
     setFile(selectedFile);
   };
   const location = useLocation();
+  const navigate = useNavigate();
   const imageURL = location.state?.imageURL || null;
   const [rotationAngle, setRotationAngle] = useState(0);
   const handleRotate = () => {
@@ -84,15 +85,19 @@ const handleImageChange = (e) => {
         body: JSON.stringify({ imageData,userId}),
       })
         .then(response => {
+          console.log("Image uplaod: ",imageData);
+          
           // Handle response from server
-          console.log("Image uplaod: ",response);
+          
         })
         .catch(error => {
           console.error('Error uploading image:', error);
         }); 
+        //navigate(-1, { state: { image: imageData } });
       } else {
           console.error('Invalid imageData format:', imageData);
       }
+      
     })
     .catch((error) => {
       console.error('Error capturing div as image:', error);
@@ -308,10 +313,10 @@ const handleRotateImage = () => {
         
         
         <Button className="round-button" style={{backgroundColor:'#225931',borderColor:'#225931',marginTop:'9px'}} onClick={saveDivAsImage}>Download Image</Button>
-        <Button className="round-button" style={{backgroundColor:'#225931',borderColor:'#225931',marginTop:'9px'}} onClick={handleSaveImage}>Save Image</Button>
+        <Button className="round-button" style={{backgroundColor:'#225931',borderColor:'#225931',marginTop:'9px'}} onClick={handleSaveImage}>Add to Cart</Button>
 
       </div>
-
+      {/* <ViewPage /> */}
     </div>
 
     

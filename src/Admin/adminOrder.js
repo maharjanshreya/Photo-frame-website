@@ -6,9 +6,11 @@ import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { CardTitle } from 'react-bootstrap';
 import { formatDateString } from '../ProductView/time';
-
+import { Pagination } from 'react-bootstrap';   
 function Order() {
     const [orders, setOrders] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5; 
     const [view, setView] = useState('all');
     const [toggleColor, setToggleColor] = useState("red");
     const [defaultStatus, setDefaultStatus] = useState('Processing');
@@ -17,22 +19,21 @@ function Order() {
     const getColor = (status) => {
         switch (status) {
             case 'Processing':
-                return 'blue'; // Change to blue for Processing status
+                return 'blue';   
             case 'Shipped':
-                return 'orange'; // Change to orange for Shipped status
+                return 'orange'; 
             case 'Delivered':
-                return 'green'; // Change to green for Delivered status
+                return 'green'; 
             case 'Cancelled':
-                return 'red'; // Change to red for Cancelled status
+                return 'red';   
             default:
-                return 'black'; // Default color
+                return 'black'; 
         }
     };
 
     const handleDelivery = async (orderId, status, color) => {
         setToggleColor({ ...toggleColor, [orderId]: color });
-        try {
-            // Send a PUT request to update the order status
+        try { 
             const response = await fetch(`/update-order/${orderId}`, {
                 method: 'PUT',
                 headers: {
@@ -73,7 +74,6 @@ function Order() {
    
     const handleViewChange = (status) => {
         if (status === activeButton) {
-            // If it is, do nothing and return
             return;
         }
         setActiveButton(status); // Update the active button state
@@ -101,7 +101,10 @@ function Order() {
         setFilteredOrders(newFilteredOrders);
     };
 
-
+    const paginate = (items, pageNumber, pageSize) => {
+        const startIndex = (pageNumber - 1) * pageSize;
+        return items.slice(startIndex, startIndex + pageSize);
+      };
     useEffect(() => {
         fetchOrders();
     }, []);
@@ -118,7 +121,7 @@ function Order() {
                     <Button style={{ backgroundColor: activeButton === 'Cancelled' ? 'blue' : '#e6e6e6', borderColor: '#e6e6e6', color: '#7d7a7a', marginRight: '4px' }} onClick={() => handleViewChange('Cancelled')}>Cancelled</Button>
                     <Button style={{ backgroundColor: activeButton === 'Processing' ? 'blue' : '#e6e6e6', borderColor: '#e6e6e6', color: '#7d7a7a', marginRight: '4px' }} onClick={() => handleViewChange('Processing')}>On Progress</Button>
                     <Button style={{ backgroundColor: activeButton === 'Delivered' ? 'green' : '#e6e6e6', color: activeButton === 'Delivered' ? 'white' : '#7d7a7a',borderColor: '#e6e6e6', marginRight: '4px' }} onClick={() => handleViewChange('Delivered')}>Delivered</Button>
-                    <div className='table-responsive' style={{ marginTop: '70px' }}>
+                    <div className='table-responsive' style={{ marginTop: '70px',marginBottom: '70px' }}>
                         <Card style={{ padding: '10px' }}>
                             <CardTitle>Orders</CardTitle>
                             <table className="table align-middle mb-0 bg-white">
@@ -134,7 +137,7 @@ function Order() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                        {filteredOrders.map(order => (
+                                        {paginate(filteredOrders, currentPage, itemsPerPage).map((order) => (
                                             <tr key={order._id}>
                                                 <td>
                                                     <p className="fw-normal mb-1">{order._id}</p>
@@ -185,6 +188,17 @@ function Order() {
                                     ))}
                                 </tbody>
                             </table>
+                            <Pagination style={{justifyContent:"center",marginTop:'9px'}}>
+                                {Array.from({ length: Math.ceil(filteredOrders.length / itemsPerPage) }).map((_, index) => (
+                                    <Pagination.Item
+                                    key={index}
+                                    active={index + 1 === currentPage}
+                                    onClick={() => setCurrentPage(index + 1)}
+                                    >
+                                    {index + 1}
+                                    </Pagination.Item>
+                                ))}
+                                </Pagination>
                         </Card>
                     </div>
                 </div>

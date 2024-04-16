@@ -49,7 +49,7 @@ function Homepage() {
 
 
   const productView = (productId) => {
-    navigate(`/productView/${productId}`);
+    navigate(`/productView/${productId}`, { state: { additionalInfo: "New Products" } });
   }
 
   const productFunc = async () => {
@@ -147,7 +147,7 @@ function Homepage() {
   const [isTopRatedActive, setIsTopRatedActive] = useState(false);
 
   const handleShowNewFeatured = () => {
-
+    const crumb = "New Feature";
     setIsNewFeaturedActive(true);
     setIsTopRatedActive(false);
     setShowNewFeatured(true);
@@ -275,16 +275,16 @@ function Homepage() {
           </div>
         </div>
         </div>
-        <div>
+        <div id='view'>
           <h1 className='' style={{ marginLeft: '55px',paddingLeft: '12px', fontFamily: 'Recoleta,Georgia,serif', fontWeight: '800', fontSize: '30px' }}>View Products</h1>
         </div>
 
 
 
 
-        <div className={`fade-in ${isVisible ? 'visible' : 'hidden'}`}>
-          <div className="container">
-            <div className="d-flex justify-content-left my-3">
+        <div className={`fade-in ${isVisible ? 'visible' : 'hidden'}`} id='new-products'>
+          <div className="container" >
+            <div className="d-flex justify-content-left my-3"  id='new-products'>
               <p
                 className={`m-4 ${isNewFeaturedActive ? 'active-button-t' : ''}`}
                 onClick={handleShowNewFeatured}
@@ -309,13 +309,14 @@ function Homepage() {
                 <div className='row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4'>
                   {newestProducts.map((row) => (
 
-                    <div key={row?._id} className="col justify-content-center">
+                    <div key={row?._id} className="col justify-content-center" >
                       <img
                         src={`/product-image//${row._id}`}
                         alt="Product Image"
                         className="img"
                         height={300}
-                        width={250} onClick={() => productView(row?._id)}
+                        
+                        width={250} style={{cursor:'pointer'}} onClick={() => productView(row?._id)}
                       />
                       <div className='product-name' style={{ maxWidth: '250px' }}>
                         <p className=''>{row?.productName}</p>

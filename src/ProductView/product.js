@@ -1,6 +1,8 @@
 import { React, useState, useEffect } from 'react';
+import './product.css';
+
 import Navbar from '../Navbar/navbar';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { CiStar } from "react-icons/ci";
 import './product.css';
 import Button from 'react-bootstrap/Button';
@@ -9,6 +11,7 @@ import Card from 'react-bootstrap/Card';
 import Cart from '../ProductView/cart';
 import Badge from 'react-bootstrap/Badge';
 import Stack from 'react-bootstrap/Stack';
+import { Link } from "react-router-dom";
 import axios from 'axios';
 import { MdOutlineUpdate } from "react-icons/md";
 import { MdOutlinePolicy } from "react-icons/md";
@@ -24,11 +27,17 @@ import ReactStars from "react-rating-stars-component";
 import { MdOutlineSupervisorAccount } from "react-icons/md";
 import { formatDateString } from './time';
 import { LiaShippingFastSolid } from "react-icons/lia";
+
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
 let product_id = null;
 
 function Product() {
+  const location = useLocation();
+  const imageData = location?.state?.image || null;
+  const crumbs = location?.state?.additionalInfo || null;
+  console.log("Received crumbs in Product:", crumbs);
+  console.log("Received imageData in Product:", imageData);
   const { cart, setCart } = useCart();
-  const { wishlist, setwishlist } = useCart();
   const navigate = useNavigate();
   const userIdLS = localStorage.getItem('userId');
   const { productId } = useParams();
@@ -71,7 +80,7 @@ function Product() {
     //setProduct_Id(p_id);
     if (product_id) {
       setQuantity(prevQuantity => prevQuantity + 1);
-      addToCart(quantity+1);
+      addToCart(quantity + 1);
     }
   }
 
@@ -108,24 +117,30 @@ function Product() {
       console.log('Error in fetching image data', err);
     }
   };
+
   
-  const [width, setWidth] = useState(productData.size || '');
+  const [w, setW] = useState('');
+  const [h, setH] = useState('');
+  
+  const handleWChange = (event) => {
+    setW(String(event.target.value));
 
-
-  const handleWidthChange = (event) => {
-    setWidth(event.target.value);
   };
-  console.log("width",width);
+  const handleHChange = (event) => {
+    setH(String(event.target.value));
+
+  };
 
   const addToCart = async (quantityToAdd) => {
-    console.log("width = ",width);
+    const dimensionsString = `${w} X ${h}`;
     const data = {
       userId: userIdLS,
       items: [
         {
           productId: product_id,
           quantity: quantityToAdd,
-          size: width,
+          size: dimensionsString || productData.size,
+
         },
       ],
     };
@@ -175,117 +190,143 @@ function Product() {
   };
 
   const totalCount = reviewData.filter(review => review.review && review.review.length > 0).length;     // to count the number of reviews
+  let overallRatingSum = 0;
 
   useEffect(() => {
     productFunc();
     imageFunc();
     getReviewFunc();
+    const calculateOverallRatingSum = (reviewData) => {
+      let sum = 0;
+      for (let i = 0; i < reviewData.length; i++) {
+        sum += reviewData[i].rating;
+      }
+      const averageRating = sum / reviewData.length;
+      return averageRating;
+    };
 
+    const maxStarCount = 5;
+    overallRatingSum = parseInt(calculateOverallRatingSum(reviewData).toFixed(1)) || 0;
+    console.log(overallRatingSum);
 
   }, [product_id]);
 
   const starStyle = { color: '#B8930F', size: 30, fill: '#B8930F' };
-
-  const calculateOverallRatingSum = (reviewData) => {
-    let sum = 0;
-    for (let i = 0; i < reviewData.length; i++) {
-      sum += reviewData[i].rating;
-    }
-    const averageRating = sum / reviewData.length;
-    return averageRating;
-  };
-  const maxStarCount = 5;
-  const overallRatingSum = parseInt(calculateOverallRatingSum(reviewData).toFixed(1)) || 0;
-  console.log(overallRatingSum);
-  
-  const overallRatingMapped = (overallRatingSum / maxStarCount) * 5;
-
   const [showAllReviews, setShowAllReviews] = useState(false);
 
   const toggleShowAllReviews = () => {
     setShowAllReviews(!showAllReviews);
   };
-  
-  
+
+  const handleScrollToView = () => {
+    const viewElement = document.getElementById('view');
+    if (viewElement) {
+      viewElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (<>
     <Navbar />
 
     <div className='product-single'>
 
-      <div className=''>
+      <div className='d-flex flex-row align-items-start'>
         <div className='image-product'>
           <div className='image-overlay'>
             {imageURL && <img src={imageURL} alt="Product Image" style={{ width: '400px', height: '450px' }} />}
           </div>
-
+          
         </div>
-        <div>
+        <div style={{marginRight:'20px'}}>
+          <Breadcrumb style={{ color: 'red' }}>
+            <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+            <Breadcrumb.Item >
+              <Link to="/" onClick={handleScrollToView}>{crumbs}</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item active> {productData && productData.productName}</Breadcrumb.Item>
+          </Breadcrumb>
 
           {productData && (
             <div>
-              <h3 className='product-names'>{productData.productName}</h3>
-              {Array.from({ length: 5 }).map((_, index) => (
-                <CiStar key={index} style={starStyle} />
-              ))}
-              <p className='price-single-product'>Rs. {productData.price}</p>
-              <hr style={{ paddingRight: '60px' }} />
-              <p style={{ textAlign: 'justify' }}>{productData.description}</p>
 
+              <h3 className='product-names'>{productData.productName}</h3><hr />
+              <div className="d-flex flex-row align-items-center">
+                <div className="mr-2" style={{ padding: '10px 25px 10px 0px' }}><span className='price-single-product' >Rs. {productData.price}</span></div>
+                <div className="p-2 mr-2"><ReactStars size={26} value={overallRatingSum} edit={false} className='mr-5 mb-0' style={{ marginRight: '10px' }} /></div>
+                <div className="p-2 mr-2"><span>{totalCount > 0 ? <span>{totalCount}</span> : <span>0</span>} review</span></div>
+              </div>
+              <div className="d-flex flex-row align-items-center">
+              <div className="mr-2" style={{color:'#aeaeae', padding: '10px 25px 10px 0px' }}><span className='' >Personalize frame size</span></div>
+
+              </div>           
+                <div className="w-h">
+                  <input type="number" value={w} onChange={handleWChange} placeholder='W' />
+                  <input type="number" value={h} onChange={handleHChange} placeholder='H'/> 
+              </div>
+              <div className=""><Button variant="outline-dark" className='add-to-cart' onClick={(e) => { e.preventDefault(); handleCart(); }}>ADD TO CART</Button></div>
+
+              {/* <input type="text" value={width} onChange={handleWidthChange} /> */}
+               
+              <p style={{ textAlign: 'justify',fontFamily:'',marginTop:'20px',marginBottom:'38px'}}>{productData.description}</p>
+              <span className="sub-product-heading">Category </span>
               {productData.category && (
-                <p> <span style={{ fontWeight: '600' }}>Category: </span>{productData.category.name}</p>
+                
+                <p style={{}}>{productData.category.name}</p>
               )}
-              <p style={{ fontWeight: '600' }}>Size: {productData.size}</p>
-              <input type="text" value={width} onChange={handleWidthChange} />
-              <p style={{ fontWeight: '600' }}>Dimension: {productData.dimension}</p>
+              <span className="sub-product-heading">Size </span>
+             <p>{productData.size}</p>
+              <span className="sub-product-heading">Dimension </span>
+              <p>{productData.dimension}</p>
               <p style={{ fontWeight: '600' }}>
                 {productData.quantity > 0 ? `Available(${productData.quantity})` : <span style={{ color: 'red', fontWeight: '800' }}>Out of Stock</span>}
               </p>
-              <button className='add-to-cart' onClick={(e) => { e.preventDefault(); handleCart(); }}>Add To Cart</button>
+             
+
               <button className='add-to-cart' onClick={(e) => { e.preventDefault(); handleUpload(imageURL); }}>Upload</button>
-              
+
             </div>
           )}<Toaster position="top-center" reverseOrder={true} />
-        </div><br/>
-        <div className='d-flex justify-content-center ' style={{ textAlign: 'center', margin:"30px"}}>
-          <div className="row">
+        </div></div><br />
+        <div className='d-flex justify-content-center ' style={{ textAlign: 'center', margin: "30px" }}>
+          <div className="row p-5 ">
             <div className="col-auto">
               <MdOutlineUpdate />
             </div>
             <div className="col mb-0">
-              <p>Delivery Time</p>
+              <p >Delivery Time</p>
               <p>{productData.minDelivery}-{productData.maxDelivery} days</p>
             </div>
           </div>
 
-          <div className="row">
+          <div className="row p-5">
             <div className="col-auto">
-            <LiaShippingFastSolid />
+              <LiaShippingFastSolid />
             </div>
-            <div className="col mb-0" style={{textAlign:'left'}}>
-            <p>Shipping Cost</p>
-            <p className='text-center'> Rs. {productData.shipping} </p>
+            <div className="col mb-0" style={{ textAlign: 'left' }}>
+              <p>Shipping Cost</p>
+              <p className='text-center'> Rs. {productData.shipping} </p>
             </div>
           </div>
 
-          <div className="row">
+          <div className="row p-5">
             <div className="col-auto">
-            <MdOutlinePolicy />
+              <MdOutlinePolicy />
             </div>
-            <div className="col mb-0" style={{textAlign:'left'}}>
-            <p>Return Policy</p>
-            <p className='text-center'>Nonreturnable</p>
+            <div className="col mb-0" style={{ textAlign: 'left' }}>
+              <p>Return Policy</p>
+              <p className='text-center'>Nonreturnable</p>
             </div>
           </div>
-          
+
         </div>
 
         <hr />
         <div><h4 className='m-1'>Overall Rating</h4>
           <h1 style={{ fontFamily: 'Gelasio' }}>{overallRatingSum}</h1>
-        {console.log("jsncsj",overallRatingSum)}
+          {console.log("jsncsj", overallRatingSum)}
           <ReactStars
             size={30}
-            value={overallRatingSum} edit={false}/>
+            value={overallRatingSum} edit={false} />
           <div className='d-flex'>
 
 
@@ -305,13 +346,13 @@ function Product() {
 
               <textarea value={review} onChange={(e) => setReview(e.target.value)} placeholder='Write review on this product' rows="4" cols="80" style={{ borderRadius: '6px', padding: '5px 5px' }}></textarea><br />
               <Button variant="warning" style={{ color: 'white' }} onClick={(e) => { e.preventDefault(); postReviewFunc(); }}>Submit Review</Button>
-            </div><br /><hr/>
+            </div><br /><hr />
             <h4>View Comments</h4>
             {reviewData.slice(0, showAllReviews ? reviewData.length : 3).map(review => (
               review.review && (
                 <div key={review._id} className="review">
                   <Card style={{ backgroundColor: '#fafafa', margin: '15px 0px' }}>
-                    <CardBody style={{paddingBottom:"0px"}}>
+                    <CardBody style={{ paddingBottom: "0px" }}>
                       <div className="row">
                         <div className="col-auto">
                           <MdOutlineSupervisorAccount />
@@ -320,12 +361,12 @@ function Product() {
                           <p>{review.user.email}</p>
                           <ReactStars size={24} edit={false} value={review.rating} />
                           <p> {review.review}</p>
-                          <p style={{color:"#808080",fontSize:'17px'}}>{formatDateString(review.createdAt)}</p>
+                          <p style={{ color: "#808080", fontSize: '17px' }}>{formatDateString(review.createdAt)}</p>
                         </div>
                       </div>
-                      
-                      
-                       </CardBody>
+
+
+                    </CardBody>
                   </Card>
                 </div>
               )))}
@@ -339,7 +380,7 @@ function Product() {
 
           </>
         </div>
-      </div>
+      
     </div>
   </>);
 }

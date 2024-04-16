@@ -12,6 +12,7 @@ const cartController = async (req, res) => {
     //console.log(productIdd);
     const quantity = items[0].quantity;
     const size = items[0].size;
+    const imgUrl = items[0].imageURL;
     console.log("Size", size);
     const isValidProduct = await Product.exists({ _id: productIdd });
     if (!isValidProduct) {

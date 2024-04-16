@@ -1,104 +1,57 @@
-// import React from "react";
-// import { render, screen, waitFor } from "@testing-library/react";
-// import userEvent from "@testing-library/user-event";
-// import Login from "../LoginRegister/Login";
-// import { BrowserRouter } from "react-router-dom";
-
-// // Mock the react-router-dom module
-// jest.mock("react-router-dom", () => ({
-//   ...jest.requireActual("react-router-dom"),
-//   useNavigate: jest.fn(), // Mock useNavigate
-// }));
-
-// // Mocking the fetch function
-// global.fetch = jest.fn(() =>
-//   Promise.resolve({
-//     json: () => Promise.resolve({ success: true }),
-//     ok: true,
-//   })
-// );
-
-// describe("Login component", () => {
-//   it("submits email and password", async () => {
-//     const email = "admin@gmail.com";
-//     const password = "admin123";
-//     const mockNavigate = jest.fn();
-//     require("react-router-dom").useNavigate.mockReturnValue(mockNavigate);
-
-//     render(
-//       <BrowserRouter> {/* Wrap the Login component with BrowserRouter */}
-//         <Login />
-//       </BrowserRouter>
-//     );
-
-//     userEvent.type(screen.getByPlaceholderText(/email/i), email);
-//     userEvent.type(screen.getByPlaceholderText(/password/i), password);
-//     userEvent.click(screen.getByRole("button", { name: /login/i }));
-
-//     // Add some debug statements to understand the behavior
-//     console.log("mockNavigate calls:", mockNavigate.mock.calls);
-// // Add debug output to see if there are any errors during test execution
-// console.log("Fetch calls:", fetch.mock.calls);
-// console.log("Document body:", document.body.innerHTML);
-//     // Wait for the API call to resolve
-//     await waitFor(() => {
-//       console.log("Fetch calls:", fetch.mock.calls);
-//       console.log("Document body:", document.body.innerHTML);
-//       expect(fetch).toHaveBeenCalledWith('/signin', {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify({ email, password }),
-//         credentials: "include",
-//       });
-
-//       // Add a debug statement to check the received arguments for mockNavigate
-//       console.log("mockNavigate calls:", mockNavigate.mock.calls);
-
-//       expect(mockNavigate).toHaveBeenCalledWith("/adminDashboard");
-//     });
-//   });
-// });
+import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import Login from "../LoginRegister/Login";
+import {Login} from '../LoginRegister/Login';
 
-// Mock the navigate function
-const mockNavigate = jest.fn();
+describe('Login component', () => {
+  it('should render login form', async () => {
+    // Render the component
+    const { getByPlaceholderText, getByText } = render(<Login />);
 
-HTMLCanvasElement.prototype.getContext = jest.fn(() => {
-  // Mock implementation, return whatever getContext needs to return
-  return {};
-});
-// Mock the fetch function
-global.fetch = jest.fn().mockResolvedValue({
-  ok: true,
-  json: () => Promise.resolve({ success: true }),
-});
+    // Find input fields and submit button
+    const emailInput = getByPlaceholderText('Email');
+    const passwordInput = getByPlaceholderText('Password');
+    const submitButton = getByText('Login');
 
-test('Login component submits email and password and redirects to admin dashboard', async () => {
-  // Render the Login component
-  const { getByLabelText, getByText } = render(<Login navigate={mockNavigate} />); // Assuming you pass the navigate function as a prop
+    // Fill in the form inputs
+    fireEvent.change(emailInput, { target: { value: 'admin@gmail.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'admin123' } });
 
-  // Fill out the form fields
-  fireEvent.change(getByLabelText('email'), { target: { value: 'admin@gmail.com' } });
-  fireEvent.change(getByLabelText('password'), { target: { value: 'admin123' } });
+    // Simulate form submission
+    fireEvent.click(submitButton);
 
-  // Click the login button
-  fireEvent.click(getByText('Login'));
-
-  // Wait for the login process to complete
-  await waitFor(() => {
-    // Check that the fetch function was called with the correct URL and options
-    expect(fetch).toHaveBeenCalledWith('/signin', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({ email: 'admin@gmail.com', password: 'admin123' }),
+    // Wait for async tasks (e.g., API calls) to complete
+    await waitFor(() => {
+      // Assert that the user is redirected after successful login
+      expect(window.location.pathname).toBe('/adminDashboard');
     });
-    // Check that the navigate function was called with the correct path
-    expect(mockNavigate).toHaveBeenCalledWith('/adminDashboard');
+  });
+
+  it('should display error message on invalid login', async () => {
+    // Mock fetch function to simulate failed login
+    jest.spyOn(global, 'fetch').mockResolvedValueOnce({
+      ok: false,
+      json: async () => ({ message: 'Invalid email or password' }),
+    });
+
+    // Render the component
+    const { getByPlaceholderText, getByText } = render(<Login />);
+
+    // Find input fields and submit button
+    const emailInput = getByPlaceholderText('Email');
+    const passwordInput = getByPlaceholderText('Password');
+    const submitButton = getByText('Login');
+
+    // Fill in the form inputs
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+
+    // Simulate form submission
+    fireEvent.click(submitButton);
+
+    // Wait for async tasks (e.g., API calls) to complete
+    await waitFor(() => {
+      // Assert that the error message is displayed
+      expect(getByText('Invalid email or password')).toBeInTheDocument();
+    });
   });
 });

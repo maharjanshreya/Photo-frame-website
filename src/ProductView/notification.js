@@ -117,27 +117,14 @@ function Notification() {
       <Navbar />
       <h2 style={{ margin: '40px',fontSize:'15px', fontWeight:'bold',color:'gray' }}>Notification</h2>
       <div style={{ margin: '40px' }}>
-        <h3>Orders</h3>
+        <h3>Today's Notification</h3>
         {/* Show today's notifications in an Alert */}
         {todayNotifications.map(notification => (
           <Alert key={notification._id} variant="primary">
             {notification.message}
           </Alert>))}
 
-        {/* Show other notifications below the Alert 
-        <h3>Other Notifications</h3>
-        <ul>
-          {otherNotifications.map(notification => (
-            <li key={notification._id}>{notification.message}</li>
-          ))}
-        </ul>*/}
-      </div>
-
-        
-      <div style={{ margin: '40px' }}>
-      <h3>Reports</h3>
-        
-        {Array.isArray(todayReports) && todayReports.length > 0 ? (
+          {Array.isArray(todayReports) && todayReports.length > 0 ? (
           todayReports.map((report, index) => (
             <div key={index} className='section-notify-today'>
 
@@ -165,14 +152,29 @@ function Notification() {
             </div>
           ))
         ) : (
-          <p>No reports available for today.</p>
+          null
         )}
 
+        
+        
+      </div>
+
+        
+      <div style={{ margin: '40px' }}>
+    
         <div style={{ marginTop: '40px' }}>
           <h3>Recent</h3>
+          
+        
+          {otherNotifications.map(notification => (
+            <Alert key={notification._id} variant="secondary">
+            {notification.message}</Alert>
+          ))}
+        
           {Array.isArray(olderReports) && olderReports.length > 0 ? (
             olderReports.map((report, index) => (
-              <div key={index} className='section-notify'>
+              <Alert key={index} variant="secondary" >
+              <div key={index} >
                 <p>Title: {report.title}</p>
                 <p>Created At: {formatDateString(report.adminReply[0].createdAt)}</p>
 
@@ -190,6 +192,7 @@ function Notification() {
                   ))}
                 </div>
               </div>
+              </Alert>
             ))
           ) : (
             <p>No older reports available.</p>

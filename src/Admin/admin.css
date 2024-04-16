@@ -91,7 +91,18 @@
     border-radius: 4px;
     box-sizing: border-box;
   }
-  
+  .add-notify{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #888888;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  .name{
+    padding-left: 13px;
+  }
   .admin-panel{
     margin-right: 30px;
   }

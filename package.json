@@ -62,5 +62,8 @@
     "moduleNameMapper": {
       "^axios$": "axios/dist/node/axios.cjs"
     }
+  },
+  "devDependencies": {
+    "jest-canvas-mock": "^2.5.2"
   }
 }
