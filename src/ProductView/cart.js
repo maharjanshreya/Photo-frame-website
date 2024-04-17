@@ -1,5 +1,5 @@
 import Navbar from '../Navbar/navbar';
-import { React, useEffect, useState } from 'react';
+import { React, useEffect, useState ,useContext} from 'react';
 import './product.css';
 
 import Modal from 'react-bootstrap/Modal';
@@ -11,20 +11,50 @@ import { MdDelete } from "react-icons/md";
 import { FaAngleDown } from "react-icons/fa6";
 import { useCart } from '../context/cart';
 import Map from '../ProductView/map';
+import { useParams, useLocation } from 'react-router-dom';
+import { useUpload } from '../context/uploadId';
 let total = 0;
 function Cart() {
- 
+  const { upload } = useUpload();
   const [error, setError] = useState('');
   const { cart, setCart } = useCart();
   const navigate = useNavigate();
   const [cartData, setCartData] = useState({ cart: { items: [] } });
   const [imageURL, setImageURL] = useState(null);
+  const [im, setIm] = useState({});
   const userId = localStorage.getItem('userId');
   const [subtotal, setSubtotal] = useState(0);
   const [total, setTotal] = useState(0);
   const [shipping, setShipping] = useState(0);
 
+  console.log("Upload ID",upload);
+
+  const fetchImageData = async (uploadId, productId) => {
+    console.log("Fetched Upload ID", uploadId);
+    try {
+      const response = await fetch(`/getImage-upload/${encodeURIComponent(uploadId)}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch image data');
+      }
+      const imageData = await response.json();
+      console.log(imageData);
+      // Convert the buffer to a base64 string
+      const base64String = btoa(
+        new Uint8Array(imageData.imageData.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
+      const url = `data:image/png;base64,${base64String}`;
+      
+      // Set the image URL for the corresponding product ID
+      setIm(prevImages => ({
+        ...prevImages,
+        [productId]: url
+      }));
+    } catch (error) {
+      console.error('Error retrieving image data:', error);
+    }
+  };
   const getCart = async () => {
+    
     try {
       const userId = localStorage.getItem('userId');
 
@@ -43,14 +73,38 @@ function Cart() {
       }
 
       const datas = await res.json();
-      setCartData(datas);
-     // console.log("cart data quantity ", datas);
-      setCart(datas.cart.items.length);
-      console.log(datas.cart);
       
-      //console.log("cart data for image",datas.cart.items[0].productId._id);
-      //console.log("cardData",cartData);
-      //console.log("Items length in cart: ",datas.cart.items.length);
+      setCartData(datas);
+      
+      setCart(datas.cart.items.length);
+      console.log("cart: ",datas.cart.items);
+      if (Array.isArray(datas.cart.items)) {
+        datas.cart.items.forEach(item => {
+          const { uploadId, productId } = item;
+          // Now you can use 'uploadId' and 'productId' as needed
+          console.log(uploadId, productId._id);
+          // You can call functions or perform any other operations using 'uploadId' and 'productId'
+          // For example:
+          fetchImageData(uploadId,  productId._id); // Call fetchImageData function with uploadId and productId
+        });
+      }
+      // if (Array.isArray(datas.cart.items)) {
+      //   datas.cart.items.forEach(item => {
+      //     const uploadId = item.uploadId;
+      //     // Now you can use 'uploadId' as needed
+      //     console.log(uploadId);
+      //     // You can call functions or perform any other operations using 'uploadId'
+      //     // For example:
+      //     fetchImageData(uploadId); // Call fetchImageData function with uploadId
+      // }); 
+      // } else {
+      //   // If datas is not an array, just call fetchImageData with the uploadId
+      //   fetchImageData([datas.cart.items.uploadId]);
+      //   console.log("Upload ID",datas.cart.items.uploadId);
+      // }
+    
+      
+      
       if (datas.cart.items && datas.cart.items.length > 0) {
         const imagePromises = datas.cart.items.map(async (item) => {
           try {
@@ -244,6 +298,7 @@ function Cart() {
                                             <MDBCardImage key={image.productId} src={image.url}
                                               fluid className="rounded-3" style={{ width: "45px" }} alt="Avatar" />)
                                         ))}
+                                       {im[item.productId._id] && <MDBCardImage src={im[item.productId._id]} alt="Product" fluid className="rounded-3" style={{ width: "45px" }} />}
                                       </div>
                                       <div className="ms-4">
                                         <MDBTypography tag="h5">

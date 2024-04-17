@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect ,useContext} from 'react';
 import './product.css';
 
 import Navbar from '../Navbar/navbar';
@@ -27,16 +27,20 @@ import ReactStars from "react-rating-stars-component";
 import { MdOutlineSupervisorAccount } from "react-icons/md";
 import { formatDateString } from './time';
 import { LiaShippingFastSolid } from "react-icons/lia";
-
+import ViewPage from '../Homepage/ImageGallery';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import { useUpload } from '../context/uploadId';
 let product_id = null;
 
 function Product() {
   const location = useLocation();
-  const imageData = location?.state?.image || null;
+  const { setUpload } = useUpload();
+
+  const uploadId = location?.state?.image;
+  setUpload(uploadId);
   const crumbs = location?.state?.additionalInfo || null;
-  console.log("Received crumbs in Product:", crumbs);
-  console.log("Received imageData in Product:", imageData);
+ // console.log("Received crumbs in Product:", crumbs);
+  //console.log("Received imageData in Product:", imageData);
   const { cart, setCart } = useCart();
   const navigate = useNavigate();
   const userIdLS = localStorage.getItem('userId');
@@ -85,10 +89,10 @@ function Product() {
   }
 
   const handleUpload = (imageURL) => {
-    console.log(imageURL);
+    //console.log(imageURL);
     //setProduct_Id(p_id);
     if (product_id) {
-      navigate('/imagepage', { state: { imageURL } });
+      navigate('/imagepage', { state: { imageURL,productId } });
     }
   }
 
@@ -132,7 +136,7 @@ function Product() {
   };
 
   const addToCart = async (quantityToAdd) => {
-    const dimensionsString = `${w} X ${h}`;
+    const dimensionsString = w && h ? `${w} X ${h}` : null;
     const data = {
       userId: userIdLS,
       items: [
@@ -140,7 +144,7 @@ function Product() {
           productId: product_id,
           quantity: quantityToAdd,
           size: dimensionsString || productData.size,
-
+          uploadId: uploadId,
         },
       ],
     };
@@ -224,7 +228,8 @@ function Product() {
       viewElement.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
+  
+ // console.log("Product Image data",imageData);
   return (<>
     <Navbar />
 
@@ -323,7 +328,7 @@ function Product() {
         <hr />
         <div><h4 className='m-1'>Overall Rating</h4>
           <h1 style={{ fontFamily: 'Gelasio' }}>{overallRatingSum}</h1>
-          {console.log("jsncsj", overallRatingSum)}
+         
           <ReactStars
             size={30}
             value={overallRatingSum} edit={false} />
@@ -380,7 +385,7 @@ function Product() {
 
           </>
         </div>
-      
+        <ViewPage /> 
     </div>
   </>);
 }

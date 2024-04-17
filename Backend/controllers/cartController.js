@@ -1,5 +1,6 @@
 const Cart = require('../model/cartModel');
 const Product = require('../model/productModel'); 
+const Upload = require('../model/uploadModel'); 
 const mongoose = require('mongoose');
 
 const cartController = async (req, res) => {
@@ -12,7 +13,7 @@ const cartController = async (req, res) => {
     //console.log(productIdd);
     const quantity = items[0].quantity;
     const size = items[0].size;
-    const imgUrl = items[0].imageURL;
+    const uploadId = items[0].uploadId;
     console.log("Size", size);
     const isValidProduct = await Product.exists({ _id: productIdd });
     if (!isValidProduct) {
@@ -24,7 +25,7 @@ const cartController = async (req, res) => {
       // If the user doesn't have a cart, create a new one
       const newCart = new Cart({
         userId,
-        items: [{ productId: productIdd, quantity, size }]
+        items: [{ productId: productIdd, quantity, size, uploadId}]
       });
       await newCart.save();
       return res.status(200).json({ success: true, message: 'Product added to cart successfully', cart: newCart });
@@ -38,9 +39,10 @@ const cartController = async (req, res) => {
     if (existingItem) {
       existingItem.quantity += 1;
     } else {
-      userCart.items.push({ productId: productIdd, quantity, size });
+      userCart.items.push({ productId: productIdd, quantity, size , uploadId});
     }
     await userCart.save();// Save the updated cart
+    console.log("User cart: ",userCart);
     res.status(200).json({ success: true, message: 'Product added to cart successfully', cart: userCart });
   } catch (err) {
     console.error(err);
@@ -58,6 +60,7 @@ const getCartController = async (req, res) => {
     if (!userCart) {
       return res.status(404).json({ success: false, message: 'Cart not found' });
     }
+    console.log("User cart in get: ",userCart) 
 
     res.status(200).json({ success: true, message: 'Cart retrieved successfully', cart: userCart });
     //console.log("User cart: ",userCart);

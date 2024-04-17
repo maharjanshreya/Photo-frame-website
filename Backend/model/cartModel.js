@@ -15,8 +15,14 @@ const mongoose = require('mongoose');
         type: String, 
         required: true,
     },
+    
+    uploadId:{
+        type: mongoose.ObjectId,
+        ref: 'Upload', // Reference to the Product model if you have one
+        
+    }
     });
-
+    
     const cartSchema = new mongoose.Schema({
     userId: {
         type: mongoose.ObjectId,

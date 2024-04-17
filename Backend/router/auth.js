@@ -13,7 +13,7 @@ const { useContext } = require('react');
 const { ObjectId } = require('mongodb');
 const { searchController } = require('../controllers/searchController.js');
 const { getNotification, createNotification } = require('../controllers/notificationController.js');
-const { uploadController, getImageByUserId } = require('../controllers/uploadController.js');
+const { uploadController, getImageByUserId, getImageByUploadId } = require('../controllers/uploadController.js');
 const { paymentController, handlePaymentSuccess } = require('../controllers/paymentController.js');
 const { addToWishlistController, getWishlistController } = require('../controllers/wishlistController.js');
 const { cartController, getCartController, removeCartController } = require('../controllers/cartController.js');
@@ -169,7 +169,7 @@ router.get('/search/:keyword', searchController);
 //route for user upload main
 router.post('/upload', authenticate, uploadController);
 router.get('/getImage/:userId', getImageByUserId);
-
+router.get('/getImage-upload/:uploadId', getImageByUploadId);
 
 //route for payment
 router.get('/handle-success/:session_id', authenticate, handlePaymentSuccess);

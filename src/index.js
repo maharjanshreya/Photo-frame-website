@@ -11,6 +11,7 @@ import { AuthProvider} from './context/token';
 import { Auth2Provider} from './context/role';
 import { UserProvider } from './context/user';
 import { BrowserRouter } from 'react-router-dom';
+import { UploadProvider} from './context/uploadId';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -21,9 +22,9 @@ root.render(
         <SearchProvider>
           <CartProvider>
             <WishlistProvider>
-            
+            <UploadProvider>
               <App />
-              
+              </UploadProvider>
               </WishlistProvider>
           </CartProvider>
         </SearchProvider>

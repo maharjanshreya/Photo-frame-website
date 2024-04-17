@@ -18,6 +18,7 @@ function Image(){
   const location = useLocation();
   const navigate = useNavigate();
   const imageURL = location.state?.imageURL || null;
+  const productId = location.state?.productId || null;
   const [rotationAngle, setRotationAngle] = useState(0);
   const handleRotate = () => {
     setRotationAngle(rotationAngle + 90); // Rotate by 90 degrees clockwise
@@ -77,6 +78,7 @@ const handleImageChange = (e) => {
       const imageData = canvas.toDataURL('image/png');
       if (/^data:image\/(png|jpeg);base64,/.test(imageData)) {
         console.log('Image data:', imageData);
+        
       fetch('/upload', {
         method: 'POST',
         headers: {
@@ -84,15 +86,17 @@ const handleImageChange = (e) => {
         },
         body: JSON.stringify({ imageData,userId}),
       })
-        .then(response => {
-          console.log("Image uplaod: ",imageData);
-          
-          // Handle response from server
-          
-        })
+      .then(response => response.json())
+      .then(data => {
+        // Access the uploadId from the response data
+        const uploadId = data.uploadId;
+        navigate(`/productView/${productId}`, { state: { image: uploadId } });
+        console.log("saved image id: ", uploadId);
+      })
         .catch(error => {
           console.error('Error uploading image:', error);
         }); 
+         
         //navigate(-1, { state: { image: imageData } });
       } else {
           console.error('Invalid imageData format:', imageData);

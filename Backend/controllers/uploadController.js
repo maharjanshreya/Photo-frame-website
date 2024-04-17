@@ -21,9 +21,9 @@ const uploadController = async (req, res) => {
       });
 
       try {
-        await newImage.save();
+        const savedImage = await newImage.save();
         console.log('Image data saved to the database');
-        res.status(200).json({ success: true, imagePath });
+        res.status(200).json({ success: true, uploadId: savedImage._id });
       } catch (error) {
         console.error('Error saving image data to the database:', error);
         res.status(500).json({ success: false, error: 'Failed to save image data to the database' });
@@ -48,5 +48,21 @@ const getImageByUserId = async (req, res) => {
       res.status(500).json({ error: 'Failed to retrieve image data' });
   }
 };
+const getImageByUploadId = async (req, res) => {
+  const uploadId = req.params.uploadId;
 
-module.exports = { uploadController,getImageByUserId };
+  try {
+    const upload = await Upload.findById(uploadId);
+
+    if (!upload) {
+      return res.status(404).json({ error: 'Image data not found for the upload ID' });
+    }
+
+    // Send the image data in the response
+    res.status(200).json({ imageData: upload.imageData });
+  } catch (error) {
+    console.error('Error retrieving image data:', error);
+    res.status(500).json({ error: 'Failed to retrieve image data' });
+  }
+};
+module.exports = { uploadController,getImageByUserId,getImageByUploadId };
