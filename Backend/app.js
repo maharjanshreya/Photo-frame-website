@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
     limit: '50mb',
     extended: true,
     
-  }));
+}));
   
 app.use(require('./router/auth'));
 app.set("view engine", "ejs");
@@ -30,7 +30,7 @@ db.once('open', function() {
 });
 // Enable CORS for all routes
 app.use(cors({
-  origin: 'http://localhost:3000', // Change this to your frontend URL
+  origin: 'http://localhost:3000', 
   credentials: true,
   exposedHeaders: ['set-cookie'],
 }));

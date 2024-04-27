@@ -35,8 +35,15 @@ function Success() {
           console.log('Error in fetching data', err);
         }
       };
+      const [paymentSuccessCalled, setPaymentSuccessCalled] = useState(false);
+
     const handlePaymentSuccess = async () => {
         try {
+            if (paymentSuccessCalled) {
+                console.log('handlePaymentSuccess already called');
+                return;
+            }
+            console.log('handlePaymentSuccess already called');
             // Retrieve session ID from URL query parameters or state
             const sessionId = getSessionIdFromURL(); // Implement this function to retrieve the session ID
             console.log(sessionId);
@@ -47,7 +54,7 @@ function Success() {
 
             // Make HTTP request to backend
             const response = await fetch(url, {
-                method: 'GET',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -56,9 +63,11 @@ function Success() {
 
             // Check if request was successful
             if (response.ok) {
+                setPaymentSuccessCalled(true);
                 const data = await response.json();
                 console.log('Payment success:', data);
                 setPayment(data.orderDetails);
+                
                 // Handle successful response from backend
                 const newUrl = window.location.href.split('?')[0];
                 window.history.replaceState({}, document.title, newUrl);
@@ -66,6 +75,7 @@ function Success() {
                 console.error('Error handling payment success:', response.statusText);
                 // Handle error response from backend
             }
+            setPaymentSuccessCalled(true);
         } catch (error) {
             console.error('Error handling payment success:', error);
             // Handle other errors
@@ -91,8 +101,10 @@ function Success() {
 
     useEffect(() => {
         // getCart();
-        handlePaymentSuccess();
-    }, []);
+        if (!paymentSuccessCalled) {
+            handlePaymentSuccess();
+        }
+    }, [paymentSuccessCalled]);
     return (
         <>
             <Navbar />

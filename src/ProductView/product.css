@@ -76,7 +76,12 @@
 }
 
 .wishlist{
-    margin: 10px 80px;
+    display: grid;
+    place-items: left; 
+    max-width: 1000px;
+    justify-content: center;
+    text-align: left;
+    margin: auto; 
 }
 .wishlist h1{
     font-family: 'Poppins';
@@ -105,4 +110,11 @@
     margin-top: 10px;
     margin-bottom: 10px;
     font-family: 'Gelasio';
+}
+.image-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    justify-items: center; /* Center items horizontally */
+    margin-top: 30px;
 }

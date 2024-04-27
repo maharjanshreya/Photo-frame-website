@@ -362,7 +362,25 @@
   margin-right: 18px;
   border-radius: 10px;
   border: 1px dashed #3c3939;
+  width: 50%;
+  background-color: rgba(0, 0, 0, 0.5); /* 50% opacity */
   
+}
+.right-container-edit{
+  padding: 20px;
+  border: 1px solid #e8e8e8;
+  margin-left: 20px;
+  margin-right: 20px;
+
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.edit-container {
+  width: 100%;
+  opacity: 0; /* Initial opacity */
+  animation: fadeIn 0.7s ease forwards; /* Smooth fade-in animation over 0.5 seconds */
 }
 .active-button-t{
   border-bottom: 1px solid #000;
@@ -377,9 +395,10 @@
   margin: 2px 5px;
 }
 .container-left {
-  padding: 47px;
+  padding: 25px;
   background-color: #f2f2f2;
   border: 2px solid #e8e8e8;
+  width: 20%;
 }
 .inputfile {
 	width: 0.1px;

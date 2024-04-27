@@ -130,7 +130,7 @@ router.put('/product-update/:pid', formidable(), updateProductController);
 
 //route for add to cart
 router.post('/add-to-cart', authenticate, cartController);
-router.get('/add-to-cart/:id', authenticate, getCartController);
+router.get('/add-to-cart/:id', authenticate, isConsumer,getCartController);
 router.delete('/remove-item/:userId/:productId', authenticate, removeCartController);
 
 
@@ -172,7 +172,7 @@ router.get('/getImage/:userId', getImageByUserId);
 router.get('/getImage-upload/:uploadId', getImageByUploadId);
 
 //route for payment
-router.get('/handle-success/:session_id', authenticate, handlePaymentSuccess);
+router.post('/handle-success/:session_id', authenticate, handlePaymentSuccess);
 router.post('/create-checkout-session', authenticate, paymentController);
 
 //route for order get

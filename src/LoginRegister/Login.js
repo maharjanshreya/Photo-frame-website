@@ -7,7 +7,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/token';
 import { useUser } from '../context/user';
-
+import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 import {
     MDBBtn,
@@ -16,9 +16,9 @@ import {
     MDBCol,
     MDBIcon,
     MDBInput
-}
-    from 'mdb-react-ui-kit';
+}from 'mdb-react-ui-kit';
 function Login() {
+    const[loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [userData, setUserData] = useState([]);
     const [email, setEmail] = useState('');
@@ -47,6 +47,7 @@ function Login() {
     };
     const loginUser = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const res = await fetch('/signin', {
                 method: "POST",
@@ -60,6 +61,7 @@ function Login() {
                 })
             });
             if (!res.ok) {
+                setLoading(false);
                 const data = await res.json();
                 const errorMessage = data.message || 'An unknown error occurred.';
                 console.error("Error from backend:", errorMessage);
@@ -69,6 +71,7 @@ function Login() {
 
             const data = await res.json();
             if (data.error) {
+                setLoading(false);
                 throw new Error(data.message); // If server sends error, throw an error with the error message
             }
             console.log("data", data);
@@ -82,19 +85,23 @@ function Login() {
             localStorage.setItem('role', data.userData?.role);
 
             if (res.status === 400 || !data) {
+                setLoading(false);
                 console.log(data.message);
                 throw new Error(data.message || "An unknown error occurred.");
             }
 
 
             if (role === 'admin') {
+                setLoading(false);
                 navigate("/adminDashboard");
             } else {
+                setLoading(false);
                 navigate("/"); // Change '/consumerPage' to the path of your consumer page
             }
 
 
         } catch (error) {
+            setLoading(false);
             setError(error.message); // Set error message
             console.log('Error form catch block ', error.message);
         }
@@ -169,8 +176,11 @@ function Login() {
                                         {error && <div style={{ color: 'red', fontWeight: '500', textAlign: 'left' }}>{error}</div>}
                                         <input type="submit" className="mb-4 px-5 mx-5 w-100" value="Login" />
                                     </form>
-
+ {loading && (<Spinner animation="border" role="status">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </Spinner>)}
                                     <p className="small mb-5 pb-lg-3 text-left"><Link to='/reset' className='link-info' >Forgot password?</Link></p>
+                                   
                                     <p className='text-center'>Don't have an account? <Link to='/register' className="link-info">Register here</Link></p>
                                 </div>
                             </div>

@@ -88,21 +88,7 @@ function Cart() {
           fetchImageData(uploadId,  productId._id); // Call fetchImageData function with uploadId and productId
         });
       }
-      // if (Array.isArray(datas.cart.items)) {
-      //   datas.cart.items.forEach(item => {
-      //     const uploadId = item.uploadId;
-      //     // Now you can use 'uploadId' as needed
-      //     console.log(uploadId);
-      //     // You can call functions or perform any other operations using 'uploadId'
-      //     // For example:
-      //     fetchImageData(uploadId); // Call fetchImageData function with uploadId
-      // }); 
-      // } else {
-      //   // If datas is not an array, just call fetchImageData with the uploadId
-      //   fetchImageData([datas.cart.items.uploadId]);
-      //   console.log("Upload ID",datas.cart.items.uploadId);
-      // }
-    
+      
       
       
       if (datas.cart.items && datas.cart.items.length > 0) {
@@ -178,71 +164,71 @@ function Cart() {
   };
  
   //payment integration
-  const handleCheckout = async () => { 
-    
-    try {
-       
-      // Load Stripe.js
-      const stripe = await loadStripe('pk_test_51OyOhcA4uLHwNxGYlwqMkbqvF6QOd73m6MqORxnhF54D3fXLO9Fz2D3ZrGd0Cc8dyQtvkZDKC6wh53uxEC0ZYiOb00xGrm5KBV');
-
-      console.log("Cart data", cartData.cart.items);
-
-      // Prepare request body
-      const body = {
-        products: cartData.cart.items,
+    const handleCheckout = async () => { 
+      
+      try {
         
-      };
+        // Load Stripe.js
+        const stripe = await loadStripe('pk_test_51OyOhcA4uLHwNxGYlwqMkbqvF6QOd73m6MqORxnhF54D3fXLO9Fz2D3ZrGd0Cc8dyQtvkZDKC6wh53uxEC0ZYiOb00xGrm5KBV');
 
-      // Prepare request headers
-      const headers = {
-        'Content-Type': 'application/json',
-      };
+        console.log("Cart data", cartData.cart.items);
 
-      const response = await fetch('/create-checkout-session', {
-        method: 'POST',
-        body: JSON.stringify(body),
-        headers: headers,
-      });
+        // Prepare request body
+        const body = {
+          products: cartData.cart.items,
+          
+        };
 
-      if (!response.ok) {
-        throw new Error('Failed to create checkout session');
+        // Prepare request headers
+        const headers = {
+          'Content-Type': 'application/json',
+        };
+
+        const response = await fetch('/create-checkout-session', {
+          method: 'POST',
+          body: JSON.stringify(body),
+          headers: headers,
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to create checkout session');
+        }
+
+        // Parse response JSON
+        const session = await response.json();
+
+        // Redirect to Stripe Checkout
+        const result = await stripe.redirectToCheckout({
+          sessionId: session.id
+        });
+        console.log(session);
+
+        if (result.error) {
+          console.log(result.error.message);
+        }
+      } catch (error) {
+        console.error('Error during checkout:', error);
       }
+    };
 
-      // Parse response JSON
-      const session = await response.json();
-
-      // Redirect to Stripe Checkout
-      const result = await stripe.redirectToCheckout({
-        sessionId: session.id
-      });
-      console.log(session);
-
-      if (result.error) {
-        console.log(result.error.message);
+    useEffect(() => {
+      getCart();
+      if (cartData?.cart && Array.isArray(cartData?.cart?.items)) {
+        const subtotalValue = cartData.cart.items.reduce((acc, item) => acc + (item.quantity * item.productId.price), 0);
+        setSubtotal(subtotalValue);
       }
-    } catch (error) {
-      console.error('Error during checkout:', error);
-    }
-  };
-
-  useEffect(() => {
-    getCart();
-    if (cartData?.cart && Array.isArray(cartData?.cart?.items)) {
-      const subtotalValue = cartData.cart.items.reduce((acc, item) => acc + (item.quantity * item.productId.price), 0);
-      setSubtotal(subtotalValue);
-    }
-    // Calculate shipping cost
-    let shippingCost = 0;
-    cartData.cart.items.forEach(item => {
-        // Add shipping cost of each item to the total
-        shippingCost += item.productId.shipping;
-    });
-    
-    // Calculate total (subtotal + shipping cost)
-    const totalValue = subtotal + shippingCost; // Adding 20 for additional costs
-    setTotal(totalValue);
-    setShipping(shippingCost);
-  }, [userId, cartData]);
+      // Calculate shipping cost
+      let shippingCost = 0;
+      cartData.cart.items.forEach(item => {
+          // Add shipping cost of each item to the total
+          shippingCost += item.productId.shipping;
+      });
+      
+      // Calculate total (subtotal + shipping cost)
+      const totalValue = subtotal + shippingCost; // Adding 20 for additional costs
+      setTotal(totalValue);
+      setShipping(shippingCost);
+    }, [userId, cartData]);
 
 
   return (

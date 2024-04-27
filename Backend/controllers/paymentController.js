@@ -65,8 +65,8 @@ const paymentController = async (req, res) => {
         });
         
        // Retrieve session details from Stripe
-        const retrievedSession = await stripe.checkout.sessions.listLineItems(session.id);
-        const userID = req.userID; // Assuming userID is obtained from the request
+       // const retrievedSession = await stripe.checkout.sessions.listLineItems(session.id);
+        //const userID = req.userID; // Assuming userID is obtained from the request
         //await createOrder(session, userID);
         console.log(session);
         res.json({ id: session.id });
@@ -78,35 +78,12 @@ const paymentController = async (req, res) => {
 
 
 const handlePaymentSuccess = async (req, res) => {
-    try {
-        // Assuming you have the session ID and user ID from the request
-        const sessionID = req.params.session_id;
-        console.log("Session id",sessionID);
-        const userID = req.userID;
-        // const { productIds } = req.body;
-        // console.log("Product ids handle: ",productIds);
-        // Make sure productIds is an array
-        // if (!Array.isArray(productIds)) {
-        //     throw new Error('Invalid productIds data');
-        // }
-        // Retrieve the session from Stripe to get the order details
-        const sessionData = await stripe.checkout.sessions.retrieve(sessionID);
-        // Access line items in the session
-        
-        // Create the order and get the specific order details
-        const orderDetails = await createOrder(sessionData, userID);
-        console.log(orderDetails);
-        // Render the success page with the specific order details
-        res.json({ orderDetails });
-    } catch (error) {
-        console.error('Error handling success page:', error);
-        res.status(500).send('Internal server error');
-    }
-};
-// Function to create an order
-const createOrder = async (sessionData, userID) => {
+    
+    console.log("called once in create order");
     //console.log("Product ids in create order: ",productIds);
-    try {
+    try {const userID = req.userID;
+        const sessionID = req.params.session_id;
+        const sessionData = await stripe.checkout.sessions.retrieve(sessionID);
          // Check if the order already exists for this session
          const existingOrder = await Order.findOne({ session_id: sessionData.id });
          if (existingOrder) {
@@ -114,8 +91,8 @@ const createOrder = async (sessionData, userID) => {
              return; // Do not create a new order
          }
         const retrievedSession = await stripe.checkout.sessions.listLineItems(sessionData.id);
-        console.log("Session id in create order: ",sessionData.id);
-        console.log("retrievedSession, ",retrievedSession.data);
+        // console.log("Session id in create order: ",sessionData.id);
+        // console.log("retrievedSession, ",retrievedSession.data);
         const shipping = sessionData.shipping_options;
          
        
@@ -126,7 +103,7 @@ const createOrder = async (sessionData, userID) => {
         }
         // Extract product data from the session
         const lineItems = retrievedSession.data;
-        console.log("line uitems data: ",lineItems);
+      //  console.log("line uitems data: ",lineItems);
         
         const products = lineItems.map(item => {
             // Parse size from description
@@ -160,12 +137,11 @@ const createOrder = async (sessionData, userID) => {
             buyer: userID,
             status: 'Processing', 
         });
-
-        // Save the order to the database
-        await order.save();
+        const orderDetails = await order.save();
+        res.status(201).json({ orderDetails });
         //await subtractProductQuantity(productIds);
-        console.log('Order created successfully:', order);
-        return order;
+        console.log('Order created successfully:');
+       
     } catch (error) {
         console.error('Error creating order:', error);
         throw error;

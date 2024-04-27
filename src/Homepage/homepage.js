@@ -1,15 +1,13 @@
 import { React, useState, useEffect, useRef } from 'react';
 import Navbar from '../Navbar/navbar';
-import ImagePagea from '../Homepage/image';
-import SideImage from '../Images/Group 9.png';
 import './homepage.css';
 import { IoSearchOutline } from "react-icons/io5";
 import Button from 'react-bootstrap/Button';
 import Image from '../Images/Group 7.png';
 import Image2 from '../Images/Group 14.png';
-import Product4 from '../Images/product4.png';
 import Product8 from '../Images/Product8.jpg';
-import Product9 from '../Images/Product9.jpg';
+import { toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import Grid1 from '../Images/grid1.jpg';
 import Grid2 from '../Images/grid2.jpg';
 import Grid3 from '../Images/grid3.jpg';
@@ -19,27 +17,19 @@ import Product10 from '../Images/product10.jpg';
 import MyProdu from '../Images/MyImageProduct.jpg';
 import Group35 from '../Images/Group 35.png';
 import Footer from './footer';
-import Frame from '../Images/product6.png';
-import Frames from '../Images/product3_t.png';
-import Card from 'react-bootstrap/Card';
 import Carousel from 'react-bootstrap/Carousel';
 import { FaRegHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import ProductView from '../ProductView/product';
-import ImageFrameOverlay from './ImageFrameOverlay';
-import New from './new';
 import { useSearch } from '../context/search';
 import axios from 'axios';
-import ImagePage from './image';
-import { useWishlist } from '../context/wishlist';
 import TopRated from './topRated';
-import Badge from 'react-bootstrap/Badge';
-import Stack from 'react-bootstrap/Stack';
 import { MDBInputGroup, MDBInput, MDBIcon, MDBBtn } from 'mdb-react-ui-kit';
 function Homepage() {
   const userId = localStorage.getItem('userId');
   const [productData, setProductData] = useState([]);
   const navigate = useNavigate();
+  const [wishlistItems, setWishlistItems] = useState({});
   useEffect(() => {
 
     productFunc();
@@ -117,7 +107,12 @@ function Homepage() {
         console.log("Message not sent");
         window.alert("Message not sent");
       } else {
-        window.alert("added to favoruites");
+        setWishlistItems(prevState => ({
+          ...prevState,
+          [productId]: !prevState[productId]
+        }));
+        toast.success('Product added to favourites!');
+        
         //setwishlists(prevCart => prevCart + 1);
       }
     } catch (error) {
@@ -276,7 +271,7 @@ function Homepage() {
         </div>
         </div>
         <div id='view'>
-          <h1 className='' style={{ marginLeft: '55px',paddingLeft: '12px', fontFamily: 'Recoleta,Georgia,serif', fontWeight: '800', fontSize: '30px' }}>View Products</h1>
+         <center> <h1 className='' style={{  fontFamily: 'Recoleta,Georgia,serif', fontWeight: '800', fontSize: '30px',color:'#795F49' }}>View Products</h1></center>
         </div>
 
 
@@ -284,7 +279,7 @@ function Homepage() {
 
         <div className={`fade-in ${isVisible ? 'visible' : 'hidden'}`} id='new-products'>
           <div className="container" >
-            <div className="d-flex justify-content-left my-3"  id='new-products'>
+            <div className="d-flex justify-content-center my-3"  id='new-products'>
               <p
                 className={`m-4 ${isNewFeaturedActive ? 'active-button-t' : ''}`}
                 onClick={handleShowNewFeatured}
@@ -328,8 +323,14 @@ function Homepage() {
                         </div>
 
                         <div>
-                          <FaRegHeart onClick={() => handleAddToWishlist(row?._id)} />
+                        {wishlistItems[row?._id] ? (
+        <FaHeart onClick={() => handleAddToWishlist(row?._id)} style={{ color: 'red' }} />
+      ) : (
+        <FaRegHeart onClick={() => handleAddToWishlist(row?._id)} />
+      )}
+                          
                         </div>
+                        <Toaster  position="top-center" reverseOrder={true}/>
                       </div>
 
                     </div>

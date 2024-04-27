@@ -4,6 +4,10 @@
 // learn more: https://github.com/testing-library/jest-dom
 import 'jest-canvas-mock';
 import '@testing-library/jest-dom';
+import fetchMock from 'jest-fetch-mock';
+
+// Set up fetch mocking
+global.fetch = fetchMock;
 class MockIntersectionObserver {
     constructor(callback, options) {}
     observe() {

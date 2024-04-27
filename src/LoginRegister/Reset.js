@@ -11,10 +11,10 @@ import { Link } from 'react-router-dom';
 function Reset(){
     const[response,setResponse] = useState('');
     const[error,setError] = useState('');
-    const [show, setShow] = useState(false);
+    const[show, setShow] = useState(false);
     const handleClose = () => setShow(false);
-    const [loading, setLoading] = useState(false);
-    const [user, setUser] = useState({
+    const[loading, setLoading] = useState(false);
+    const[user, setUser] = useState({
         email:"",
     });
 

@@ -3,7 +3,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Cookies from 'js-cookie';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute'; // Ensure correct import path
-
+import ProtectedRouteUser from './ProtectedRouteUser';
 // Import your components
 import HomePage from './Homepage/homepage';
 import Login from './LoginRegister/Login';
@@ -16,6 +16,8 @@ import AboutUs from './Homepage/aboutus';
 import Products from './Homepage/products';
 import ContactUs from './Homepage/ContactUs';
 import Wishlist from './ProductView/wishlist';
+import Crop from './Homepage/crop';
+import CropG from './Homepage/cropG';
 import Search from './Homepage/searchPage';
 import Upload from './Homepage/upload';
 import Footer from './Homepage/footer';
@@ -33,6 +35,7 @@ import { useAuth } from './context/token';
 import Success from './ProductView/success';
 import Cancel from './ProductView/cancel';
 import Reset from './LoginRegister/Reset';
+import RoomView from './Homepage/roomView';
 import { BrowserRouter as Router } from 'react-router-dom';
 // Import Homepage
 import Homepage from './Homepage/homepage';
@@ -77,12 +80,17 @@ function App() {
         <Route path="/navbar" element={<Navbar />} />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/crop" element={<Crop />} />
+        <Route path="/cropG" element={<CropG />} />
         <Route path="/account" element={<Account />} />
         <Route path="/reset" element={<Reset />} />
         <Route path="/search" element={<Search />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/adminLogin" element={<AdminLogin />} />
-       
+        <Route path="/roomView" element={<RoomView />} />
+        <Route element={<ProtectedRouteUser />}>
+          <Route element={<Cart />} path="/cart" exact />
+        </Route>
         <Route element={<ProtectedRoute />}>
           <Route element={<AdminDashboard />} path="/adminDashboard" exact />
           <Route element={<AdminOrder />} path="/adminOrder" exact />
@@ -93,9 +101,8 @@ function App() {
         </Route>
         <Route path="/productView/:productId" element={<ProductView />} />
 
-
-
-        <Route path="/cart" element={<Cart />} />
+       
+        {/* <Route path="/cart" element={<Cart />} /> */}
         <Route path="/footer" element={<Footer />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/report" element={<Report />} />

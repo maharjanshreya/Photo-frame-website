@@ -95,6 +95,13 @@ function Product() {
       navigate('/imagepage', { state: { imageURL,productId } });
     }
   }
+  const handleRoomView = (imageURL) => {
+    //console.log(imageURL);
+    //setProduct_Id(p_id);
+    if (product_id) {
+      navigate('/cropG', { state: { imageURL,productId } });
+    }
+  }
 
   const imageFunc = async () => {
     try {
@@ -287,7 +294,8 @@ function Product() {
               </p>
              
 
-              <button className='add-to-cart' onClick={(e) => { e.preventDefault(); handleUpload(imageURL); }}>Upload</button>
+              <Button variant="outline-dark" className='add-to-cart' style={{marginRight:'9px'}} onClick={(e) => { e.preventDefault(); handleUpload(imageURL); }}>Upload</Button>
+              <Button variant="outline-dark" className='add-to-cart' onClick={(e) => { e.preventDefault(); handleRoomView(imageURL); }}>Room View</Button>
 
             </div>
           )}<Toaster position="top-center" reverseOrder={true} />
