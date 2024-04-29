@@ -95,6 +95,7 @@ function Product() {
       navigate('/imagepage', { state: { imageURL,productId } });
     }
   }
+  
   const handleRoomView = (imageURL) => {
     //console.log(imageURL);
     //setProduct_Id(p_id);

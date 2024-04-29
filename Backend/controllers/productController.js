@@ -75,6 +75,34 @@ const getProductController = async (req, res) => {
         });
     }
 };
+
+
+const getProductByCategoryController = async (req, res) => {
+    
+    try {
+        const categoryId = req.params.cid;
+        console.log(categoryId);
+        const products = await Product.find({ category: categoryId}).select("-image");
+        console.log("products",products);
+        res.status(200).json({ 
+        success: true,
+        total : products.length,
+        message: 'Products by category',
+        products,
+       
+        });
+        
+        
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).send({
+            success: false,
+            message: 'Error in sending product',
+            error: err.message,
+        });
+    }
+};
+
 //get single product by ID
 const getSingleProductController = async (req, res) => {
     console.log('Request received for product ID:', req.params.id);
@@ -211,4 +239,4 @@ const updateProductController = async (req, res) =>  {
 };
 
   
-module.exports = {createProductController,getProductController,getPhotoController,getSingleProductController,deleteProductController,updateProductController};
+module.exports = {createProductController,getProductController,getPhotoController,getSingleProductController,deleteProductController,updateProductController,getProductByCategoryController};

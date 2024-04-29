@@ -95,5 +95,28 @@ const removeCartController = async (req, res) => {
   }
 };
 
-module.exports = { cartController, getCartController, removeCartController };
+const removeAllCartController = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    if (!userId) {
+      return res.status(400).json({ success: false, message: 'Invalid input parameters' });
+    }
+    let userCart = await Cart.findOne({ userId });
+
+    if (!userCart) {
+      return res.status(404).json({ success: false, message: 'Cart not found' });
+    }
+
+    // Remove the item from the cart
+    userCart.items = [];
+    await userCart.save();    
+    return res.status(200).json({ success: true, message: 'All items removed from the cart', cart: userCart });
+  } catch (error) {
+    console.error('Error removing item from cart:', error);
+    return res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+module.exports = { cartController, getCartController, removeCartController,removeAllCartController };
 

@@ -17,6 +17,7 @@ import { ModalBody } from 'react-bootstrap';
 import PostUsers from './postUsers';
 import { toast } from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
+import {CategoryGetApi} from '../Components/categoryApi';
 function Dashboard() {
   const [selectedOption, setSelectedOption] = useState('Create Category');
   const [show, setShow] = useState(false); // for edit category
@@ -257,20 +258,9 @@ function Dashboard() {
   };
   const categoryFunc = async () => {
     try {
-      const res = await fetch('/category', {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      });
-      if (!res.ok) {
-        const error = new Error(res.statusText);
-        throw error;
-      }
+      
 
-      const datas = await res.json();
+      const datas = await CategoryGetApi();
       console.log('API Response:', datas);
       setCategoryData(datas.categories);
       console.log("Datas.data", datas.categories);

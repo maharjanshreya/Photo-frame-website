@@ -16,14 +16,14 @@ const { getNotification, createNotification } = require('../controllers/notifica
 const { uploadController, getImageByUserId, getImageByUploadId } = require('../controllers/uploadController.js');
 const { paymentController, handlePaymentSuccess } = require('../controllers/paymentController.js');
 const { addToWishlistController, getWishlistController } = require('../controllers/wishlistController.js');
-const { cartController, getCartController, removeCartController } = require('../controllers/cartController.js');
+const { cartController, getCartController, removeCartController, removeAllCartController } = require('../controllers/cartController.js');
 const { forgotController, resetController, postResetController } = require('../controllers/resetController.js');
 const { getAllOrderController, getSingleOrderController, updateOrderController } = require('../controllers/orderController.js');
 const { reportController, getReportController, replyToReportController, getReplyController } = require('../controllers/reportController.js');
 const { createCategoryController, getCategoryController, updateCategoryController, deleteCategoryController } = require('../controllers/categoryController.js');
 const { userController, deleteUserController, updateUserController, register, contactController, getAccountController } = require('../controllers/userController.js');
 const { createReviewController, getReviewController, getAllReviewController, getHighestRatedProduct, getAllHighestRatedProducts } = require('../controllers/reviewController.js');
-const { createProductController, getProductController, getPhotoController, getSingleProductController, deleteProductController, updateProductController } = require('../controllers/productController.js');
+const { createProductController, getProductController, getPhotoController, getSingleProductController, deleteProductController, updateProductController, getProductByCategoryController } = require('../controllers/productController.js');
 
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
@@ -126,12 +126,14 @@ router.get('/products/:id', getSingleProductController);
 router.get('/product-image/:pid', getPhotoController);
 router.delete('/deleteproduct/:id', authenticate, deleteProductController);
 router.put('/product-update/:pid', formidable(), updateProductController);
+router.get('/category-product/:cid', getProductByCategoryController);
 
 
 //route for add to cart
 router.post('/add-to-cart', authenticate, cartController);
 router.get('/add-to-cart/:id', authenticate, isConsumer,getCartController);
 router.delete('/remove-item/:userId/:productId', authenticate, removeCartController);
+router.delete('/remove-item/:userId', authenticate, removeAllCartController);
 
 
 //route for add to wishlist

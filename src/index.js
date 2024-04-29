@@ -19,15 +19,17 @@ root.render(
     <AuthProvider>
     <Auth2Provider>
       <UserProvider>
-        <SearchProvider>
+        
           <CartProvider>
             <WishlistProvider>
-            <UploadProvider>
+          
+            <SearchProvider>
               <App />
-              </UploadProvider>
+              </SearchProvider>
+             
               </WishlistProvider>
           </CartProvider>
-        </SearchProvider>
+        
       </UserProvider>
      </Auth2Provider>
     </AuthProvider>

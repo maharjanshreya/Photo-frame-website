@@ -2,26 +2,16 @@ import React, { useState,useEffect} from 'react';
 import Button from 'react-bootstrap/Button';
 import { toast } from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
+import { CategoryGetApi } from '../Components/categoryApi';
 const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
     console.log("update product: ", productId);
     const [categoryData, setCategoryData] = useState([]);
     const [productData, setProductData] = useState([]);
     const categoryFunc = async () => {
         try {
-          const res = await fetch('/category',  {
-          method: 'GET',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-        });
-        if (!res.ok) {
-          const error = new Error(res.statusText);
-          throw error;
-        }
           
-        const datas = await res.json();
+          
+        const datas = await CategoryGetApi();
         console.log('API Response:', datas); 
         setCategoryData(datas.categories);
         console.log("Datas.data",datas.categories);

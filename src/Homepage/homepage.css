@@ -363,7 +363,7 @@
   border-radius: 10px;
   border: 1px dashed #3c3939;
   width: 50%;
-  background-color: rgba(0, 0, 0, 0.5); /* 50% opacity */
+  background-color: #e0e0e0; /* 50% opacity */
   
 }
 .right-container-edit{
@@ -407,12 +407,14 @@
 	overflow: hidden;
 	position: absolute;
 	z-index: -1;
+  margin-bottom: 10px;
 }
 .inputfile + label {
+  margin-bottom: 10px;
   font-size: 1.25em;
   font-weight: 700;
   color: white;
-  background-color: red;
+  background-color: rgb(222, 72, 72);
   display: inline-block;
   padding: 10px 20px;
 }

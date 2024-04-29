@@ -3,7 +3,7 @@ import ReactCrop, { centerCrop, convertToPixelCrop, makeAspectCrop } from "react
 import setCanvasPreview from "./setCanvasPreview";
 import { useLocation, useNavigate } from 'react-router-dom'; 
 import { Button } from "react-bootstrap";
-
+import Navbar from '../Navbar/navbar';
 const ASPECT_RATIO = 1;
 const MIN_DIMENSION = 150;
 
@@ -62,9 +62,15 @@ const ImageCropper = () => {
   };
   return (
     <>
+    <Navbar />
+    <h3 style={{fontFamily: 'Recoleta,Georgia,serif',color:'rgb(121, 95, 73)',textAlign:'center'}}>Crop Image</h3>
+    <p style={{fontFamily: 'Recoleta,Georgia,serif',color:'rgb(121, 95, 73)',textAlign:'center'}}>Please crop the required frame image since the whole background may come.</p>
+    <div className="edit-container" style={{backgroundColor:'#e0e0e0',paddingTop:'30px',paddingBottom:'30px',textAlign:'center'}}> 
+    
       {error && <p className="text-red-400 text-xs">{error}</p>}
+      <div style={{width:'50%',margin:'auto'}}>
       {imageURL && (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center" >
           <ReactCrop
             crop={crop}
             onChange={(pixelCrop, percentCrop) => setCrop(percentCrop)}
@@ -80,22 +86,28 @@ const ImageCropper = () => {
               style={{ maxHeight: "70vh" }}
               onLoad={onImageLoad}
             />
-          </ReactCrop>
-          <button
-            className="text-white font-mono text-xs py-2 px-4 rounded-2xl mt-4 bg-sky-500 hover:bg-sky-600"
+          </ReactCrop><br/>
+          <Button
+            variant="outline-dark" className='add-to-cart'
             onClick={handleCropImage}
           >
             Crop Image
-          </button>
+          </Button>
         </div>
-      )}
+      )}</div>
+
+      </div>
+      <h3 style={{fontFamily: 'Recoleta,Georgia,serif',color:'rgb(121, 95, 73)',textAlign:'center',marginTop:'30px'}}>Image Preview</h3>
+    <p style={{fontFamily: 'Recoleta,Georgia,serif',color:'rgb(121, 95, 73)',textAlign:'center'}}>Please crop the required frame image since the whole background may come.</p>
+    <div className="edit-container" style={{backgroundColor:'#e0e0e0',paddingTop:'30px',paddingBottom:'30px',textAlign:'center'}}> 
+
       {croppedImageUrl && (
         <img
           src={croppedImageUrl}
           alt="Cropped"
           style={{ maxHeight: "70vh" }}
         />
-      )}
+      )} 
       {crop && (
         <canvas
           ref={previewCanvasRef}
@@ -108,8 +120,11 @@ const ImageCropper = () => {
             height: 150,
           }}
         />
-      )}
-      <Button variant="outline-dark" className='add-to-cart' onClick={handleGoAhead}>Go Ahead</Button>
+      )}<br/>
+           <Button variant="outline-dark" className='add-to-cart' onClick={handleGoAhead}>Go Ahead</Button>
+
+           </div>
+
     </>
   );
 };

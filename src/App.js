@@ -16,7 +16,6 @@ import AboutUs from './Homepage/aboutus';
 import Products from './Homepage/products';
 import ContactUs from './Homepage/ContactUs';
 import Wishlist from './ProductView/wishlist';
-import Crop from './Homepage/crop';
 import CropG from './Homepage/cropG';
 import Search from './Homepage/searchPage';
 import Upload from './Homepage/upload';
@@ -80,7 +79,7 @@ function App() {
         <Route path="/navbar" element={<Navbar />} />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/crop" element={<Crop />} />
+       
         <Route path="/cropG" element={<CropG />} />
         <Route path="/account" element={<Account />} />
         <Route path="/reset" element={<Reset />} />

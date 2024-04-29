@@ -119,10 +119,7 @@ function Wishlist() {
       setWishlists(data.wishlist.products.length);
       console.log("length", wishlists);
       const productIds = data.wishlist.products.map((product) => product._id);
-
-      // Clear the loadedImages state before fetching images for the new set of products
-      setLoadedImages([]);
-
+      
       // Use Promise.all to wait for all image fetches to complete before proceeding
       const imageURLs = await Promise.all(productIds.map((productId, index) => imageFunc(productId, index)));
 

@@ -1,11 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 import { MemoryRouter } from 'react-router-dom';
+import { SearchProvider } from './context/search';
 test('renders learn react link', () => {
   render(
-    <MemoryRouter>
+    <SearchProvider>
       <App />
-    </MemoryRouter>
+    </SearchProvider>
   );
   
   const linkElement = screen.getByText(/learn react/i);

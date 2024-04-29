@@ -67,7 +67,6 @@ function Homepage() {
     setBackgroundColor((prevColor) => (prevColor === 'white' ? '#FFEDAF' : 'white'));
   };
   const [values, setValues] = useSearch();
-  // Check if searchResult is defined and values is not null before accessing its properties
 
 
   const handleSubmit = async (e) => {
@@ -120,7 +119,7 @@ function Homepage() {
       window.alert("Failed to add to wishlist. Please try again later.");
     }
   };
-  // Example usage in your component
+  
   const handleAddToWishlist = (productId) => {
     // Get userId from your authentication or context
 

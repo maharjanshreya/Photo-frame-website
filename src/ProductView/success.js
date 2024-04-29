@@ -12,6 +12,24 @@ function getSessionIdFromURL() {
     return queryParams.get('session_id');
 }
 function Success() {
+    const userId = localStorage.getItem('userId');
+    const handleRemoveCart = async () => {
+        // console.log('The product name to be deleted is ' + _id);
+        try {
+          // Make an API call to delete the categoryuserData.userId
+          const response = await fetch(`/remove-item/${encodeURIComponent(userId)}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+    
+          
+        } catch (error) {
+          console.error('Error during product deletion', error);
+        }
+    };
+     
     const [payment, setPayment] = useState([]);
     const [cartData, setCartData] = useState({ cart: { items: [] } });
     const getCart = async () => {
@@ -37,6 +55,8 @@ function Success() {
       };
       const [paymentSuccessCalled, setPaymentSuccessCalled] = useState(false);
 
+
+    
     const handlePaymentSuccess = async () => {
         try {
             if (paymentSuccessCalled) {
@@ -103,6 +123,7 @@ function Success() {
         // getCart();
         if (!paymentSuccessCalled) {
             handlePaymentSuccess();
+            handleRemoveCart();
         }
     }, [paymentSuccessCalled]);
     return (
