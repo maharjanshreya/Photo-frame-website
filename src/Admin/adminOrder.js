@@ -108,7 +108,36 @@ function Order() {
     useEffect(() => {
         fetchOrders();
     }, []);
-
+    const handleDeleteOrder = async (_id) => {
+        console.log('The user id to be deleted is ' + _id);
+        try {
+          
+          const response = await fetch(`/delete-order/${encodeURIComponent(_id)}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              // Add any other headers as needed (e.g., authentication token)
+            },
+          });
+    
+          if (response.ok) {
+            // If deletion is successful, update the state to reflect the changes
+            try {
+              // Update the state to remove the deleted category
+              setFilteredOrders(prevOrder=> prevOrder.filter(order => order._id !== _id));
+            } catch (error) {
+              console.error('Error during product deletion', error);
+              
+            }
+          } else {
+            console.error('Failed to delete product messafe');
+            
+          }
+        } catch (error) {
+          console.error('Error during product deletion', error);
+          
+        }
+      };
     return (
         <>
             <div className='d-flex'>
@@ -183,6 +212,15 @@ function Order() {
                                                         <Dropdown.Item onClick={() => handleDelivery(order._id, 'Cancelled', "red")}>Cancelled</Dropdown.Item>
                                                     </Dropdown.Menu>
                                                 </Dropdown>
+                                            </td>
+                                            <td>
+                                                <button type="button" className="btn btn-link btn-sm btn-rounded"  onClick={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                handleDeleteOrder(order._id);
+                                                }}>
+                                                Delete
+                                                </button>
                                             </td>
                                         </tr>
                                     ))}

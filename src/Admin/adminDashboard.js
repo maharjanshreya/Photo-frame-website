@@ -18,6 +18,7 @@ import PostUsers from './postUsers';
 import { toast } from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
 import {CategoryGetApi} from '../Components/categoryApi';
+import {PostCategory} from '../Components/categoryPostApi';
 function Dashboard() {
   const [selectedOption, setSelectedOption] = useState('Create Category');
   const [show, setShow] = useState(false); // for edit category
@@ -89,20 +90,9 @@ function Dashboard() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name } = category;
-    const res = await fetch("/category", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        name: name
-      })
-    });
-    if (!res.ok) {
-      console.log(`HTTP error! Status: ${res.status}`);
-    }
-    const data = await res.json();
-    if (res.status === 200 || !data) {
+   try{
+    const { status, data } = await PostCategory(name);
+    if (status === 200) {
       toast.error("Category already exists.");
       console.log("Category already exists");
 
@@ -111,6 +101,11 @@ function Dashboard() {
       console.log("Category Added Successfully.");
       categoryFunc();
     }
+   }catch(error){
+    console.error('Error during category creation', error);
+    toast.error(error);
+   }
+    
   }
 
   // Function to handle category deletion
@@ -325,7 +320,7 @@ function Dashboard() {
                   <div>
                     <h4 className='header-text' style={{ color: '#444141' }}>Manage Category</h4>
                     <form method='POST' onSubmit={handleSubmit} >
-                      <input type='text' placeholder='Enter your category' name="name" className='category' required value={category.name} onChange={handleInputs} />
+                      <input type='text' placeholder='Enter category name' name="name" className='category' required value={category.name} onChange={handleInputs} />
                       <input type='submit' value="Add"  />
                     </form><Toaster position="top-center" reverseOrder={true} />
 

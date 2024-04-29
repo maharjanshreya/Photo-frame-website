@@ -1,11 +1,11 @@
 import Navbar from '../Navbar/navbar';
-import { React, useEffect, useState ,useContext} from 'react';
+import { React, useEffect, useState, useContext } from 'react';
 import './product.css';
 
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { loadStripe } from '@stripe/stripe-js';
-import {MDBCard,MDBCardBody,MDBCardImage,MDBCol,MDBContainer,MDBIcon,MDBRow,MDBTypography,} from "mdb-react-ui-kit";
+import { MDBCard, MDBCardBody, MDBCardImage, MDBCol, MDBContainer, MDBIcon, MDBRow, MDBTypography, } from "mdb-react-ui-kit";
 import { useNavigate } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
 import { FaAngleDown } from "react-icons/fa6";
@@ -27,8 +27,6 @@ function Cart() {
   const [total, setTotal] = useState(0);
   const [shipping, setShipping] = useState(0);
 
-  console.log("Upload ID",upload);
-
   const fetchImageData = async (uploadId, productId) => {
     console.log("Fetched Upload ID", uploadId);
     try {
@@ -43,18 +41,34 @@ function Cart() {
         new Uint8Array(imageData.imageData.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
       );
       const url = `data:image/png;base64,${base64String}`;
-      
+
       // Set the image URL for the corresponding product ID
-      setIm(prevImages => ({
-        ...prevImages,
-        [productId]: url
+      setIm(prevImages => {
+        const updatedImages = {
+          ...prevImages,
+          [productId]: url
+        };
+        console.log('Updated images:', updatedImages);
+        return updatedImages;
+      });
+
+      const productsWithImages = await Promise.all(cartData.cart.items.map(async (item) => {
+        // Access the image URL corresponding to the product ID from the 'im' state
+        const imageUrl = im[item.productId._id];
+        return {
+          ...item,
+          imageUrl: imageUrl // Add the image URL to the product data
+        };
       }));
+      console.log("Products with images:", productsWithImages);
+
     } catch (error) {
       console.error('Error retrieving image data:', error);
     }
   };
+
   const getCart = async () => {
-    
+
     try {
       const userId = localStorage.getItem('userId');
 
@@ -73,11 +87,11 @@ function Cart() {
       }
 
       const datas = await res.json();
-      
+
       setCartData(datas);
-      
+
       setCart(datas.cart.items.length);
-      console.log("cart: ",datas.cart.items);
+      console.log("cart: ", datas.cart.items);
       if (Array.isArray(datas.cart.items)) {
         datas.cart.items.forEach(item => {
           const { uploadId, productId } = item;
@@ -85,12 +99,12 @@ function Cart() {
           console.log(uploadId, productId._id);
           // You can call functions or perform any other operations using 'uploadId' and 'productId'
           // For example:
-          fetchImageData(uploadId,  productId._id); // Call fetchImageData function with uploadId and productId
+          fetchImageData(uploadId, productId._id); // Call fetchImageData function with uploadId and productId
         });
       }
-      
-      
-      
+
+
+
       if (datas.cart.items && datas.cart.items.length > 0) {
         const imagePromises = datas.cart.items.map(async (item) => {
           try {
@@ -124,6 +138,7 @@ function Cart() {
       console.log('Error in fetching data', err);
     }
   };
+
   // product delete from user cart
   const handleRemoveCart = async (_id) => {
     // console.log('The product name to be deleted is ' + _id);
@@ -152,83 +167,84 @@ function Cart() {
           setCart(updatedCartData.cart.items.length);
         } catch (error) {
           console.error('Error during product deletion', error);
-         
+
         }
       } else {
         console.error('Failed to delete product messafe');
-        
+
       }
     } catch (error) {
       console.error('Error during product deletion', error);
     }
   };
- 
+
   //payment integration
-    const handleCheckout = async () => { 
-      
-      try {
-        
-        // Load Stripe.js
-        const stripe = await loadStripe('pk_test_51OyOhcA4uLHwNxGYlwqMkbqvF6QOd73m6MqORxnhF54D3fXLO9Fz2D3ZrGd0Cc8dyQtvkZDKC6wh53uxEC0ZYiOb00xGrm5KBV');
+  const handleCheckout = async () => {
 
-        console.log("Cart data", cartData.cart.items);
+    try {
+      const stripe = await loadStripe('pk_test_51OyOhcA4uLHwNxGYlwqMkbqvF6QOd73m6MqORxnhF54D3fXLO9Fz2D3ZrGd0Cc8dyQtvkZDKC6wh53uxEC0ZYiOb00xGrm5KBV');
 
-        // Prepare request body
-        const body = {
-          products: cartData.cart.items,
-          
+      const productsWithImages = await Promise.all(cartData.cart.items.map(async (item) => {
+        const imageUrl = im[item.productId._id];
+        return {
+          ...item,          
+          uploadId: item.uploadId,
         };
+      }));
 
-        // Prepare request headers
-        const headers = {
-          'Content-Type': 'application/json',
-        };
+      const body = {
+        products: productsWithImages,
+      };
 
-        const response = await fetch('/create-checkout-session', {
-          method: 'POST',
-          body: JSON.stringify(body),
-          headers: headers,
-        });
+      const headers = {
+        'Content-Type': 'application/json',
+      };
 
-        if (!response.ok) {
-          throw new Error('Failed to create checkout session');
-        }
-
-        // Parse response JSON
-        const session = await response.json();
-
-        // Redirect to Stripe Checkout
-        const result = await stripe.redirectToCheckout({
-          sessionId: session.id
-        });
-        console.log(session);
-
-        if (result.error) {
-          console.log(result.error.message);
-        }
-      } catch (error) {
-        console.error('Error during checkout:', error);
-      }
-    };
-
-    useEffect(() => {
-      getCart();
-      if (cartData?.cart && Array.isArray(cartData?.cart?.items)) {
-        const subtotalValue = cartData.cart.items.reduce((acc, item) => acc + (item.quantity * item.productId.price), 0);
-        setSubtotal(subtotalValue);
-      }
-      // Calculate shipping cost
-      let shippingCost = 0;
-      cartData.cart.items.forEach(item => {
-          // Add shipping cost of each item to the total
-          shippingCost += item.productId.shipping;
+      const response = await fetch('/create-checkout-session', {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: headers,
       });
-      
-      // Calculate total (subtotal + shipping cost)
-      const totalValue = subtotal + shippingCost; // Adding 20 for additional costs
-      setTotal(totalValue);
-      setShipping(shippingCost);
-    }, [userId, cartData]);
+
+      if (!response.ok) {
+        throw new Error('Failed to create checkout session');
+      }
+
+      // Parse response JSON
+      const session = await response.json();
+
+      // Redirect to Stripe Checkout
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.id
+      });
+      console.log(session);
+
+      if (result.error) {
+        console.log(result.error.message);
+      }
+    } catch (error) {
+      console.error('Error during checkout:', error);
+    }
+  };
+
+  useEffect(() => {
+    getCart();
+    if (cartData?.cart && Array.isArray(cartData?.cart?.items)) {
+      const subtotalValue = cartData.cart.items.reduce((acc, item) => acc + (item.quantity * item.productId.price), 0);
+      setSubtotal(subtotalValue);
+    }
+    // Calculating shipping cost
+    let shippingCost = 0;
+    cartData.cart.items.forEach(item => {
+      // Add shipping cost of each item to the total
+      shippingCost += item.productId.shipping;
+    });
+
+    // Calculating total (subtotal + shipping cost)
+    const totalValue = subtotal + shippingCost; 
+    setTotal(totalValue);
+    setShipping(shippingCost);
+  }, [userId, cartData]);
 
 
   return (
@@ -284,7 +300,7 @@ function Cart() {
                                             <MDBCardImage key={image.productId} src={image.url}
                                               fluid className="rounded-3" style={{ width: "45px" }} alt="Avatar" />)
                                         ))}
-                                       {im[item.productId._id] && <MDBCardImage src={im[item.productId._id]} alt="Product" fluid className="rounded-3" style={{ width: "45px" }} />}
+                                        {im[item.productId._id] && <MDBCardImage src={im[item.productId._id]} alt="Product" fluid className="rounded-3" style={{ width: "45px" }} />}
                                       </div>
                                       <div className="ms-4">
                                         <MDBTypography tag="h5">
@@ -350,7 +366,7 @@ function Cart() {
                           <div className="d-flex justify-content-between">
                             <p className="mb-2">Shipping address.</p>
                             {/* <Map /> */}
-                            
+
                           </div>
                           <Button style={{ backgroundColor: '#2596be' }} onClick={handleCheckout}>Checkout</Button>
                           {error && <div style={{ color: 'red', fontWeight: '500' }}>{error}</div>}
@@ -365,7 +381,7 @@ function Cart() {
         </MDBContainer>
       </section>
 
-     
+
     </>
   );
 }

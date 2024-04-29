@@ -4,26 +4,34 @@ const Product = require('../model/productModel');
 const paymentController = async (req, res) => {
     try {
         const {products} = req.body; // Access the 'products' array directly
-       console.log("Products:",products);
         if (!products || !Array.isArray(products)) {
             throw new Error('Invalid products data');
         }
 
-        const line_items = products.map((product) => ({
-            price_data: {
-                currency: "NPR",
-                product_data: {
-                    name: `${product.productId.productName} - Size: ${product.size}`,
-                   
+        const metadata = {};
+        products.forEach((product, index) => {
+            metadata[`product_${index}_quantity`] = String(product.quantity);
+            if (product.uploadId) {
+                metadata[`product_${index}_uploadId`] = String(product.uploadId);
+            }
+        });
+
+        const line_items = products.map((product) => {
+            const lineItem = {
+                price_data: {
+                    currency: "NPR",
+                    product_data: {
+                        name: `${product.productId.productName} - Size: ${product.size}`,
+                        
+                    },
+                    unit_amount: product.productId.price * 100,
                 },
-                
-                unit_amount: product.productId.price * 100,
-            },
-            quantity: product.quantity,
-            
-            
-            
-        }));
+                quantity: product.quantity,
+               
+            };
+           return lineItem;
+        });
+       
         const sizeString = products.map(item => item.size).join(', ');
         const shippingOptions = products.map(ship => ({
             shipping_rate_data: {
@@ -47,10 +55,11 @@ const paymentController = async (req, res) => {
             
         }));
         
-       console.log("Size:",products.size);
-        console.log(JSON.stringify(line_items, null, 2));
+       //console.log("Size:",products.size);
+        //console.log(JSON.stringify(line_items, null, 2));
         const session = await stripe.checkout.sessions.create({
             line_items: line_items,
+            metadata: metadata,
             payment_method_types: [
                 'card',
             ],
@@ -63,12 +72,6 @@ const paymentController = async (req, res) => {
             },
             shipping_options: shippingOptions,
         });
-        
-       // Retrieve session details from Stripe
-       // const retrievedSession = await stripe.checkout.sessions.listLineItems(session.id);
-        //const userID = req.userID; // Assuming userID is obtained from the request
-        //await createOrder(session, userID);
-        console.log(session);
         res.json({ id: session.id });
     } catch (error) {
         console.error('Error in paymentController:', error);
@@ -80,7 +83,6 @@ const paymentController = async (req, res) => {
 const handlePaymentSuccess = async (req, res) => {
     
     console.log("called once in create order");
-    //console.log("Product ids in create order: ",productIds);
     try {const userID = req.userID;
         const sessionID = req.params.session_id;
         const sessionData = await stripe.checkout.sessions.retrieve(sessionID);
@@ -90,6 +92,27 @@ const handlePaymentSuccess = async (req, res) => {
              console.log('Order already exists for session:', sessionData.id);
              return; // Do not create a new order
          }
+         const metadata = sessionData.metadata;
+         const uploadIds = [];
+
+            // Loop through the metadata object to retrieve the uploadId for each product
+            for (const key in metadata) {
+            if (Object.hasOwnProperty.call(metadata, key)) {
+                // Check if the key contains 'uploadId'
+                if (key.includes('uploadId')) {
+                // Extract the uploadId value
+                const uploadId = metadata[key];
+                // Include the uploadId only if it exists
+                if (uploadId) {
+                    uploadIds.push(uploadId);
+                }
+                }
+            }
+            }
+
+            // Now the uploadIds array contains all the valid uploadIds extracted from the metadata
+            console.log("UploadIds:", uploadIds);
+        
         const retrievedSession = await stripe.checkout.sessions.listLineItems(sessionData.id);
         // console.log("Session id in create order: ",sessionData.id);
         // console.log("retrievedSession, ",retrievedSession.data);
@@ -105,16 +128,18 @@ const handlePaymentSuccess = async (req, res) => {
         const lineItems = retrievedSession.data;
       //  console.log("line uitems data: ",lineItems);
         
-        const products = lineItems.map(item => {
+        const products = lineItems.map((item, index)=> {
             // Parse size from description
             const size = item.description.includes('Size:') ? item.description.split('Size: ')[1] : ''; // Extract size from description
+          
             console.log('Extracted size:', size); // Log the extracted size
             //const product = await Product.findById(item.price.product);
             return {
                 name: item.description,
                 price: item.price.unit_amount / 100,
                 quantity: item.quantity,
-                size: size // Assign the extracted size to the product
+                size: size, // Assign the extracted size to the product,
+                uploadId: uploadIds[index]
             };
         });
         const amountTotal = sessionData.amount_total / 100;

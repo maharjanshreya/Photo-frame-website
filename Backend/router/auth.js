@@ -18,7 +18,7 @@ const { paymentController, handlePaymentSuccess } = require('../controllers/paym
 const { addToWishlistController, getWishlistController } = require('../controllers/wishlistController.js');
 const { cartController, getCartController, removeCartController, removeAllCartController } = require('../controllers/cartController.js');
 const { forgotController, resetController, postResetController } = require('../controllers/resetController.js');
-const { getAllOrderController, getSingleOrderController, updateOrderController } = require('../controllers/orderController.js');
+const { getAllOrderController, getSingleOrderController, updateOrderController, deleteOrderController } = require('../controllers/orderController.js');
 const { reportController, getReportController, replyToReportController, getReplyController } = require('../controllers/reportController.js');
 const { createCategoryController, getCategoryController, updateCategoryController, deleteCategoryController } = require('../controllers/categoryController.js');
 const { userController, deleteUserController, updateUserController, register, contactController, getAccountController } = require('../controllers/userController.js');
@@ -174,12 +174,13 @@ router.get('/getImage/:userId', getImageByUserId);
 router.get('/getImage-upload/:uploadId', getImageByUploadId);
 
 //route for payment
-router.post('/handle-success/:session_id', authenticate, handlePaymentSuccess);
+router.get('/handle-success/:session_id', authenticate, handlePaymentSuccess);
 router.post('/create-checkout-session', authenticate, paymentController);
 
 //route for order get
 router.get('/view-order', authenticate, getAllOrderController);
 router.get('/view-my-orders/:buyerId', authenticate, getSingleOrderController);
+router.delete('/delete-order/:oid', deleteOrderController);
 
 //route for revire and rating 
 router.post('/give-review', createReviewController);
@@ -190,6 +191,7 @@ router.get('/get-all-review', getAllReviewController);
 //route for highest rated product
 router.get('/highest-rate-product', getHighestRatedProduct);
 router.get('/all-highest-rate-product', getAllHighestRatedProducts);
+
 
 
 module.exports = router;

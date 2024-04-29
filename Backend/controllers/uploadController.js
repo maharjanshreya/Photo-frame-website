@@ -44,7 +44,7 @@ const getImageByUserId = async (req, res) => {
       const imageDataArray = upload.map(upload => upload.imageData);
       res.status(200).json({ imageDataArray });
   } catch (error) {
-      console.error('Error retrieving image data:', error);
+      //console.error('Error retrieving image data:', error);
       res.status(500).json({ error: 'Failed to retrieve image data' });
   }
 };
@@ -61,7 +61,7 @@ const getImageByUploadId = async (req, res) => {
     // Send the image data in the response
     res.status(200).json({ imageData: upload.imageData });
   } catch (error) {
-    console.error('Error retrieving image data:', error);
+    //console.error('Error retrieving image data:', error);
     res.status(500).json({ error: 'Failed to retrieve image data' });
   }
 };

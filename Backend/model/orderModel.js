@@ -4,6 +4,7 @@ const productSchema = new mongoose.Schema({
     price: Number,
     quantity: Number,
     size: String,
+    uploadId: { type: mongoose.ObjectId, ref: 'Upload' }
 });
 const shippingDetailsSchema = new mongoose.Schema({
     address: {
@@ -26,6 +27,7 @@ const orderSchema = new mongoose.Schema({
         type: mongoose.ObjectId,
         ref: "User",    
     },
+    
     status:{
         type: String,
         default: "Processing",
@@ -34,6 +36,7 @@ const orderSchema = new mongoose.Schema({
     },
 {timestamps: true}
 );
+
 
 //collection creation
 const Order = mongoose.model("Order", orderSchema);

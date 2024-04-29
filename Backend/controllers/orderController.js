@@ -54,4 +54,21 @@ const updateOrderController =  async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
-module.exports = {getAllOrderController,getSingleOrderController,updateOrderController};
+const deleteOrderController = async (req, res) => {
+    try {
+        const orderId = req.params.oid;
+        const deletedProduct = await Order.findByIdAndDelete(orderId);
+  
+        if (deletedProduct) {
+            return res.json({ message: 'Order deleted successfully', deletedProduct  });
+        } else {
+          console.log('Order not found:', deletedProduct);
+            return res.status(404).json({ error: 'Failed to delete order' });
+        }
+    } catch (error) {
+        console.error("error : ",error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+module.exports = {getAllOrderController,getSingleOrderController,updateOrderController,deleteOrderController};
