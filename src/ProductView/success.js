@@ -34,7 +34,7 @@ function Success() {
             console.error('Error during product deletion', error);
         }
     };
-
+    const [productData, setProductData] = useState([]);
     const getCart = async () => {
         try {
             const userId = localStorage.getItem('userId');
@@ -51,12 +51,60 @@ function Success() {
 
             const datas = await res.json();
             setCartData(datas);
-            console.log(datas);
+            const productIds = datas.cart.items.map(item => item.productId._id);
+            console.log("productives",productIds);
+            //console.log("cart data",cartData);
+            decreaseProductQuantities(productIds);
+        } catch (err) {
+            console.log('Error in fetching data', err);
+        }
+    }
+    const getCarts = async () => {
+        try {
+            const userId = localStorage.getItem('userId');
+
+
+            const res = await fetch(`/add-to-cart/${encodeURIComponent(userId)}`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+            if (!res.ok) {
+                const error = new Error(res.statusText);
+                throw error;
+            }
+
+            const datas = await res.json();
+            // setCartData(datas);
+            // const productIds = datas.cart.items.map(item => item.productId._id);
+            // console.log("productives",productIds);
+            //console.log("cart data",cartData);
+            return datas.cart.items;
         } catch (err) {
             console.log('Error in fetching data', err);
         }
     }
 
+    const productFunc = async () => {
+        try {
+          const res = await fetch('/products', {
+            method: 'GET',
+            credentials: 'include',
+          });
+          if (!res.ok) {
+            const error = new Error(res.statusText);
+            throw error;
+          }
+    
+          const datas = await res.json();
+          //console.log('API Response in products:', datas);
+          setProductData(datas.products);
+          return datas.products; 
+          
+    
+        } catch (err) {
+          console.log('Error in fetching data', err);
+        }
+      };
     const fetchImageData = async (uploadId, productId) => {
         console.log("Fetched Upload ID", uploadId);
         try {
@@ -99,8 +147,7 @@ function Success() {
             // Retrieve session ID from URL query parameters or state
             const sessionId = getSessionIdFromURL(); // Implement this function to retrieve the session ID
             console.log(sessionId);
-            // const productIds = cartData.cart.items.map(item => item.productId._id);
-            // console.log("products",productIds);t
+            
             const url = `/handle-success/${encodeURIComponent(sessionId)}`;
 
             // Make HTTP request to backend
@@ -109,32 +156,87 @@ function Success() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                // body: JSON.stringify({ productIds }),
+                
             });
 
             // Check if request was successful
             if (response.ok) {
+                await getCart();
                 const data = await response.json();
                 console.log('Payment success:', data);
-                setPayment(data.orderDetails);
+                setPayment(data.orderDetails); 
                 if (Array.isArray(data.orderDetails.products)) {
                     data.orderDetails.products.forEach(item => {
                         const { uploadId, _id } = item;
                         fetchImageData(uploadId, _id); // Call fetchImageData function with uploadId and productId
                     });
                 }
-                // Handle successful response from backend
+               
                 const newUrl = window.location.href.split('?')[0];
                 window.history.replaceState({}, document.title, newUrl);
-               
+                
             } else {
                 console.error('Error handling payment success:', response.statusText);
-                // Handle error response from backend
             }
            
         } catch (error) {
             console.error('Error handling payment success:', error);
             // Handle other errors
+        }
+    };
+    const decreaseProductQuantities = async (productIds) => {
+        try {
+            let fetchedProducts = []; 
+            if (productData.length === 0) {
+                
+                console.log('Product data is empty. Fetching product data...');
+                fetchedProducts = await productFunc();
+            }
+             let fetchedItems = [];
+            if (cartData.cart.items.length === 0) {
+                console.log('Cart data is empty. Fetching cart data...');
+                fetchedItems = await getCarts();
+            }
+             console.log('Fetched products:', fetchedProducts);
+            console.log('Fetched items:', fetchedItems);
+            // Loop through product IDs and decrease quantities in the product data
+            for (const productId of productIds) {
+                console.log('Decreasing quantity for product:', productId);
+                // Find the corresponding product in the product data
+                const productToUpdate = fetchedProducts.find(product => product._id === productId);
+                console.log("Product to update", productToUpdate);
+                const currentQuantity = productToUpdate ? productToUpdate.quantity : 0;
+                if (productToUpdate) {
+                    console.log("cart d",cartData.cart.items);
+                    // Find the purchased quantity from the cart data
+                    const purchasedQuantity = fetchedItems.find(item => item.productId._id === productId)?.quantity || 0;
+                    console.log('Purchased quantity:', purchasedQuantity);
+                    // Decrease the quantity of the product in the product data
+                    const newQuantity = Math.max(0, currentQuantity - purchasedQuantity);
+                    console.log('New quantity:', newQuantity);
+                    // Send a request to update the product with the new quantity
+                    const response = await fetch(`/category-product-quantity/${encodeURIComponent(productId)}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ quantity: newQuantity }),
+                    });
+            
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log('Product quantity updated successfully:', data);
+                        //handleRemoveCart();
+                        // Optionally handle success response from backend
+                    } else {
+                        console.error('Error updating product quantity:', response.statusText);
+                        // Optionally handle error response from backend
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error decreasing product quantities:', error);
+            // Handle errors
         }
     };
 
@@ -157,12 +259,13 @@ function Success() {
     };
 
     useEffect(() => {
-        // getCart();
+        
         if (!paymentSuccessCalledRef.current) {
             handlePaymentSuccess();
             
-        }handleRemoveCart();
-    }, [paymentSuccessCalled]);
+        }
+        productFunc();
+    }, [paymentSuccessCalled,cartData,productData]);
     
     return (
         <>

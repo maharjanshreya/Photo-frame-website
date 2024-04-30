@@ -60,7 +60,7 @@ const getCartController = async (req, res) => {
     if (!userCart) {
       return res.status(404).json({ success: false, message: 'Cart not found' });
     }
-    console.log("User cart in get: ",userCart) 
+    //console.log("User cart in get: ",userCart) 
 
     res.status(200).json({ success: true, message: 'Cart retrieved successfully', cart: userCart });
     //console.log("User cart: ",userCart);

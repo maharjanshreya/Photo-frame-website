@@ -23,7 +23,7 @@ const { reportController, getReportController, replyToReportController, getReply
 const { createCategoryController, getCategoryController, updateCategoryController, deleteCategoryController } = require('../controllers/categoryController.js');
 const { userController, deleteUserController, updateUserController, register, contactController, getAccountController } = require('../controllers/userController.js');
 const { createReviewController, getReviewController, getAllReviewController, getHighestRatedProduct, getAllHighestRatedProducts } = require('../controllers/reviewController.js');
-const { createProductController, getProductController, getPhotoController, getSingleProductController, deleteProductController, updateProductController, getProductByCategoryController } = require('../controllers/productController.js');
+const { createProductController, getProductController, getPhotoController, getSingleProductController, deleteProductController, updateProductController, getProductByCategoryController, updateProductQuanityController } = require('../controllers/productController.js');
 
 router.get('/', (req, res) => {
     res.send("Hellosss world from router.js");
@@ -127,6 +127,7 @@ router.get('/product-image/:pid', getPhotoController);
 router.delete('/deleteproduct/:id', authenticate, deleteProductController);
 router.put('/product-update/:pid', formidable(), updateProductController);
 router.get('/category-product/:cid', getProductByCategoryController);
+router.put('/category-product-quantity/:pid', updateProductQuanityController);
 
 
 //route for add to cart

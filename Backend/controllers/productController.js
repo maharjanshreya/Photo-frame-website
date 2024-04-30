@@ -237,6 +237,25 @@ const updateProductController = async (req, res) =>  {
         });
     }
 };
+const updateProductQuanityController = async (req, res) => {
+    try {
+        const { pid } = req.params;
+        const { quantity } = req.body;
+        console.log('Received PUT request for product ID:', pid, 'with quantity:', quantity);
+        // Update only the quantity of the product
+        const updatedProduct = await Product.findByIdAndUpdate(pid, { quantity }, { new: true });
+
+        if (updatedProduct) {
+            return res.status(200).json({ success: true, message: 'Product quantity updated', product: updatedProduct });
+        } else {
+            return res.status(404).json({ success: false, error: 'Product not found' });
+        }
+    } catch (error) {
+        console.error('Error updating product quantity:', error);
+        res.status(500).json({ success: false, error: 'Failed to update product quantity' });
+    }
+};
+
 
   
-module.exports = {createProductController,getProductController,getPhotoController,getSingleProductController,deleteProductController,updateProductController,getProductByCategoryController};
+module.exports = {createProductController,getProductController,getPhotoController,getSingleProductController,deleteProductController,updateProductController,getProductByCategoryController,updateProductQuanityController  };

@@ -84,6 +84,8 @@ const handlePaymentSuccess = async (req, res) => {
     
     console.log("called once in create order");
     try {const userID = req.userID;
+        
+        
         const sessionID = req.params.session_id;
         const sessionData = await stripe.checkout.sessions.retrieve(sessionID);
          // Check if the order already exists for this session
@@ -109,16 +111,10 @@ const handlePaymentSuccess = async (req, res) => {
                 }
             }
             }
-
-            // Now the uploadIds array contains all the valid uploadIds extracted from the metadata
-            console.log("UploadIds:", uploadIds);
         
         const retrievedSession = await stripe.checkout.sessions.listLineItems(sessionData.id);
-        // console.log("Session id in create order: ",sessionData.id);
-        // console.log("retrievedSession, ",retrievedSession.data);
         const shipping = sessionData.shipping_options;
          
-       
         if (retrievedSession.data) {
             console.log("ok");
         } else {
@@ -163,8 +159,9 @@ const handlePaymentSuccess = async (req, res) => {
             status: 'Processing', 
         });
         const orderDetails = await order.save();
-        res.status(201).json({ orderDetails });
         //await subtractProductQuantity(productIds);
+        res.status(201).json({ orderDetails });
+       
         console.log('Order created successfully:');
        
     } catch (error) {
