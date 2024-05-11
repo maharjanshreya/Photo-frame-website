@@ -14,6 +14,8 @@ import {
 import userFunc from '../Admin/user'; 
 function Component() {
     const [userLength, setUserData] = useState([]);
+    const [orderLeft, setOrderLeft] = useState([]);
+    const [orderDelivered, setOrderDelivered] = useState([]);
     const fetchData = async () => {
         try {
           const userData = await userFunc();
@@ -25,6 +27,26 @@ function Component() {
           // Handle the error
         }
       };
+      const fetchOrderData = async () => {
+        try {
+          const response = await fetch('/view-order');
+          if (!response.ok) {
+            throw new Error('Failed to fetch order data');
+          }
+          const data = await response.json();
+          const processingOrders = data.filter(order => order.status === 'Processing');
+          const deliveredOrders = data.filter(order => order.status === 'Delivered');
+          const processingOrdersCount = processingOrders.length;
+          setOrderLeft(processingOrdersCount);
+          setOrderDelivered(deliveredOrders.length);
+          // Now you can use or log the count
+          console.log('Number of orders with status "Processing":', processingOrdersCount);
+
+        } catch (error) {
+          console.error('Error fetching order data:', error);
+        }
+      };
+      fetchOrderData();
       fetchData();
   return (
     <MDBContainer fluid>
@@ -91,9 +113,9 @@ function Component() {
                         </div>
                       </div>
                       <div className='flex-grow-1 ms-4'>
-                        <p className='text-muted mb-1'>Average CTR</p>
+                        <p className='text-muted mb-1'>Orders Left</p>
                         <h2 className='mb-0'>
-                          24
+                          {orderLeft}
                           <span className='text-danger' style={{ fontSize: '0.875rem' }}>
                             <MDBIcon icon='arrow-down' className='ms-1' size='sm' />
                             <span> 3.9%</span>
@@ -114,9 +136,9 @@ function Component() {
                         </div>
                       </div>
                       <div className='flex-grow-1 ms-4'>
-                        <p className='text-muted mb-1'>Average CTR</p>
+                        <p className='text-muted mb-1'>Delivered Orders</p>
                         <h2 className='mb-0'>
-                          24
+                          {orderDelivered}
                           <span className='text-danger' style={{ fontSize: '0.875rem' }}>
                             <MDBIcon icon='arrow-down' className='ms-1' size='sm' />
                             <span> 3.9%</span>

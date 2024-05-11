@@ -246,7 +246,8 @@ const updateProductQuanityController = async (req, res) => {
         const updatedProduct = await Product.findByIdAndUpdate(pid, { quantity }, { new: true });
 
         if (updatedProduct) {
-            return res.status(200).json({ success: true, message: 'Product quantity updated', product: updatedProduct });
+            console.log('Product updated:', updatedProduct);
+            return res.status(200).json({ success: true, message: 'Product quantity updated', cart: updatedProduct });
         } else {
             return res.status(404).json({ success: false, error: 'Product not found' });
         }

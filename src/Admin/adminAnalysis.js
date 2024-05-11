@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast';
 import Component from './component1';
 import userFunc from '../Admin/user';
 import ReactStars from "react-rating-stars-component";
+import AdminLayout from './admin';
 function Anaylsis() {
   const [highestProduct, setHighestProduct] = useState([]);
   const [overall, setOverall] = useState([]);
@@ -176,8 +177,8 @@ function Anaylsis() {
       console.log("valid notification");
 
     }
-    else {
-      window.alert("valid notification");
+    else if (res.status === 201)  {
+      toast.success(data.message);
 
       console.log("valid notification");
 
@@ -185,12 +186,11 @@ function Anaylsis() {
   }
   return (
     <>
+    <AdminLayout>
       <div className='d-flex justify-content-start align-items-start'>
-        <div className='p-2 flex-shrink-1' style={{ textAlign: 'left' }} >
-          <AdminNavbar />
-        </div>
-        <div className="col-md-8 offset-md-2" style={{ marginTop: '50px', marginLeft: '250px', borderBottom: 'none' }} >
-          <h2 style={{ marginBottom: '30px' }}>Dashboard</h2>
+        
+        <div className="" style={{borderBottom: 'none' }} >
+          <h2 style={{ }}>Dashboard</h2>
           <Component />
 
           <div className='d-flex justify-content-start align-items-stretch' style={{ marginTop: '100px' , marginBottom: '100px' }}>
@@ -216,7 +216,7 @@ function Anaylsis() {
                   {
                     userData.map((row) => (
                       <option key={row._id} value={row._id}>
-                        {row.firstname}{row.lastname}
+                        {row.firstname}{' '}{row.lastname}
                       </option>
                     ))}
                 </select>   <br />
@@ -252,6 +252,7 @@ function Anaylsis() {
 
         </div>
       </div>
+      </AdminLayout>
     </>
   );
 }

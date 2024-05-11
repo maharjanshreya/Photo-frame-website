@@ -118,5 +118,38 @@ const removeAllCartController = async (req, res) => {
   }
 };
 
-module.exports = { cartController, getCartController, removeCartController,removeAllCartController };
+//put my cart
+const updateCartController = async (req, res) => {
+  const { userId, productId } = req.params;
+  let { quantity } = req.body;
+  
+  console.log("Quantity: ", quantity);
+  console.log("User ID: ", userId);
+  console.log("Product ID: ", productId);
+
+  try {
+      // Find the user's cart and update the quantity of the specified product
+      const updatedCart = await Cart.findOneAndUpdate(
+          { userId, 'items.productId': productId },
+          { $inc: { 'items.$.quantity': quantity } },
+          { new: true }
+      );
+
+      // If the cart is not found or the product is not found in the cart, return error
+      if (!updatedCart) {
+          console.log("Cart or item not found");
+          return res.status(404).json({ error: 'Cart or item not found' });
+      }
+
+      // Return the updated cart
+      return res.status(200).json({ message: 'Cart updated successfully', cart: updatedCart });
+  } catch (error) {
+      console.error('Error updating cart:', error);
+      return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+
+module.exports = { cartController, getCartController, removeCartController,removeAllCartController,updateCartController };
 

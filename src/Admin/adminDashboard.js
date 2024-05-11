@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './adminNavbar';
 import Stack from 'react-bootstrap/Stack';
 import Modal from 'react-bootstrap/Modal';
+import AdminLayout from './admin';
 import { FiEdit } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
 import { FaRegImage } from "react-icons/fa6";
@@ -273,14 +274,12 @@ function Dashboard() {
   }, []);
   return (
     <>
+    <Navbar />
       <div style={{ display: 'flex' }}>
-        {/* Navbar on the left */}
-        <div>
-          <Navbar />
-        </div>
+      
         <div style={{ flex: 1 }}>
           {/* Content on the right */}
-          <div style={{ marginLeft: '250px', padding: '20px' }}>
+          <AdminLayout>
             <div className='d-flex'>
               <div className='admin-panel'>
                 <h4 className="header-text" style={{ color: '#426751' }}>Admin Panel</h4>
@@ -492,7 +491,7 @@ function Dashboard() {
               ) : (
                 <p>No user available.</p>
               ))}
-          </div>
+          </AdminLayout>
         </div>
 
 

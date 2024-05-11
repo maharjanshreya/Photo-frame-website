@@ -6,7 +6,8 @@ import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { CardTitle } from 'react-bootstrap';
 import { formatDateString } from '../ProductView/time';
-import { Pagination } from 'react-bootstrap';   
+import { Pagination } from 'react-bootstrap';  
+import AdminLayout from './admin'; 
 function Order() {
     const [orders, setOrders] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -140,11 +141,10 @@ function Order() {
       };
     return (
         <>
-            <div className='d-flex'>
+            <AdminLayout>
+           
+                
                 <div>
-                    <AdminNavbar />
-                </div>
-                <div className="col-md-8 offset-md-2" style={{ marginTop: '50px' ,marginLeft:'250px'}}>
                     <h2>Orders</h2>
                     <Button  style={{ backgroundColor: activeButton === 'all' ? 'orange' : '#e6e6e6',color: activeButton === 'all' ? 'white' : '#7d7a7a', borderColor: '#e6e6e6',marginRight: '4px' }}  onClick={() => handleViewChange('all')}>All Status</Button>
                     <Button style={{ backgroundColor: activeButton === 'Cancelled' ? 'blue' : '#e6e6e6', borderColor: '#e6e6e6', color: '#7d7a7a', marginRight: '4px' }} onClick={() => handleViewChange('Cancelled')}>Cancelled</Button>
@@ -240,7 +240,8 @@ function Order() {
                         </Card>
                     </div>
                 </div>
-            </div>
+            
+            </AdminLayout>
         </>
     );
 }

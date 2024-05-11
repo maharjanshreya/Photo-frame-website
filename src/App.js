@@ -28,6 +28,7 @@ import AdminReview from './Admin/adminReview';
 import AdminAnalysis from './Admin/adminAnalysis';
 import AdminContact from './Admin/adminContact';
 import AdminNotifyUpdates from './Admin/addNotification';
+import AdminAccount from './Admin/adminMyAccount';
 import Cart from './ProductView/cart';
 import Notification from './ProductView/notification';
 import { useAuth } from './context/token';
@@ -97,6 +98,7 @@ function App() {
           <Route element={<AdminAnalysis />} path="/adminAnalysis" exact />
           <Route element={<AdminNotifyUpdates />} path="/notify" exact />
           <Route element={<AdminContact />} path="/adminContact" exact />
+          <Route element={<AdminAccount />} path="/adminAccount" exact />
         </Route>
         <Route path="/productView/:productId" element={<ProductView />} />
 

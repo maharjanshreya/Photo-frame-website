@@ -1,10 +1,11 @@
 import React,{useState,useEffect}from 'react';
-import AdminNavbar from './adminNavbar';
+import Navbar from './adminNavbar';
 import { formatDateString } from '../ProductView/time';
 import Card from 'react-bootstrap/Card';
 import CardBody from 'react-bootstrap/Card';
 import ReactStars from "react-rating-stars-component";
 import { MdOutlineSupervisorAccount } from "react-icons/md";
+import AdminLayout from './admin';
 function Review(){
     const [review, setReviewData] = useState([]);
     const getReviewFunc = async () => {
@@ -34,10 +35,8 @@ function Review(){
             <div className='' style={{marginRight:'36px'}}>
 
    
-                <div>
-                <AdminNavbar/>
-                </div>
-                <div style={{marginLeft:'250px'}}>
+               
+                <AdminLayout >
                     <h2 >Reviews  </h2>
                     <div style={{width:'100%'}}>
                         {
@@ -60,7 +59,7 @@ function Review(){
                                     </Card>
                                 </div>
                             ))}</div>
-                </div>
+                </AdminLayout>
                 </div>
         </>
     );

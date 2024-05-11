@@ -1,11 +1,12 @@
 import Navbar from '../Navbar/navbar';
 import { React, useEffect, useState, useContext } from 'react';
 import './product.css';
-
+import { FaPlus } from "react-icons/fa6";
+import { FaMinus } from "react-icons/fa";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { loadStripe } from '@stripe/stripe-js';
-import { MDBCard, MDBCardBody, MDBCardImage, MDBCol, MDBContainer, MDBIcon, MDBRow, MDBTypography, } from "mdb-react-ui-kit";
+import { MDBCard, MDBCardBody, MDBCardImage, MDBCol, MDBContainer, MDBIcon, MDBRow, MDBTypography,MDBBtn } from "mdb-react-ui-kit";
 import { useNavigate } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
 import { FaAngleDown } from "react-icons/fa6";
@@ -28,15 +29,14 @@ function Cart() {
   const [shipping, setShipping] = useState(0);
 
   const fetchImageData = async (uploadId, productId) => {
-    console.log("Fetched Upload ID", uploadId);
+    
     try {
       const response = await fetch(`/getImage-upload/${encodeURIComponent(uploadId)}`);
       if (!response.ok) {
-        throw new Error('Failed to fetch image data');
+       // throw new Error('Failed to fetch image data');
       }
       const imageData = await response.json();
-      console.log(imageData);
-      // Convert the buffer to a base64 string
+     
       const base64String = btoa(
         new Uint8Array(imageData.imageData.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
       );
@@ -48,7 +48,7 @@ function Cart() {
           ...prevImages,
           [productId]: url
         };
-        console.log('Updated images:', updatedImages);
+        
         return updatedImages;
       });
 
@@ -60,12 +60,59 @@ function Cart() {
           imageUrl: imageUrl // Add the image URL to the product data
         };
       }));
-      console.log("Products with images:", productsWithImages);
+     
 
     } catch (error) {
-      console.error('Error retrieving image data:', error);
+      //console.error('Error retrieving image data:', error);
     }
   };
+  const updateQuantity = async (productId, quantity) => {
+    try {
+        const userId = localStorage.getItem('userId');
+        const response = await fetch(`/add-to-cart/update/${encodeURIComponent(userId)}/${encodeURIComponent(productId)}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ quantity }),
+        });
+
+        if (response.ok) {
+            const updatedCartData = await response.json();
+            return updatedCartData;
+        } else {
+            throw new Error('Failed to update cart item quantity');
+        }
+    } catch (error) {
+        throw new Error('Error updating cart item quantity: ' + error.message);
+    }
+};
+  const handlePlus = async (productId) => {
+    const userId = localStorage.getItem('userId');
+    try {
+      const updatedCartData = await updateQuantity(productId, 1);
+      // Update the cart data in the state
+      setCartData(updatedCartData);
+      console.log(updatedCartData);
+    } catch (error) {
+        // Handle fetch error
+        console.error('Error updating cart item quantity:', error);
+    }
+};
+const handleMinus = async (productId) => {
+  const userId = localStorage.getItem('userId');
+  try {
+    const updatedCartData = await updateQuantity(productId, -1);
+    // Update the cart data in the state
+    setCartData(updatedCartData);
+    console.log(updatedCartData);
+  } catch (error) {
+      // Handle fetch error
+      console.error('Error updating cart item quantity:', error);
+  }
+};
+
+  
 
   const getCart = async () => {
 
@@ -91,12 +138,12 @@ function Cart() {
       setCartData(datas);
 
       setCart(datas.cart.items.length);
-      console.log("cart: ", datas.cart.items);
+      //console.log("cart: ", datas.cart.items);
       if (Array.isArray(datas.cart.items)) {
         datas.cart.items.forEach(item => {
           const { uploadId, productId } = item;
           // Now you can use 'uploadId' and 'productId' as needed
-          console.log(uploadId, productId._id);
+         // console.log(uploadId, productId._id);
           // You can call functions or perform any other operations using 'uploadId' and 'productId'
           // For example:
           fetchImageData(uploadId, productId._id); // Call fetchImageData function with uploadId and productId
@@ -125,7 +172,7 @@ function Cart() {
             };
           } catch (error) {
             navigate('/login', { replace: true });
-            console.error(error.message);
+           // console.error(error.message);
             return null;
           }
         });
@@ -135,7 +182,7 @@ function Cart() {
         setImageURL(filteredImages);
       }
     } catch (err) {
-      console.log('Error in fetching data', err);
+     // console.log('Error in fetching data', err);
     }
   };
 
@@ -273,16 +320,7 @@ function Cart() {
 
                           <p className="mb-0">You have {cartData?.cart?.items.length || 0} items in your cart</p>
                         </div>
-                        <div>
-                          <p>
-                            <span className="text-muted">Sort by:</span>
-                            <ul><a href="#!" className="text-body">
-                              price
-                              <FaAngleDown fas icon="angle-down mt-1" />
-                            </a></ul>
-
-                          </p>
-                        </div>
+                        
                       </div>
 
 
@@ -309,11 +347,25 @@ function Cart() {
                                         <p className="small mb-0">Size: {item.size}</p>
                                       </div>
                                     </div>
-                                    <div className="d-flex flex-row align-items-center">
-                                      <div style={{ width: "50px" }}>
+                                    <div className="d-flex flex-row align-items-center"> 
+                                    <div>
+                                        
+                                          <FaMinus onClick={() => handleMinus(item.productId._id)} />
+                                      
+                                      </div>
+                                   
+                                      <div style={{ }}>
+                                      
                                         <MDBTypography tag="h5" className="fw-normal mb-0">
+                                         
                                           {item.quantity}
+                                         
                                         </MDBTypography>
+                                      </div>
+                                      <div>
+                                        
+                                          <FaPlus onClick={() => handlePlus(item.productId._id)} style={{marginRight:'30px'}}/>
+                                        
                                       </div>
                                       <div style={{ width: "88px" }}>
                                         <MDBTypography tag="h5" className="mb-0" style={{ color: 'red' }}>
@@ -363,11 +415,7 @@ function Cart() {
                             <p className="mb-2">Total.</p>
                             <p className="mb-2">Rs. {total}</p>
                           </div>
-                          <div className="d-flex justify-content-between">
-                            <p className="mb-2">Shipping address.</p>
-                            {/* <Map /> */}
-
-                          </div>
+                         
                           <Button style={{ backgroundColor: '#2596be' }} onClick={handleCheckout}>Checkout</Button>
                           {error && <div style={{ color: 'red', fontWeight: '500' }}>{error}</div>}
                         </MDBCardBody>

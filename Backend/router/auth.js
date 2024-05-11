@@ -16,7 +16,7 @@ const { getNotification, createNotification } = require('../controllers/notifica
 const { uploadController, getImageByUserId, getImageByUploadId } = require('../controllers/uploadController.js');
 const { paymentController, handlePaymentSuccess } = require('../controllers/paymentController.js');
 const { addToWishlistController, getWishlistController } = require('../controllers/wishlistController.js');
-const { cartController, getCartController, removeCartController, removeAllCartController } = require('../controllers/cartController.js');
+const { cartController, getCartController, removeCartController, removeAllCartController, updateCartController } = require('../controllers/cartController.js');
 const { forgotController, resetController, postResetController } = require('../controllers/resetController.js');
 const { getAllOrderController, getSingleOrderController, updateOrderController, deleteOrderController } = require('../controllers/orderController.js');
 const { reportController, getReportController, replyToReportController, getReplyController } = require('../controllers/reportController.js');
@@ -132,6 +132,7 @@ router.put('/category-product-quantity/:pid', updateProductQuanityController);
 
 //route for add to cart
 router.post('/add-to-cart', authenticate, cartController);
+router.put('/add-to-cart/update/:userId/:productId', authenticate, updateCartController);
 router.get('/add-to-cart/:id', authenticate, isConsumer,getCartController);
 router.delete('/remove-item/:userId/:productId', authenticate, removeCartController);
 router.delete('/remove-item/:userId', authenticate, removeAllCartController);
@@ -179,9 +180,9 @@ router.get('/handle-success/:session_id', authenticate, handlePaymentSuccess);
 router.post('/create-checkout-session', authenticate, paymentController);
 
 //route for order get
-router.get('/view-order', authenticate, getAllOrderController);
+router.get('/view-order', authenticate,isAdmin, getAllOrderController);
 router.get('/view-my-orders/:buyerId', authenticate, getSingleOrderController);
-router.delete('/delete-order/:oid', deleteOrderController);
+router.delete('/delete-order/:oid',authenticate,isAdmin, deleteOrderController);
 
 //route for revire and rating 
 router.post('/give-review', createReviewController);
