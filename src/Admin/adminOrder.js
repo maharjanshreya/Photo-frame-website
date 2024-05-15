@@ -8,6 +8,7 @@ import { CardTitle } from 'react-bootstrap';
 import { formatDateString } from '../ProductView/time';
 import { Pagination } from 'react-bootstrap';  
 import AdminLayout from './admin'; 
+import { paginate } from '../Components/paginate';
 function Order() {
     const [orders, setOrders] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);

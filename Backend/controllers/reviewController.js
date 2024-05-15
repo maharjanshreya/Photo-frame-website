@@ -32,7 +32,7 @@ const createReviewController = async (req, res) => {
         console.error('Error:', err);
         res.status(500).json({
             success: false,
-            message: 'Error in creating review',
+            message: 'Please try again.',
             error: err.message,
         });
     }

@@ -170,7 +170,7 @@ function Account() {
                     <label htmlFor="contact" className="form-label">
                       Contact
                     </label>
-                    <input type="text" className="form-control" id="contact" name="contact" value={updates.contact || (userData && userData.contact)} onChange={handleInputChange} />
+                    <input type="number" className="form-control" id="contact" name="contact" value={updates.contact || (userData && userData.contact)} onChange={handleInputChange}  maxLength="10" />
                   </div>
                   <div className="mb-3">
                     <label htmlFor="password" className="form-label">

@@ -226,7 +226,7 @@ function Success() {
                     if (response.ok) {
                         const data = await response.json();
                         console.log('Product quantity updated successfully:', data);
-                        //handleRemoveCart();
+                        handleRemoveCart();
                         // Optionally handle success response from backend
                     } else {
                         console.error('Error updating product quantity:', response.statusText);

@@ -9,7 +9,6 @@ import { FaReply } from "react-icons/fa";
 import Dropdown from 'react-bootstrap/Dropdown';
 import { formatDateString } from '../ProductView/time';
 import AdminLayout from './admin';
-
 import { MdOutlineSupervisorAccount } from "react-icons/md";
 function Contact() {
   const [reports, setReports] = useState([]);
@@ -122,13 +121,13 @@ function Contact() {
             <h1 >Report </h1>
             
             <div className="row">
-                  <div className="col-auto">
-                    <MdOutlineSupervisorAccount color='green' />
-                  </div>
-                  <div className="col">
-                    <p>Analyze and respond to user   reports efficiently.</p>
-                  </div>
-                </div>
+              <div className="col-auto">
+                <MdOutlineSupervisorAccount color='green' />
+              </div>
+              <div className="col">
+                <p>Analyze and respond to user   reports efficiently.</p>
+              </div>
+            </div>
             <div className="d-flex align-items-center" style={{ marginBottom: '20px' }}>
               <div className=" flex-grow-1 ">
                 <InputGroup className="mb-1">
