@@ -10,6 +10,7 @@ import { Pagination } from 'react-bootstrap';
 import AdminLayout from './admin'; 
 import { paginate } from '../Components/paginate';
 function Order() {
+    const [searchQuery, setSearchQuery] = useState('');
     const [orders, setOrders] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5; 
@@ -98,8 +99,15 @@ function Order() {
             default:
                 break;
         }
-        console.log('Filtered Orders:', filteredOrders);
-        //setOrders(filteredOrders); // Update the orders state with filtered orders
+        if (searchQuery) {
+            newFilteredOrders = newFilteredOrders.filter(order => 
+                (order._id && order._id.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                (order.buyer && order.buyer.email && order.buyer.email.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                (order.buyer && order.buyer.contact && order.buyer.contact  .toLowerCase().includes(searchQuery.toLowerCase())) ||
+                (order.products && order.products.some(product => product.name && product.name.toLowerCase().includes(searchQuery.toLowerCase())))
+            );
+        }
+        console.log('Filtered Orders:', newFilteredOrders);
         setFilteredOrders(newFilteredOrders);
     };
 
@@ -110,6 +118,19 @@ function Order() {
     useEffect(() => {
         fetchOrders();
     }, []);
+
+    useEffect(() => {
+        let newFilteredOrders = orders;
+        if (searchQuery) {
+            newFilteredOrders = newFilteredOrders.filter(order => 
+                (order._id && order._id.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                (order.buyer && order.buyer.email && order.buyer.email.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                (order.buyer && order.buyer.contact && order.buyer.contact.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                (order.products && order.products.some(product => product.name && product.name.toLowerCase().includes(searchQuery.toLowerCase())))
+            );
+        }
+        setFilteredOrders(newFilteredOrders);
+    }, [searchQuery, orders]);
     const handleDeleteOrder = async (_id) => {
         console.log('The user id to be deleted is ' + _id);
         try {
@@ -151,6 +172,16 @@ function Order() {
                     <Button style={{ backgroundColor: activeButton === 'Cancelled' ? 'blue' : '#e6e6e6', borderColor: '#e6e6e6', color: '#7d7a7a', marginRight: '4px' }} onClick={() => handleViewChange('Cancelled')}>Cancelled</Button>
                     <Button style={{ backgroundColor: activeButton === 'Processing' ? 'blue' : '#e6e6e6', borderColor: '#e6e6e6', color: '#7d7a7a', marginRight: '4px' }} onClick={() => handleViewChange('Processing')}>On Progress</Button>
                     <Button style={{ backgroundColor: activeButton === 'Delivered' ? 'green' : '#e6e6e6', color: activeButton === 'Delivered' ? 'white' : '#7d7a7a',borderColor: '#e6e6e6', marginRight: '4px' }} onClick={() => handleViewChange('Delivered')}>Delivered</Button>
+                    
+                    <div style={{ marginBottom: '20px' }}>
+                        <input 
+                            type="text" 
+                            placeholder="Search orders..." 
+                            value={searchQuery} 
+                            onChange={(e) => setSearchQuery(e.target.value)} 
+                            className="form-control"
+                        />
+                    </div>
                     <div className='table-responsive' style={{ marginTop: '70px',marginBottom: '70px' }}>
                         <Card style={{ padding: '10px' }}>
                             <CardTitle>Orders</CardTitle>
@@ -160,6 +191,7 @@ function Order() {
                                         <th>Order Id</th>
                                         <th>Order Name</th>
                                         <th>Customer name</th>
+                                        <th>Customer contact</th>
                                         <th>Shipping Address</th>
                                         <th>Date</th>
                                         <th>Amount</th>
@@ -182,6 +214,9 @@ function Order() {
                                             </td>
                                             <td>
                                                 {order.buyer.email}
+                                            </td>
+                                            <td>
+                                                {order.buyer.contact}
                                             </td>
                                             <td>
                                                 <p>

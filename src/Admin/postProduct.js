@@ -41,7 +41,7 @@ function PostProduct({ refreshProductList }) {
     price: "",
     quantity: "",
     size: "",
-    dimension: "",
+    border: "",
     shipping: "",
     minDelivery: "",
     maxDelivery: "",
@@ -65,7 +65,7 @@ function PostProduct({ refreshProductList }) {
     formData.append("quantity", product.quantity);
     formData.append("category", product.category);
     formData.append("size", product.size);
-    formData.append("dimension", product.dimension);
+    formData.append("border", product.border);
     formData.append("shipping", product.shipping);
     formData.append("minDelivery", product.minDelivery);
     formData.append("maxDelivery", product.maxDelivery);
@@ -113,7 +113,7 @@ function PostProduct({ refreshProductList }) {
       {/*Dropdown menu : out of stock or stock
                       <input type='text' placeholder='stock' name="stock" className='category'  required value={category.name} onChange={handleInputs}/>*/}
       <input type='text' placeholder='Enter size' name="size" className='category' required value={product.size} onChange={handleInputs} />
-      <input type='text' placeholder='Enter dimension' name="dimension" className='category' required value={product.dimension} onChange={handleInputs} />
+      <input type='text' placeholder='Enter border' name="border" className='category' required value={product.border} onChange={handleInputs} />
       <input type='number' placeholder='Minimum Delivery time' name="minDelivery" className='category' required value={product.minDelivery} onChange={handleInputs} />
       <input type='number' placeholder='Maximum Delivery time' name="maxDelivery" className='category' required value={product.maxDelivery} onChange={handleInputs} />
 

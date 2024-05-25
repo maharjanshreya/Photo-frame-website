@@ -70,7 +70,7 @@ function Footer() {
               <h6 className='text-uppercase fw-bold mb-4'>Category</h6>
               {categoryData.map((row) => (
                 <p>
-                  <Link to={`/category/${row._id}`} className='text-reset'>
+                  <Link to="/products" className='text-reset'>
                     {row.name}
                   </Link>
                 </p>
@@ -82,8 +82,13 @@ function Footer() {
             <MDBCol md='3' lg='2' xl='2' className='mx-auto mb-4'>
               <h6 className='text-uppercase fw-bold mb-4'>Useful links</h6>
               <p>
-                <a href='#!' className='text-reset'>
-                  Pricing
+                <a href='/aboutus' className='text-reset'>
+                  About Us
+                </a>
+              </p>
+              <p>
+                <a href='/contact' className='text-reset'>
+                  Contact Us
                 </a>
               </p>
               <p>
@@ -92,12 +97,12 @@ function Footer() {
                 </a>
               </p>
               <p>
-                <a href='#!' className='text-reset'>
+                <a href='/account#orders' className='text-reset'>
                   Orders
                 </a>
               </p>
               <p>
-              <Link to="/account#report">report a problem</Link>
+              <a href="/account#report" className='text-reset'>Report a problem</a>
               </p>
             </MDBCol>
 

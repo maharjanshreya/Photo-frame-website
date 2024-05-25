@@ -82,7 +82,7 @@ function OrderPage() {
                     <BiPurchaseTag color='green' />
                 </div>
                 <div className="col">
-                    <p>My Orders</p>
+                    <p>My Orders - (Latest)</p>
                 </div>
             </div>
             <hr />

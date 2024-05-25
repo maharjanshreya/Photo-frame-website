@@ -519,16 +519,31 @@ function Dashboard() {
       </Modal>
 
       {/*pop up for single product details*/}
-      <Modal show={show2} onHide={handleClose2} size="lg" aria-labelledby="contained-modal-title-vcenter" centered style={{ borderRadius: '24px' }}>
-        <Modal.Body style={{ padding: '68px', paddingTop: '30px', paddingleft: '30px', backgroundColor: '#D9D9D9', borderRadius: '24px' }} >
-          <center style={{ marginBottom: "30px" }}><span className='title-product-details'>View product details</span></center>
-          <ViewDetails productId={productId} onClose={handleClose2} />
+      <Modal show={show2} onHide={handleClose2} size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered>
 
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            View product details
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+
+
+          <ViewDetails productId={productId} onClose={handleClose2} />
         </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={handleClose2}>Close</Button>
+        </Modal.Footer>
+
+
+
       </Modal>
 
       {/*pop up for updates of product */}
-      <Modal show={show3} onHide={handleClose3} centered >
+      <Modal show={show3} onHide={handleClose3}  
+      centered >
 
 
         <div className="modal show" style={{ display: 'block', position: 'initial', padding: 0 }} >

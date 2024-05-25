@@ -5,17 +5,19 @@ import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import  { Link } from "react-router-dom";
 import { loadStripe } from '@stripe/stripe-js';
 import { MDBCard, MDBCardBody, MDBCardImage, MDBCol, MDBContainer, MDBIcon, MDBRow, MDBTypography,MDBBtn } from "mdb-react-ui-kit";
 import { useNavigate } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
 import { FaAngleDown } from "react-icons/fa6";
 import { useCart } from '../context/cart';
-import Map from '../ProductView/map';
 import { useParams, useLocation } from 'react-router-dom';
 import { useUpload } from '../context/uploadId';
+import { useDispatch, useSelector } from 'react-redux';
+import { incrementItem, decrementItem } from './cartSlice';
 let total = 0;
-function Cart() {
+function Cart({ item }) {
   const { upload } = useUpload();
   const [error, setError] = useState('');
   const { cart, setCart } = useCart();
@@ -27,6 +29,10 @@ function Cart() {
   const [subtotal, setSubtotal] = useState(0);
   const [total, setTotal] = useState(0);
   const [shipping, setShipping] = useState(0);
+
+  const dispatch = useDispatch();
+  const quantity = useSelector((state) => (item && item.productId && state.cart.items[item.productId._id]) || 0);
+
 
   const fetchImageData = async (uploadId, productId) => {
     
@@ -88,6 +94,7 @@ function Cart() {
     }
 };
   const handlePlus = async (productId) => {
+    dispatch(incrementItem(productId));
     const userId = localStorage.getItem('userId');
     try {
       const updatedCartData = await updateQuantity(productId, 1);
@@ -100,6 +107,7 @@ function Cart() {
     }
 };
 const handleMinus = async (productId) => {
+  dispatch(decrementItem(productId));
   const userId = localStorage.getItem('userId');
   try {
     const updatedCartData = await updateQuantity(productId, -1);
@@ -293,6 +301,9 @@ const handleMinus = async (productId) => {
     setShipping(shippingCost);
   }, [userId, cartData]);
 
+  const productView = (productId) => {
+    navigate(`/productView/${productId}`, { state: { additionalInfo: "cart" } });
+  }
 
   return (
     <>
@@ -318,7 +329,7 @@ const handleMinus = async (productId) => {
                         <div>
                           <p className="mb-1">Shopping cart</p>
 
-                          <p className="mb-0">You have {cartData?.cart?.items.length || 0} items in your cart</p>
+                          <p className="mb-0">You have {cartData?.cart?.items.length || 0} unique items in your cart</p>
                         </div>
                         
                       </div>
@@ -342,7 +353,8 @@ const handleMinus = async (productId) => {
                                       </div>
                                       <div className="ms-4">
                                         <MDBTypography tag="h5">
-                                          {item.productId.productName}
+                                          <p onClick={() =>productView(item.productId._id)}>
+                                          {item.productId.productName}</p>
                                         </MDBTypography>
                                         <p className="small mb-0">Size: {item.size}</p>
                                       </div>

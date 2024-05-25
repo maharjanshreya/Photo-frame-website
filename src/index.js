@@ -11,6 +11,8 @@ import { AuthProvider } from './context/token';
 import { Auth2Provider } from './context/role';
 import { UserProvider } from './context/user';
 import { BrowserRouter } from 'react-router-dom';
+import store from './ProductView/store';
+import { Provider } from 'react-redux';
 import { UploadProvider } from './context/uploadId';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -24,7 +26,9 @@ root.render(
             <WishlistProvider>
               <UploadProvider>
                 <SearchProvider>
+                <Provider store={store}>
                   <App />
+                  </Provider>
                 </SearchProvider>
               </UploadProvider>
             </WishlistProvider>

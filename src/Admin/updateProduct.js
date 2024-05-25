@@ -52,12 +52,13 @@ const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
           setUpdates({
               productName: productData.productName || '',
               description: productData.description || '',
+              image: productData.image || '',
               category: productData.category || '',
               shipping: productData.shipping || '',
               price: productData.price || '',
               quantity: productData.quantity || '',
               size: productData.size || '',
-              dimension: productData.dimension || '',
+              border: productData.border || '',
               minDelivery: productData.minDelivery || '',
               maxDelivery: productData.maxDelivery || '',
           });
@@ -65,12 +66,13 @@ const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
       const [updates, setUpdates] = useState({
         productName: '',
         description: '',
+        image: "",
         category: '',
         shipping: '',
         price: '',
         quantity: '',
         size: '',
-        dimension: '',
+        border: '',
         minDelivery: '',
         maxDelivery: '',
     });
@@ -100,10 +102,15 @@ const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
     
             if (!response.ok) {
                 throw new Error(`Error: ${response.status}`);
+                toast.error('Product not updated.');
             }
+
     
             const updatedProduct = await response.json();
-            toast.success('Product Updated Successfully.');
+            if(response===201){
+                 toast.success('Product Updated Successfully.');
+            }
+           
             console.log('Product updated:', updatedProduct);
             // Call refreshCategoryList to fetch the updated product list
             refreshProductList();
@@ -141,17 +148,17 @@ const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
                       <input type='text' placeholder='stock' name="stock" className='category'   value={category.name} onChange={handleInputChange}/>*/}
                        <label>Size:</label>
                       <input type='text' placeholder='size' name="size" className='category'   value={updates.size || '' } onChange={handleInputChange}/>
-                      <label>Dimension:</label>
-                      <input type='text' placeholder='dimension' name="dimension" className='category'   value={updates.dimension || ''} onChange={handleInputChange}/>
+                      <label>Border:</label>
+                      <input type='text' placeholder='border' name="border" className='category'   value={updates.border || ''} onChange={handleInputChange}/>
                       <label>Shipping:</label>
                       <input type='number' placeholder='Shipping' name="shipping" className='category'   value={updates.shipping || ''} onChange={handleInputChange}/>
                       <label>Min delivery date:</label>
                       <input type='number' placeholder='Min delivery date' name="minDelivery" className='category'   value={updates.minDelivery || ''} onChange={handleInputChange}/>
                       <label>Max delivery date:</label>
                       <input type='number' placeholder='Max delivery date' name="maxDelivery" className='category'   value={updates.maxDelivery || ''} onChange={handleInputChange}/>
-               
+                     
                 <Button type='submit' className='meterButtons' style={{backgroundColor: '#0d6efd', width:'100%'}}>Save details</Button><br/>
-            </form>
+            </form> <Toaster position="top-center" reverseOrder={true} />
         </div>
         </>
     );

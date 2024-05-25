@@ -72,7 +72,7 @@ const ViewDetails = ({ productId }) => {
                                     <p style={{marginBottom:'8px'}}><span className='title-name'>Category: </span>    <span className='product-color-weight'>{productData?.category?.name}</span></p>
                                     <p style={{marginBottom:'8px'}}><span className='title-name'>Price: </span>       <span className='product-color-weight'>{productData.price}</span></p>
                                     <p style={{marginBottom:'8px'}}><span className='title-name'> Size:</span>        <span className='product-color-weight'>{productData.size}</span></p>
-                                    <p style={{marginBottom:'8px'}}><span className='title-name'>Dimension: </span>   <span className='product-color-weight'>{productData.dimension}</span></p>  
+                                    <p style={{marginBottom:'8px'}}><span className='title-name'>Border: </span>   <span className='product-color-weight'>{productData.border}</span></p>  
 
                                     </>
                                 ) : (

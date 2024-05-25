@@ -36,14 +36,14 @@ function Register() {
             setcontactError("Contact must be exactly 10 digits. Please try again.");
             return;
         }
-        const { firstname, lastname, username, email, password, cpassword, contact } = user;
+        const { firstname, lastname, username, email, password, contact } = user;
         const res = await fetch("/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                firstname, lastname, username, email, password, cpassword, contact, role: "consumer"
+                firstname, lastname, username, email, password, contact, role: "consumer"
             })
         });
         const data = await res.json();

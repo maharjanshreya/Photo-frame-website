@@ -32,6 +32,8 @@ import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import { useUpload } from '../context/uploadId';
 import Rating from '@mui/material/Rating';
 import Footer from '../Homepage/footer';
+import { useDispatch, useSelector } from 'react-redux';
+import { incrementItem, decrementItem } from './cartSlice';
 let product_id = null;
 
 function Product() {
@@ -82,9 +84,10 @@ function Product() {
       console.log('Error in fetching data', err);
     }
   };
-
+  const dispatch = useDispatch();
   const handleCart = () => {
     //setProduct_Id(p_id);
+    dispatch(incrementItem(productId));
     if (product_id) {
       setQuantity(prevQuantity => prevQuantity + 1);
       addToCart(quantity + 1);
@@ -190,7 +193,9 @@ function Product() {
       console.error('Error adding to cart:', error);
     }
   };
+
   let sum = 0;
+
   const getReviewFunc = async () => {
     try {
       const res = await fetch(`/get-review/${encodeURIComponent(productId)}`, {
@@ -216,21 +221,9 @@ function Product() {
     productFunc();
     imageFunc();
     getReviewFunc();
-    // const calculateOverallRatingSum = (reviewData) => {
-    //   let sum = 0;
-    //   for (let i = 0; i < reviewData.length; i++) {
-    //     sum += reviewData[i].rating;
-    //   }
-    //   const averageRating = sum / reviewData.length;
-    //   return averageRating;
-    // };
-
-
     const maxStarCount = 5;
-
-
-
   }, [product_id]);
+
   useEffect(() => {
     // Calculate the sum of ratings when reviewData changes
     let sum = 0;
@@ -256,8 +249,9 @@ function Product() {
     }
   };
 
-  // console.log("Product Image data",imageData);
+  
   return (<>
+
     <Navbar />
 
     <div className='product-single'>
@@ -295,8 +289,10 @@ function Product() {
                 <input type="number" value={w} onChange={handleWChange} placeholder='W' />
                 <input type="number" value={h} onChange={handleHChange} placeholder='H' />
               </div>
-              <div className=""><Button variant="outline-dark" className='add-to-cart' onClick={(e) => { e.preventDefault(); handleCart(); }}>ADD TO CART</Button></div>
-
+             
+              <Button variant="outline-dark" className='add-to-cart' style={{ marginRight: '9px' }} onClick={(e) => { e.preventDefault(); handleUpload(imageURL); }}>Upload</Button>
+              <Button variant="outline-dark" className='add-to-cart' onClick={(e) => { e.preventDefault(); handleRoomView(imageURL); }}>Room View</Button><br/>
+              <Button variant="outline-dark" className='add-to-cart' onClick={(e) => { e.preventDefault(); handleCart(); }}>ADD TO CART</Button>
               {/* <input type="text" value={width} onChange={handleWidthChange} /> */}
 
               <p style={{ textAlign: 'justify', fontFamily: '', marginTop: '20px', marginBottom: '38px' }}>{productData.description}</p>
@@ -307,16 +303,11 @@ function Product() {
               )}
               <span className="sub-product-heading">Size </span>
               <p>{productData.size}</p>
-              <span className="sub-product-heading">Dimension </span>
-              <p>{productData.dimension}</p>
+              <span className="sub-product-heading">Border </span>
+              <p>{productData.border}</p>
               <p style={{ fontWeight: '600' }}>
                 {productData.quantity > 0 ? `Available(${productData.quantity})` : <span style={{ color: 'red', fontWeight: '800' }}>Out of Stock</span>}
               </p>
-
-
-              <Button variant="outline-dark" className='add-to-cart' style={{ marginRight: '9px' }} onClick={(e) => { e.preventDefault(); handleUpload(imageURL); }}>Upload</Button>
-              <Button variant="outline-dark" className='add-to-cart' onClick={(e) => { e.preventDefault(); handleRoomView(imageURL); }}>Room View</Button>
-
             </div>
           )}<Toaster position="top-center" reverseOrder={true} />
         </div></div><br />
@@ -358,13 +349,10 @@ function Product() {
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',padding:'20px 0px' }}>
           <h4 >Reviews</h4>
-          <h1 style={{ fontFamily: 'Poppins', fontSize: '45px', fontWeight: 'bold' }}>{overallRatingSum}</h1>
+          <h1 style={{ fontFamily: 'Poppins', fontSize: '45px', fontWeight: 'bold' }}>{isNaN(overallRatingSum) ? 0 : overallRatingSum}</h1>
           <Rating name="read-only" value={overallRatingSum} readOnly />
           <p style={{ fontSize: '12px', fontFamily: 'Poppins', color: 'gray' }}> According to {totalCount > 0 && <span>{totalCount}</span>} reviews.</p>
         </div>
-
-
-
 
         <>
           <h5 style={{ marginBottom: '15px', marginTop: '25px' }}>Leave a review:</h5>
@@ -372,7 +360,7 @@ function Product() {
           <div className=''>
 
 
-            <p className='m-1' style={{ fontFamily: 'Poppins', fontSize: '12px', color: 'gray' }}>Rate</p> <ReactStars
+            <p className='m-1' style={{ fontFamily: 'Poppins',   fontSize: '12px', color: 'gray' }}>Rate</p> <ReactStars
               count={5}
               onChange={ratingChanged}
               size={24}
@@ -382,16 +370,13 @@ function Product() {
           </div>
 
           <div>
-
-
             <textarea value={review} onChange={(e) => setReview(e.target.value)} placeholder='Write review on this product' rows="4" cols="80" style={{ borderRadius: '6px', padding: '5px 5px' }}></textarea><br />
             <Button variant="warning" style={{ color: 'white',marginTop: '15px' }} onClick={(e) => { e.preventDefault(); postReviewFunc(); }}>Submit Review</Button>
             <Toaster position="top-center" reverseOrder={true} />
           </div><br /><hr />
+
           <div className='d-flex' style={{marginTop:'34px'}}>
-
-
-          <h5 className='m-1' style={{ marginBottom: '15px', marginTop: '34px',color:'gray' }}>Comments</h5> <Stack direction="horizontal" gap={2} className='m-1'><Badge bg='warning'>{totalCount > 0 && <span>{totalCount}</span>}</Badge> </Stack>
+            <h5 className='m-1' style={{ marginBottom: '15px', marginTop: '34px',color:'gray' }}>Comments</h5> <Stack direction="horizontal" gap={2} className='m-1'><Badge bg='warning'>{totalCount > 0 && <span>{totalCount}</span>}</Badge> </Stack>
           </div>
 
           {reviewData.slice(0, showAllReviews ? reviewData.length : 3).map(review => (
@@ -410,8 +395,6 @@ function Product() {
                         <p style={{ color: "#808080", fontSize: '14px' }}>{formatDateString(review.createdAt)}</p>
                       </div>
                     </div>
-
-
                   </CardBody>
                 </Card>
               </div>

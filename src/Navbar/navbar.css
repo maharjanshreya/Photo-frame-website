@@ -1,4 +1,13 @@
 /* Use ms-auto to push icons to the right */
+.text{
+  font-family: 'Poppins';
+  font-size: '16px';
+   padding-left: '10px';
+   color: #795F49;
+    font-weight: '600';
+     display: 'inline-block';
+      
+}
 .navbar-nav .icons {
     margin-left: auto;
     display: flex;
@@ -20,9 +29,14 @@
   
   /* Add margin to the icons */
   .navbar-nav .text {
-    margin-left: 50px; /* Adjust as needed */
-    font-size: 20px; /* Set the desired font size for icons */
+    margin-left: 25px; /* Adjust as needed */
+    font-size: 16px; /* Set the desired font size for icons */
     font-weight: bolder;
+    color: #795F49;
+  }
+  .navbar-nav .text:hover {
+    
+    color: #433427;
   }
   .iconify{
     color: #795F49;
@@ -32,20 +46,22 @@
     color: #433426;
   }
   .count-cart {
-    position: absolute;
-    padding-top: 2px;
-    margin-left:90px;
-    margin-top: 5px;
-    font-size: 14px;
+    padding:2px 4px;
     border-radius: 50%;
     background: #d60b28;
-    width: 18px;
-    height: 18px;
-    line-height:16px;
-    display: block;
-    text-align: center;
+    
+  }
+
+  .count-badge {
+    width: 20px; /* Set a fixed width */
+    height: 20px; /* Set a fixed height */
+    line-height: 20px; /* Center the text vertically */
+    text-align: center; /* Center the text horizontally */
+    font-size: 12px; /* Adjust font size as needed */
+    background: #d60b28;
     color: white;
-    font-family: 'fenix';
+    border-radius: 50%;
+    padding-bottom: 3px;
   }
   .count-wishlist {
     position: absolute;

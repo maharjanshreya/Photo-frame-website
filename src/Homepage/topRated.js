@@ -1,7 +1,9 @@
 import { React, useState, useEffect,useRef } from 'react';
 
+import {  useNavigate } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
 function TopRated() {
+    const navigate = useNavigate();
     const [topRatedProducts, setTopRatedProducts] = useState([]);
     
     const getAllHighestRatedProduct = async () => {
@@ -18,32 +20,31 @@ function TopRated() {
             console.error('Error fetching order data:', error);
         }
     };
+    const productView = (productId) => {
+        navigate(`/productView/${productId}`, { state: { additionalInfo: "Top Rated Products" } });
+      }
     useEffect(() => {
    
         getAllHighestRatedProduct();
       }, []);
     return (
         <div>
-            
-            <div className="product-container">
-                {topRatedProducts.map((product, index) => (
-                    <div key={index} className="product-item">
-                        <img
-                src={`/product-image//${product.productDetails._id}`} 
+        <div className="product-container">
+          {topRatedProducts.map((product, index) => (
+            <div key={index} className="product-item">
+              <img
+                src={`/product-image//${product.productDetails._id}`}
                 alt="Product Image"
-                className="center"
-                height={300}
-                width={250} 
+                className="center" onClick={() => productView(product.productDetails._id)}
               />
-                        <p>{product.productDetails.productName}</p>
-                        
-                        <p>Rs. {product.productDetails.price}</p>
-                        <ReactStars size={24} edit={false} value={product.averageRating} />
-                        
-                    </div>
-                ))}
+              <p className="">{product.productDetails.productName}</p>
+              <p className="">Rs. {product.productDetails.price}</p>
+              <ReactStars size={24} edit={false} value={product.averageRating} />
             </div>
+          ))}
         </div>
+      </div>
+      
     );
 }
 export default TopRated;

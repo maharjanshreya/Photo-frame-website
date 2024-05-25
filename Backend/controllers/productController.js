@@ -2,7 +2,7 @@ const Product = require('../model/productModel.js');
 const fs = require('fs');
 
 const createProductController = async (req, res) => {
-    const { productName, description, category, shipping, price,quantity, size, dimension,minDelivery,maxDelivery } = req.fields;
+    const { productName, description, category, shipping, price,quantity, size, border,minDelivery,maxDelivery } = req.fields;
     const { image } = req.files;
     try {
         // Validation
@@ -19,7 +19,7 @@ const createProductController = async (req, res) => {
             price,
             quantity,
             size,
-            dimension,
+            border,
             minDelivery,
             maxDelivery});
 
@@ -190,7 +190,7 @@ const updateProductController = async (req, res) =>  {
     
     try {
         const { pid } = req.params;
-        const { productName, description, category, shipping, price,quantity, size, dimension,minDelivery,maxDelivery} = req.fields;
+        const { productName, description, category, shipping, price,quantity, size, border,minDelivery,maxDelivery} = req.fields;
         const { image } = req.files;
         
         const products = await Product.findByIdAndUpdate(pid,{
@@ -200,7 +200,7 @@ const updateProductController = async (req, res) =>  {
             price,
             quantity,
             size,
-            dimension,
+            border,
             shipping,
             minDelivery,
             maxDelivery,
@@ -209,10 +209,13 @@ const updateProductController = async (req, res) =>  {
        
 
         // Check if image exists
-        if (image && image.length > 0) {
+        if (image && image.path) {
             try {
-                products.image.data = fs.readFileSync(image.path);
-                products.image.contentType = image.type;
+                const imageData = fs.readFileSync(image.path);
+                products.image = {
+                    data: imageData,
+                    contentType: image.type,
+                };
                 console.log('Image Type:', image.type);
             } catch (readFileError) {
                 console.error('Error reading file:', readFileError);

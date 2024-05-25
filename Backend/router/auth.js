@@ -145,7 +145,7 @@ router.get('/add-to-wishlist/:userId', authenticate, isConsumer, getWishlistCont
 
 //route for report 
 router.post('/report', authenticate, reportController);
-router.post('/report/reply', authenticate, replyToReportController);
+router.post('/report/reply', authenticate, isAdmin,replyToReportController);
 router.get('/report', authenticate, getReportController);
 router.get('/report/reply/:userId', authenticate, getReplyController);
 

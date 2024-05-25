@@ -1,8 +1,8 @@
 const User = require('../model/userModel');
 const register = async (req, res) => {
-    const { firstname, lastname, username, email, password, cpassword, contact, role } = req.body;
+    const { firstname, lastname, username, email, password, contact, role } = req.body;
     const userRole = role || "consumer";
-    if (!firstname || !lastname || !username || !email || !password || !cpassword || !contact) {
+    if (!firstname || !lastname || !username || !email || !password || !contact) {
         return res.status(422).json({ error: "fill all the properties" });
     }
 
@@ -14,12 +14,9 @@ const register = async (req, res) => {
             return res.status(422).json({ error: "Email already exists" });
 
         }
-        else if (password != cpassword) {
-            return res.status(422).json({ error: "password do not match" });
-
-        }
+        
         else {
-            const user = new User({ firstname, lastname, username, email, password, cpassword, contact, role });
+            const user = new User({ firstname, lastname, username, email, password, contact, role });
             const userRegister = await user.save();
             if (userRegister) {
                 res.status(201).json({ message: "User resgister successfully" });
@@ -35,7 +32,7 @@ const register = async (req, res) => {
 const userController = async (req, res) => {
     //get user
     try {
-        const users = await User.find({ role: { $ne: 'admin' } }, { password: 0, cpassword: 0 }); // Excluding password field for security
+        const users = await User.find({ role: { $ne: 'admin' } }, { password: 0}); // Excluding password field for security
 
         res.json(users);
     } catch (error) {

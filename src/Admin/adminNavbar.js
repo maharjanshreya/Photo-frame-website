@@ -70,7 +70,7 @@ function AdminNavbar() {
                             activeClassName="active"
                             className="list-group-item list-group-item-action py-2 ripple"
                         >
-                            <i className="fas fa-tachometer-alt fa-fw me-3"></i><span>Analustics</span>
+                            <i className="fas fa-tachometer-alt fa-fw me-3"></i><span>Analytics</span>
                         </NavLink>
 
                         

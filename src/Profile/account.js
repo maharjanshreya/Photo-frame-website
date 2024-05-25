@@ -184,17 +184,17 @@ function Account() {
                 </form>
               </Accordion.Body>
             </Accordion.Item>
-            <Accordion.Item eventKey="1">
+            <Accordion.Item eventKey="1" id='orders'>
               <Accordion.Header>Your orders</Accordion.Header>
               <Accordion.Body>
                 <OrderPage />
 
               </Accordion.Body>
             </Accordion.Item>
-            <Accordion.Item eventKey="2">
+            <Accordion.Item eventKey="2" id="report">
               <Accordion.Header>Report a problem</Accordion.Header>
               <Accordion.Body>
-                <div id="report">
+                <div >
                   <Report />
                 </div>
 

@@ -171,7 +171,6 @@ function Wishlist() {
                       position="top-center"
                       reverseOrder={true}
                     />
-                    {/* Add more elements as needed */}
                   </>
                 )}
 
@@ -180,28 +179,18 @@ function Wishlist() {
             ))}
           </div>
         </div>
-
-
-
-
-
       </div>
 
       {!showAllProducts && productData && productData.wishlist && productData.wishlist.products && productData.wishlist.products.length > 3 && (
         <div className='text-center'>
               <Button variant="outline-success" className='add-to-cart' onClick={handleShowMore} style={{marginTop:'50px'}}>Load More</Button>
         </div>
-      
-        
       )}
       {showAllProducts && (
          <div className='text-center'>
          <Button variant="outline-success" className='add-to-cart' onClick={handleShowLess} style={{marginTop:'50px'}}>Show Less</Button>
           </div>
       )}
-
-
-
     </>
   );
 }
