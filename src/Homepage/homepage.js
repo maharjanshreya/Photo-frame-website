@@ -175,7 +175,7 @@ function Homepage() {
       setIsVisible(scrollY > 100);
     };
 
-    // Add scroll event listener
+    
     window.addEventListener('scroll', handleScroll);
 
     // Cleanup: remove scroll event listener when component unmounts

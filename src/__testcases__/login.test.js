@@ -93,7 +93,6 @@ describe('Api testing for category function', () => {
     // Get the submit button
     const submitButton = screen.getByText('Add');
 
-    // Simulate a click on the submit button
     fireEvent.click(submitButton);
     await waitFor(() => {
       expect(screen.getByText('Category Added Successfully.')).toBeInTheDocument();

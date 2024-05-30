@@ -31,5 +31,4 @@ const handleLogout = async (navigate) => {
   }
 };
 
-// Export the function
 export { formatDateString,handleLogout };

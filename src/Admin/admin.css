@@ -5,7 +5,7 @@
   
 .navbar-wrapper {
     background-color: #fff; /* Navbar background color */
-    padding: 10px; /* Add padding for better spacing */
+    padding: 10px;
     /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  */
   }
   
@@ -47,12 +47,12 @@
     position: fixed;
     left: 0;
     top: 0;
-    bottom: 0; /* Allow the sidebar to extend to the bottom of the viewport */
+    bottom: 0; 
     width: 220px;
     display: flex;
     flex-direction: column;
     align-items: left;
-    padding-top: 4px; /* Add padding to avoid overlapping with navbar */
+    padding-top: 4px; 
     color: #FBE9A7;
   }
   
@@ -153,39 +153,36 @@
   }
   .image{
     flex: 0 0 auto;
-    width: 70%; /* Adjust the width as needed */
-    height: 80%; /* Adjust the height as needed */
+    width: 70%;
+    height: 80%; 
     overflow: hidden; /* Hide any content that overflows the image container */
     margin-bottom: 10px;
   }
   .image img {
-    /* width: 100%;
-    height: 41%;
-    object-fit: cover; Maintain aspect ratio and cover the container */
     display: block;
-    max-width: 100%; /* Make sure the image doesn't exceed its natural width */
-    max-height: 100vh; /* Adjust the height as needed, ensuring it doesn't exceed the viewport height */
+    max-width: 100%; 
+    max-height: 100vh;
     width: auto;
     height: auto;
 }
 .title-product-details{
   color: #034959;
-font-family: Poppins;
-font-size: 23px;
-font-style: normal;
-font-weight: 700;
-line-height: normal;
-padding-bottom: 3px;
-border-bottom: 1px solid #034959;
+  font-family: Poppins;
+  font-size: 23px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #034959;
 }
 .title-name{
   color: #175D73;
-font-family: Poppins;
-font-size: 17px;
-font-style: normal;
-font-weight: 600;
-line-height: normal;
-margin-right: 10px;
+  font-family: Poppins;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin-right: 10px;
 }
 .product-color-weight{
   color: rgba(0, 0, 0, 0.46);
@@ -196,14 +193,13 @@ font-weight: 500;
 line-height: normal;
 }
 .details {
-  width: 90%; /* Adjust the width as needed */
+  width: 90%; 
   text-align: justify;
-  padding: 20px; /* Add padding for better appearance */
-  overflow-y: auto; /* Enable vertical scrolling for overflowing content */
+  padding: 20px;
+  overflow-y: auto; 
 }
-/* Optional: Style the details container to your liking */
 .details p {
-  margin: 0; /* Remove default margins */
+  margin: 0; 
 }
 
 .report{
@@ -233,7 +229,6 @@ line-height: normal;
   }
 }
 
-/* Add this style to make the table scrollable horizontally */
 .table-responsive {
   overflow-x: auto;
 }

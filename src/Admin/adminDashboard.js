@@ -186,7 +186,6 @@ function Dashboard() {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          // Add any other headers as needed (e.g., authentication token)
         },
       });
 

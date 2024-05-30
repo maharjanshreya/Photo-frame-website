@@ -57,22 +57,6 @@ const getReplyController = async (req, res) => {
 };
 
 
-// reply back by admin 
-// const replyToReportController = async (req, res) => {
-//   const { reportId, adminReply } = req.body;
-//   console.log('Report repl,y:', adminReply);
-//   try {
-//     const reportReply = await Report.findOne({_id: reportId});
-//     const reply = await reportReply.addMessage(adminReply);
-//     await reportReply.save();
-//     console.log('Updated Report:', reportReply);
-//     res.status(201).json({ message: 'User contact successful', reply: reply });
-
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, message: 'Internal Server Error' });
-//   }
-// };
 const replyToReportController = async (req, res) => {
   const { reportId, replyText,createdAt } = req.body;
   console.log('Report repl,y:', replyText);

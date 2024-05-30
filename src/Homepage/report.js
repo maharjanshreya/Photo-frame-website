@@ -20,7 +20,7 @@ function Report(){
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        userId:  userId|| '', // Assuming you have the user's ID available in your frontend
+        userId:  userId|| '', 
       });
       let name,value;
       

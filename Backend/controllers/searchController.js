@@ -10,7 +10,7 @@ const searchController = async (req, res) => {
        const result = await Product.find({
         $or:[
             {productName:{
-                $regex:keyword, $options:"i"    // i means insensitive to uppercase and lowercase
+                $regex:keyword, $options:"i"    // insensitive to uppercase and lowercase
             }}
         ]
        }).select("-image");

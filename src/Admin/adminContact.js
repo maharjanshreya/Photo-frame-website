@@ -44,7 +44,7 @@ function Contact() {
           replyText,
           createdAt,
           }),
-          credentials: 'include', // Add this line
+          credentials: 'include', 
       });
       
       if (!response.ok) {
@@ -167,7 +167,6 @@ function Contact() {
                   {report.adminReply.map((reply, index) => (
                     <div key={index}>
                       {reply && reply.replyText && <p>{reply.replyText}</p>}
-                      {/* Add any styling or additional content for each valid reply */}
                     </div>
                   ))}
                 </div>

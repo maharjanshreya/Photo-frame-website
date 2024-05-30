@@ -60,7 +60,7 @@ function PostProduct({ refreshProductList }) {
     const formData = new FormData();
     formData.append("productName", product.productName);
     formData.append("description", product.description);
-    formData.append("image", product.image); // Assuming product.image is a file input
+    formData.append("image", product.image);
     formData.append("price", product.price);
     formData.append("quantity", product.quantity);
     formData.append("category", product.category);

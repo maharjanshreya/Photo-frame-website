@@ -74,10 +74,6 @@ function Success() {
             }
 
             const datas = await res.json();
-            // setCartData(datas);
-            // const productIds = datas.cart.items.map(item => item.productId._id);
-            // console.log("productives",productIds);
-            //console.log("cart data",cartData);
             return datas.cart.items;
         } catch (err) {
             console.log('Error in fetching data', err);
@@ -143,9 +139,8 @@ function Success() {
                 return;
             }
             paymentSuccessCalledRef.current = true;
-            console.log('handlePaymentSuccess already called');
             // Retrieve session ID from URL query parameters or state
-            const sessionId = getSessionIdFromURL(); // Implement this function to retrieve the session ID
+            const sessionId = getSessionIdFromURL(); 
             console.log(sessionId);
             
             const url = `/handle-success/${encodeURIComponent(sessionId)}`;
@@ -181,7 +176,7 @@ function Success() {
            
         } catch (error) {
             console.error('Error handling payment success:', error);
-            // Handle other errors
+            
         }
     };
     const decreaseProductQuantities = async (productIds) => {

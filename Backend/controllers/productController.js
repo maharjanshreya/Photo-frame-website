@@ -135,10 +135,11 @@ const getSingleProductController = async (req, res) => {
 
 //get photo
 const getPhotoController = async (req, res) => {
-    
+    console.log("hello",req.params.pid);
     try {
        // console.log("PID",req.params.pid);
        const products = await Product.findById(req.params.pid).select("image");
+       console.log("PRiucts",products);
        if(products.image.data){
         res.set('Content-type', products.image.contentType);
         return res.status(200).send(products.image.data);

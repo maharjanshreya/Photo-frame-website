@@ -106,7 +106,6 @@ function Image() {
       .catch((error) => {
         console.error('Error capturing div as image:', error);
       });
-    // Send image data to server (e.g., via fetch or Axios)
 
   };
   const handleMouseDown = (e) => {

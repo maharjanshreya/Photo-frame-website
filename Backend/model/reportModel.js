@@ -43,7 +43,7 @@ reportSchema.methods.addMessage = async function (replyText, createdAt) {
     return this.adminReply;
   } catch (error) {
     console.log(error);
-    throw error; // Make sure to rethrow the error so that it's propagated
+    throw error; 
   }
 }
 

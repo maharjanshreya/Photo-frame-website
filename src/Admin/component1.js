@@ -20,11 +20,9 @@ function Component() {
         try {
           const userData = await userFunc();
           console.log('User data:', userData.length);
-          // Do something with userData
           setUserData(userData.length);
         } catch (error) {
           console.error('Error:', error);
-          // Handle the error
         }
       };
       const fetchOrderData = async () => {
@@ -39,7 +37,6 @@ function Component() {
           const processingOrdersCount = processingOrders.length;
           setOrderLeft(processingOrdersCount);
           setOrderDelivered(deliveredOrders.length);
-          // Now you can use or log the count
           console.log('Number of orders with status "Processing":', processingOrdersCount);
 
         } catch (error) {

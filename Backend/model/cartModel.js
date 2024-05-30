@@ -3,13 +3,13 @@ const mongoose = require('mongoose');
     const cartItemSchema = new mongoose.Schema({
     productId: {
         type: mongoose.ObjectId,
-        ref: 'Product', // Reference to the Product model if you have one
+        ref: 'Product', 
         required: true,
     },
     quantity: {
         type: Number,
         required: true,
-        default: 1, // Default quantity is 0
+        default: 1, 
     },
     size: {
         type: String, 
@@ -18,7 +18,7 @@ const mongoose = require('mongoose');
     
     uploadId:{
         type: mongoose.ObjectId,
-        ref: 'Upload', // Reference to the Product model if you have one
+        ref: 'Upload', 
         
     }
     });
@@ -26,9 +26,9 @@ const mongoose = require('mongoose');
     const cartSchema = new mongoose.Schema({
     userId: {
         type: mongoose.ObjectId,
-        ref: 'User', // Reference to the User model if you have one
+        ref: 'User',
     },
-    items: [cartItemSchema], // An array of cart items
+    items: [cartItemSchema], 
     });
 
 const Cart = mongoose.model('Cart', cartSchema);

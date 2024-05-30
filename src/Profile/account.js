@@ -67,6 +67,7 @@ function Account() {
         // Handle successful logout on the client side
         localStorage.removeItem('tokens');
         localStorage.removeItem('userId');
+        localStorage.removeItem('role');
         console.log('Logout successful');
         navigate('/login', { replace: true });
       } else {
@@ -96,7 +97,6 @@ function Account() {
     event.preventDefault();
     let updatedUpdates = { ...updates };
 
-    // Check if any field is left empty and set default values
     if (!updatedUpdates.firstname) {
       updatedUpdates.firstname = userData.firstname || '';
     }
@@ -123,7 +123,6 @@ function Account() {
       }
 
       const updatedUser = await response.json();
-      // Call refreshCategoryList to fetch the updated category list
       callMyAccount();
 
     } catch (error) {

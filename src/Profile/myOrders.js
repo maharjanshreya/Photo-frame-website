@@ -5,7 +5,7 @@ import { MdOutlineDateRange } from "react-icons/md";
 function OrderPage() {
     const userId = localStorage.getItem('userId');
     const [order, setOrderData] = useState([]);
-    const [imageURLs, setImageURLs] = useState({}); // State to store product image URLs
+    const [imageURLs, setImageURLs] = useState({}); 
 
     const getOrderFunc = async () => {
         try {
@@ -20,55 +20,13 @@ function OrderPage() {
             const response = await res.json();
             setOrderData(response);
 
-            // // Extract product IDs from orders
-            // const productIds = response.flatMap(order => order.products.map(product => product._id));
-
-            // // Fetch images for product IDs
-            // imageFunc(productIds);
             console.log('API Response:', response);
         } catch (err) {
             console.log('Error in fetching data:', err);
         }
     };
 
-    // const imageFunc = async (productIds) => {
-    //     try {
-    //         // Fetch images for each product ID in the array
-    //         const promises = productIds.map(async (productId) => {
-    //             const res = await fetch(`/product-image/${encodeURIComponent(productId)}`, {
-    //                 method: 'GET',
-    //                 credentials: 'include',
-    //             });
-    //             if (!res.ok) {
-    //                 throw new Error(`Failed to fetch image for product ID: ${productId}`);
-    //             }
-
-    //             // Read the binary data as an ArrayBuffer
-    //             const buffer = await res.arrayBuffer();
-
-    //             // Convert the ArrayBuffer to a base64 string
-    //             const base64Image = btoa(new Uint8Array(buffer).reduce((data, byte) => data + String.fromCharCode(byte), ''));
-
-    //             // Return the base64 image string
-    //             return { productId, url: `data:image/png;base64,${base64Image}` };
-    //         });
-
-    //         // Wait for all promises to resolve
-    //         const images = await Promise.all(promises);
-
-    //         // Convert the array of images to an object with productId as keys
-    //         const imageMap = {};
-    //         images.forEach(image => {
-    //             imageMap[image.productId] = image.url;
-    //         });
-
-    //         // Set the image URLs in state
-    //         setImageURLs(imageMap);
-    //     } catch (err) {
-    //         console.log('Error in fetching image data:', err);
-    //     }
-    // };
-
+  
     useEffect(() => {
         getOrderFunc();
     }, []);
@@ -92,16 +50,6 @@ function OrderPage() {
                     <ul>
                         {orderItem.products.map((product, index) => (
                             <li key={index}>
-                                {/* {imageURLs && imageURLs[product._id] && ( // Check if image URL exists for the product
-                                <img
-                                    src={imageURLs[product._id]} // Use image URL from state
-                                    className="rounded-3"
-                                    style={{ width: "45px" }}
-                                    alt="Product"
-                                />
-                            )} */}
-
-
                                 <p>{product.name} (Qty - {product.quantity})</p>
                                 <p>Price: ${product.price}</p>
                             </li>

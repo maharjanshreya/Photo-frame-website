@@ -14,23 +14,21 @@
     align-items: center;
   }
   
-  /* Add margin to the icons */
   .navbar-nav .icon {
-    margin-left: 20px; /* Adjust as needed */
+    margin-left: 20px; 
     color: black;
-    font-size: 20px; /* Set the desired font size for icons */
+    font-size: 20px; 
   }
   .navbar-nav .texts {
     display: flex;
     align-items: center;
     margin-left: 216px;
-    justify-content: center; /* Center the icons horizontally */
+    justify-content: center; 
   }
   
-  /* Add margin to the icons */
   .navbar-nav .text {
-    margin-left: 25px; /* Adjust as needed */
-    font-size: 16px; /* Set the desired font size for icons */
+    margin-left: 25px; 
+    font-size: 16px; 
     font-weight: bolder;
     color: #795F49;
   }
@@ -57,7 +55,7 @@
     height: 20px; /* Set a fixed height */
     line-height: 20px; /* Center the text vertically */
     text-align: center; /* Center the text horizontally */
-    font-size: 12px; /* Adjust font size as needed */
+    font-size: 12px; 
     background: #d60b28;
     color: white;
     border-radius: 50%;

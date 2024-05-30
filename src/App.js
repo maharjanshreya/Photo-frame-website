@@ -47,29 +47,7 @@ function App() {
 
   const role = localStorage.getItem('role');
   const cuurent_user_type = role;
-  // const checkUserRole = useCallback(() => {
-  //   const role = localStorage.getItem('role');
-  //   if (token) {
-  //     const parsedData = JSON.parse(token);
-  //     const userRole = parsedData[0]?.role;
-  //     if (userRole === 'admin') {
-  //       setHasToken(true);
-  //     } else {
-  //       setHasToken(false); // Reset hasToken if the user's role is not admin
-  //     }
-  //   } else {
-  //     setHasToken(false); // Reset hasToken if there is no token
-  //   }
-  // }, []);
 
-  // useEffect(() => {
-  //   checkUserRole();
-  //   setLoading(false);
-  // }, [checkUserRole]);
-  // if (loading) {
-  //   // Render loading indicator or skeleton component
-  //   return <div>Loading...</div>;
-  // }
 
   return (
     <Router>
@@ -80,17 +58,11 @@ function App() {
         <Route path="/navbar" element={<Navbar />} />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/products" element={<Products />} />
-       
-        <Route path="/cropG" element={<CropG />} />
-        <Route path="/account" element={<Account />} />
         <Route path="/reset" element={<Reset />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/contact" element={<ContactUs />} />
-        <Route path="/adminLogin" element={<AdminLogin />} />
-        <Route path="/roomView" element={<RoomView />} />
-        <Route element={<ProtectedRouteUser />}>
-          <Route element={<Cart />} path="/cart" exact />
-        </Route>
+        <Route path="/productView/:productId" element={<ProductView />} />
+        <Route path="/footer" element={<Footer />} />
+
         <Route element={<ProtectedRoute />}>
           <Route element={<AdminDashboard />} path="/adminDashboard" exact />
           <Route element={<AdminOrder />} path="/adminOrder" exact />
@@ -99,19 +71,23 @@ function App() {
           <Route element={<AdminNotifyUpdates />} path="/notify" exact />
           <Route element={<AdminContact />} path="/adminContact" exact />
           <Route element={<AdminAccount />} path="/adminAccount" exact />
+        </Route>   
+        
+        <Route element={<ProtectedRouteUser />}>
+          <Route element={<Cart />} path="/cart" exact />
+          <Route element={<ImagePage />} path="/imagepage" exact/>
+          <Route element={<RoomView />} path="/roomView"  exact />
+          <Route element={<CropG />} path="/cropG"  exact/>
+          <Route element={<Upload />} path="/upload" exact />
+          <Route element={<Success />} path="/success" exact />
+          <Route element={<Cancel />} path="/cancel" exact />
+          <Route element={<Wishlist />} path="/wishlist" exact />
+          <Route element={<Report />} path="/report" exact />
+          <Route element={<Notification />} path="/notification" exact />
+          <Route element={<Account />} path="/account" exact />
+          <Route element={<ContactUs />} path="/contact" exact />
         </Route>
-        <Route path="/productView/:productId" element={<ProductView />} />
-
-       
-        {/* <Route path="/cart" element={<Cart />} /> */}
-        <Route path="/footer" element={<Footer />} />
-        <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/report" element={<Report />} />
-        <Route path="/notification" element={<Notification />} />
-        <Route path="/imagepage" element={<ImagePage />} />
-        <Route path="/upload" element={<Upload />} />
-        <Route path="/success" element={<Success />} />
-        <Route path="/cancel" element={<Cancel />} />
+        
       </Routes>
     </Router>
   );

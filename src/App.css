@@ -38,27 +38,27 @@
 }
 body {
   font-size: 16px;
-  /* Other styles for larger screens */
+ 
 }
 
 @media only screen and (max-width: 600px) {
-  /* Styles for smaller screens */
+  
 
   body {
-      font-size: 14px; /* Adjusting font size for smaller screens */
+      font-size: 14px; 
   }
 
-  /* Additional styles for smaller screens */
+ 
   .container {
-      width: 100%; /* Making a container full-width on smaller screens */
+      width: 100%; 
   }
 
-  /* Hide some elements on smaller screens */
+  
   .hide-on-mobile {
       display: none;
   }
 
-  /* Adjust spacing or margins for smaller screens */
+ 
   .element {
       margin: 5px;
   }

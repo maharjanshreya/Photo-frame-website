@@ -11,7 +11,7 @@ function Products() {
   const [categoryData, setCategoryData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [products, setProducts] = useState([]);
-  const [sortCriteria, setSortCriteria] = useState('price'); // 'price' or 'name'
+  const [sortCriteria, setSortCriteria] = useState('price'); 
   const [sortOrder, setSortOrder] = useState('asc');
 
   const imageFunc = async (productId) => {

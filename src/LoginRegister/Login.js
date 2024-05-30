@@ -16,9 +16,9 @@ import {
     MDBCol,
     MDBIcon,
     MDBInput
-}from 'mdb-react-ui-kit';
+} from 'mdb-react-ui-kit';
 function Login() {
-    const[loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [userData, setUserData] = useState([]);
     const [email, setEmail] = useState('');
@@ -115,46 +115,15 @@ function Login() {
     }, [userId]);
     return (
         <>
-            {/* <div className="full-screen-image">
-            <div className="left-column">
-                <img src={sideImage} alt="logout" className="full-height-image" />
-            </div>
-            <div className="right-column">
-                <p className='text'>Login and <br />Design your frames with</p>
-                <img src={Logo} alt="logout" className="" />
-                <form method='POST' className='input-text' onSubmit={loginUser}>
-                    <input type="text" id="username" name="username" placeholder="Username" value={email} onChange={(e) => setEmail(e.target.value)} required /><br />
-
-                    <input type={showPassword ? 'text' : 'password'} id="password" name="password" placeholder="Password" value={password} required onChange={(e) => setPassword(e.target.value)} style={{ paddingRight: '30px' }} /><br />
-                    <p style={{ marginRight: '15pc' }}>
-                        <label htmlFor="showPassword">
-                            <input
-                                type="checkbox"
-                                id="showPassword"
-                                checked={showPassword}
-                                onChange={handleTogglePassword}
-                            />
-                            Show Password
-                        </label></p>
-
-                    <input type="submit" value="Login" />
-                </form>
-                {error && <div style={{ color: 'red', fontWeight: '500' }}>{error}</div>}
-                <p><Link to='/reset'   > <u className='forgetpassword-color' style={{color:'red'}}>Forgot Password </u></Link></p>
-<p>Don't have an account?<Link to='/register' > <u className='register-color'>Register Now </u></Link></p>
-                <Link to='/'><button>Cancel</button></Link>
-
-            </div>
-
-
-        </div> */}
 
 
             <MDBContainer fluid>
                 <MDBRow>
 
                     <MDBCol sm='7' className='d-none d-sm-block px-0'>
+
                         <img src={sideImage} alt="Login image" className="w-100" style={{ height: '100vh', objectFit: 'cover', objectPosition: 'left' }} />
+
                     </MDBCol>
                     <MDBCol sm='5'>
                         <div style={{ marginBottom: '48px' }} className='d-flex justify-content-center'>
@@ -162,7 +131,7 @@ function Login() {
                                 <MDBIcon fas icon="crow fa-3x me-3" style={{ color: '#709085' }} />
                                 <div>
                                     <center><p className='text mb-0'>Login and <br />Design your frames with</p>
-                                        <img src={Logo} alt="logout" className="" /></center>
+                                        <Link to='/'><img src={Logo} alt="logout" className="" /></Link></center>
                                 </div>
                             </div></div>
                         <div className='row justify-content-center'>
@@ -170,17 +139,17 @@ function Login() {
                                 <div className='d-flex flex-column justify-content-center w-100 pt-2 pt-md-4 form-outline'>
                                     <form method='POST' onSubmit={loginUser} className='input-form'>
 
-                                        <MDBInput  wrapperClass='mb-4 mx-5 w-100' id='formControlLg' type='email' size="lg" name="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                                        <MDBInput wrapperClass='mb-4 mx-5 w-100' id='formControlLg' type='email' size="lg" name="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
-                                        <MDBInput  wrapperClass='mb-4 mx-5 w-100' type='password' id='formControlLg' size="lg" name="password" placeholder="Password" value={password} required onChange={(e) => setPassword(e.target.value)} />
+                                        <MDBInput wrapperClass='mb-4 mx-5 w-100' type='password' id='formControlLg' size="lg" name="password" placeholder="Password" value={password} required onChange={(e) => setPassword(e.target.value)} />
                                         {error && <div style={{ color: 'red', fontWeight: '500', textAlign: 'left' }}>{error}</div>}
                                         <input type="submit" className="mb-4 px-5 mx-5 w-100" value="Login" />
                                     </form>
- {loading && (<Spinner animation="border" role="status">
+                                    {loading && (<Spinner animation="border" role="status">
                                         <span className="visually-hidden">Loading...</span>
                                     </Spinner>)}
                                     <p className="small mb-5 pb-lg-3 text-left"><Link to='/reset' className='link-info' >Forgot password?</Link></p>
-                                   
+
                                     <p className='text-center'>Don't have an account? <Link to='/register' className="link-info">Register here</Link></p>
                                 </div>
                             </div>

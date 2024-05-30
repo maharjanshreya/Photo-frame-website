@@ -45,6 +45,7 @@ function NavbarC({ item }) {
                 // Handle successful logout on the client side
                 localStorage.removeItem('tokens');
                 localStorage.removeItem('userId');
+                localStorage.removeItem('role');
                 dispatch(clearCart());
                 console.log('Logout successful');
                 navigate('/login', { replace: true });
@@ -223,12 +224,12 @@ function NavbarC({ item }) {
 
                                 </div>
                         </Nav.Link>
-                        <Dropdown>
-                            <Dropdown.Toggle variant="success" id="dropdown-basic" style={{ backgroundColor: 'transparent', border: '0px' }}>
+                        <Dropdown align="end" >
+                            <Dropdown.Toggle variant="success" id="dropdown-basic" style={{ backgroundColor: 'transparent', border: '0px',right:0 }}>
                                 <VscAccount size={26} style={{ marginRight: '30px' }} className='iconify' />
                             </Dropdown.Toggle>
 
-                            <Dropdown.Menu>
+                            <Dropdown.Menu style={{right:0}}> 
                                 {userId ? (
                                     <>
                                         <Dropdown.Item href="#/action-1">

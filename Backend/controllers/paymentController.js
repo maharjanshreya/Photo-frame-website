@@ -3,7 +3,7 @@ const Order = require('../model/orderModel');
 const Product = require('../model/productModel');
 const paymentController = async (req, res) => {
     try {
-        const {products} = req.body; // Access the 'products' array directly
+        const {products} = req.body; 
         if (!products || !Array.isArray(products)) {
             throw new Error('Invalid products data');
         }
@@ -92,12 +92,12 @@ const handlePaymentSuccess = async (req, res) => {
          const existingOrder = await Order.findOne({ session_id: sessionData.id });
          if (existingOrder) {
              console.log('Order already exists for session:', sessionData.id);
-             return; // Do not create a new order
+             return; 
          }
          const metadata = sessionData.metadata;
          const uploadIds = [];
 
-            // Loop through the metadata object to retrieve the uploadId for each product
+            
             for (const key in metadata) {
             if (Object.hasOwnProperty.call(metadata, key)) {
                 // Check if the key contains 'uploadId'
@@ -134,13 +134,13 @@ const handlePaymentSuccess = async (req, res) => {
                 name: item.description,
                 price: item.price.unit_amount / 100,
                 quantity: item.quantity,
-                size: size, // Assign the extracted size to the product,
+                size: size, 
                 uploadId: uploadIds[index]
             };
         });
         const amountTotal = sessionData.amount_total / 100;
         const shippingDetails = sessionData.shipping_details;
-       // Create a new order entry using the Order model
+      
         const order = new Order({
             products: products,
             shippingAddress: {
@@ -169,26 +169,5 @@ const handlePaymentSuccess = async (req, res) => {
         throw error;
     }
 };
-// const subtractProductQuantity = async (productIds) => {
-//     console.log("Product ids: ",productIds);
-//     try {
-//         // Iterate through line items and subtract the quantity from the product in the database
-//         for (const productId of productIds) {
-            
-//             console.log("Subsstract product id: ", productId);
-//             // Assuming product IDs in your database are stored as strings
-//             const product = await Product.findOne({ productId: productId });
-//             if (product) {
-//                 product.quantity -= 1;
-//                 await product.save();
-//             } else {
-//                 console.log('Product not found:', productId);
-//             }
-//         }
-//     } catch (error) {
-//         console.error('Error subtracting product quantity:', error);
-//         throw error;
-//     }
-// };
 
 module.exports = { paymentController,handlePaymentSuccess };

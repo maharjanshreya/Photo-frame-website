@@ -150,11 +150,8 @@ const handleMinus = async (productId) => {
       if (Array.isArray(datas.cart.items)) {
         datas.cart.items.forEach(item => {
           const { uploadId, productId } = item;
-          // Now you can use 'uploadId' and 'productId' as needed
-         // console.log(uploadId, productId._id);
-          // You can call functions or perform any other operations using 'uploadId' and 'productId'
-          // For example:
-          fetchImageData(uploadId, productId._id); // Call fetchImageData function with uploadId and productId
+      
+          fetchImageData(uploadId, productId._id); 
         });
       }
 
@@ -198,7 +195,6 @@ const handleMinus = async (productId) => {
   const handleRemoveCart = async (_id) => {
     // console.log('The product name to be deleted is ' + _id);
     try {
-      // Make an API call to delete the categoryuserData.userId
       const response = await fetch(`/remove-item/${encodeURIComponent(userId)}/${encodeURIComponent(_id)}`, {
         method: 'DELETE',
         headers: {
@@ -291,7 +287,6 @@ const handleMinus = async (productId) => {
     // Calculating shipping cost
     let shippingCost = 0;
     cartData.cart.items.forEach(item => {
-      // Add shipping cost of each item to the total
       shippingCost += item.productId.shipping;
     });
 

@@ -75,11 +75,9 @@ router.post('/signin', async (req, res) => {
             } else {
                 res.json({
                     message: "user sign in successfully", userData: {
-                        // Include any additional properties you want to send
                         userId: userLogin._id,
                         email: userLogin.email,
                         role: userLogin.role,
-                        // Add other properties as needed
                     },
                 });
             }

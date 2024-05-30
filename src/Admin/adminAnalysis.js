@@ -233,21 +233,7 @@ function Anaylsis() {
             </div>
 
           </div>
-          <div style={{ border: '1px solid gray', borderRadius: '6px', padding: '20px', textAlign: 'left', height: '100%' }}>
-            {highestProduct ? (
-              <div>
-                <h2 style={{ fontSize: '15px' }}>Highest Rated Product</h2>
-                <span className="sub-product-heading">Name</span> <p>{highestProduct.productName}</p>
-                <span className="sub-product-heading">Rating</span> <p><ReactStars size={26} value={overall} edit={false} className='' style={{}} /></p>
-
-                {imageURL && <img src={imageURL} alt="Product" />}
-
-                {/* Add more details here as needed */}
-              </div>
-            ) : (
-              <p>Loading highest rated product...</p>
-            )}
-          </div>
+          
           
 
         </div>

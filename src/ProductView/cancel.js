@@ -14,25 +14,25 @@ function Cancel() {
         <>
             <Navbar />
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-                
-                    <div id="card-container">
-                        <Card style={{ width: '25rem', textAlign: 'center' }}>
-                            <Card.Body>
-                                <Card.Title><img src={Error} width={70} /></Card.Title>
-                                <Card.Title>Payment Unsuccessful</Card.Title>
-                                <Card.Text style={{ marginBottom: '25px', color: 'grey' }}>
-                                    Sorry! Your payment was unsuccessful. Please try again.
-                                </Card.Text>
- <center><Link to='/'><Button variant="success" style={{ margin: '20px' }}>Go to home page</Button></Link><br />
-            </center>
 
-                            </Card.Body>
-                        </Card>
-                    </div>
-                
+                <div id="card-container">
+                    <Card style={{ width: '25rem', textAlign: 'center' }}>
+                        <Card.Body>
+                            <Card.Title><img src={Error} width={70} /></Card.Title>
+                            <Card.Title>Payment Unsuccessful</Card.Title>
+                            <Card.Text style={{ marginBottom: '25px', color: 'grey' }}>
+                                Sorry! Your payment was unsuccessful. Please try again.
+                            </Card.Text>
+                            <center><Link to='/'><Button variant="success" style={{ margin: '20px' }}>Go to home page</Button></Link><br />
+                            </center>
+
+                        </Card.Body>
+                    </Card>
+                </div>
+
             </div>
 
-           
+
         </>
     )
 

@@ -33,11 +33,11 @@ const productSchema = new mongoose.Schema({
         type: String, required: true
     },
     minDelivery: {
-        type: Number, // Assuming this is in days
+        type: Number, 
         required: true
     },
     maxDelivery: {
-        type: Number, // Assuming this is in days
+        type: Number,
         required: true
     }
 },

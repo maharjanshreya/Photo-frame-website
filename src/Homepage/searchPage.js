@@ -30,7 +30,7 @@ function SearchPage(){
 
                 <div key={row?._id}>
                     <img
-                        src={`/product-image//${row._id}`} // Update with your actual backend URL and endpoint
+                        src={`/product-image//${row._id}`} 
                         alt="Product Image"
                         className="center"
                         height={300}

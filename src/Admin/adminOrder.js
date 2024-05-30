@@ -139,7 +139,6 @@ function Order() {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
-              // Add any other headers as needed (e.g., authentication token)
             },
           });
     
@@ -161,6 +160,70 @@ function Order() {
           
         }
       };
+
+      const [im, setIm] = useState({});
+
+      const fetchImageData = async (uploadId, productId) => {
+        console.log("Fetched Upload ID", uploadId);
+        try {
+            const response = await fetch(`/getImage-upload/${encodeURIComponent(uploadId)}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch image data');
+            }
+            const imageData = await response.json();
+            console.log(imageData);
+            // Convert the buffer to a base64 string
+            const base64String = btoa(
+                new Uint8Array(imageData.imageData.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
+            );
+            const url = `data:image/png;base64,${base64String}`;
+
+            // Set the image URL for the corresponding product ID
+            setIm(prevImages => {
+                const updatedImages = {
+                    ...prevImages,
+                    [productId]: url
+                };
+                console.log('Updated images:', updatedImages);
+                return updatedImages;
+            });
+
+
+        } catch (error) {
+            console.error('Error retrieving image data:', error);
+        }
+    };
+    const [imageURL, setImageURL] = useState({});
+    const fetchImage = async (productId) => {
+        try {
+          const response = await fetch(`/product-image/${encodeURIComponent(productId)}`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch image');
+          }
+          console.log("In respionse",response);
+          const imageURL = URL.createObjectURL(await response.blob());
+          setImageURL(prevURLs => ({ ...prevURLs, [productId]: imageURL }));
+          console.log('Updated not images:', imageURL);
+        } catch (error) {
+          console.error('Error fetching image:', error);
+        }
+      };
+    
+
+    useEffect(() => {
+        // Clear previous images when orders change
+        setIm({});
+        setImageURL({});
+    
+        // Fetch images for each product in the orders
+        filteredOrders.forEach(order => {
+          order.products.forEach(product => {
+            fetchImage(product._id)
+            fetchImageData(product.uploadId,product._id);
+          });
+        });
+      }, [filteredOrders]);
+
     return (
         <>
             <AdminLayout>
@@ -173,7 +236,7 @@ function Order() {
                     <Button style={{ backgroundColor: activeButton === 'Processing' ? 'blue' : '#e6e6e6', borderColor: '#e6e6e6', color: '#7d7a7a', marginRight: '4px' }} onClick={() => handleViewChange('Processing')}>On Progress</Button>
                     <Button style={{ backgroundColor: activeButton === 'Delivered' ? 'green' : '#e6e6e6', color: activeButton === 'Delivered' ? 'white' : '#7d7a7a',borderColor: '#e6e6e6', marginRight: '4px' }} onClick={() => handleViewChange('Delivered')}>Delivered</Button>
                     
-                    <div style={{ marginBottom: '20px' }}>
+                    <div style={{ marginBottom: '20px',marginTop :'20px' }}>
                         <input 
                             type="text" 
                             placeholder="Search orders..." 
@@ -190,6 +253,7 @@ function Order() {
                                     <tr className='table-tt'>
                                         <th>Order Id</th>
                                         <th>Order Name</th>
+                                        <th>Image</th>
                                         <th>Customer name</th>
                                         <th>Customer contact</th>
                                         <th>Shipping Address</th>
@@ -212,6 +276,21 @@ function Order() {
                                                     </div>
                                                 ))}
                                             </td>
+                                            
+                                            <td>
+                                                {order.products.map(product => (
+                                                    <div key={product._id}>
+                                                        
+
+                                                    {im[product._id] 
+                                                        ? <img src={im[product._id]} alt="Product" className="rounded-3" style={{ width: "45px", marginRight: '10px' }} />
+                                                        : <p>No image</p>
+                                                    }
+                                                    </div>
+                                                ))}
+                                                </td>
+
+
                                             <td>
                                                 {order.buyer.email}
                                             </td>

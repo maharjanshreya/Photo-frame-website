@@ -90,7 +90,6 @@ function Notification() {
   const [notifications, setNotifications] = useState([]);
   const fetchNotifications = async () => {
     try {
-      // Make a GET request to fetch notifications for the specified user ID
       const response = await axios.get(`/notification/${encodeURIComponent(userId)}`);
       setNotifications(response.data);
       console.log('Notifications:', response.data);
@@ -145,7 +144,6 @@ function Notification() {
 
                         : 'No reply text available'}
                     </p>
-                    {/* Add any styling or additional content for each reply */}
                   </div>
                 ))}
               </div>

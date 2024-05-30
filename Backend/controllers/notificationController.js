@@ -35,13 +35,10 @@ const createNotification =  async (req, res) => {
     }
 };
 const sendSoundNotification = () => {
-    // Code to trigger the sound notification
-    // For example, using a package like node-notifier or electron-notification
-    // Here, I'm using node-notifier as an example
     notifier.notify({
         title: 'New Notification',
         message: 'You have a new notification!',
-        sound: true // Plays the default system notification sound
+        sound: true 
     });
 };
 module.exports = {getNotification,createNotification};

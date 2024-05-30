@@ -64,7 +64,7 @@ function Contact(){
                     contact,
                     message,
                 }),
-                credentials: 'include', // Add this line
+                credentials: 'include', 
             });
     
             const data = await res.json();
