@@ -30,7 +30,7 @@ db.once('open', function() {
 });
 // Enable CORS for all routes
 app.use(cors({
-  origin: 'https://photo-frame-website.onrender.com', 
+  origin: 'https://samanphotoframe.onrender.com', 
   credentials: true,
   exposedHeaders: ['set-cookie'],
 }));
