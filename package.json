@@ -1,0 +1,18 @@
+{
+    "name": "photoframe",
+    "version": "1.0.0",
+    "description": "backend for photo frame website",
+    "main": "app.js",
+    "scripts": {
+      "build": "cd Backend && npm install  && cd ../Frontend && npm install && npm run build",
+      "start": "node Backend/app.js",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/maharjanshreya/Photo-frame-website.git"
+    },
+    "author": "shreeya maharjan",
+    "license": "ISC"
+   
+  }
