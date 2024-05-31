@@ -30,7 +30,7 @@ db.once('open', function() {
 });
 // Enable CORS for all routes
 app.use(cors({
-  origin: 'http://localhost:3000', 
+  origin: 'https://photo-frame-website.vercel.app', 
   credentials: true,
   exposedHeaders: ['set-cookie'],
 }));
