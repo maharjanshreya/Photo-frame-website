@@ -30,7 +30,7 @@ db.once('open', function() {
 });
 // Enable CORS for all routes
 app.use(cors({
-  origin: 'https://samanphotoframe-18coh86dh-shreeya-maharjans-projects.vercel.app', 
+  origin: 'https://photo-frame-website.onrender.com', 
   credentials: true,
   exposedHeaders: ['set-cookie'],
 }));
