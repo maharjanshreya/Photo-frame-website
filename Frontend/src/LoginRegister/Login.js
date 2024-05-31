@@ -18,10 +18,8 @@ import {
     MDBInput
 } from 'mdb-react-ui-kit';
 function Login() {
-    const backendUrl = process.env.REACT_APP_BACKEND_URL;
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const [userData, setUserData] = useState([]);
     const [email, setEmail] = useState('');
     const [hasToken, setHasToken] = useState(false);
     const [error, setError] = useState('');
@@ -50,7 +48,7 @@ function Login() {
         e.preventDefault();
         setLoading(true);
         try {
-            const res = await fetch('/${backendUrl}/signin', {
+            const res = await fetch('/signin', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
