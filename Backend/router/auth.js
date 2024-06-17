@@ -70,7 +70,7 @@ router.post('/signin', async (req, res) => {
                 domain: '.vercel.app',
                 path: '/',
                 secure:'true',
-                samesite:'none',
+                sameSite:'none',
                 
 
             });
