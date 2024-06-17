@@ -30,7 +30,7 @@ db.once('open', function() {
 });
 // Enable CORS for all routes
 app.use(cors({
-  origin: 'https://samanphotoframe.onrender.com', 
+  origin: ["https://samanphotoframe.vercel.app"], 
   credentials: true,
   exposedHeaders: ['set-cookie'],
 }));
