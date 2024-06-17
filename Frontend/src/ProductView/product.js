@@ -64,7 +64,7 @@ function Product() {
 
   const productFunc = async () => {
     try {
-      const res = await fetch(`https://photo-frame-website.onrender.com/products/${encodeURIComponent(productId)}`, {
+      const res = await fetch(`/products/${encodeURIComponent(productId)}`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -112,7 +112,7 @@ function Product() {
 
   const imageFunc = async () => {
     try {
-      const res = await fetch(`https://photo-frame-website.onrender.com/product-image/${encodeURIComponent(productId)}`, {
+      const res = await fetch(`/product-image/${encodeURIComponent(productId)}`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -163,7 +163,7 @@ function Product() {
       ],
     };
     try {
-      const response = await axios.post('https://photo-frame-website.onrender.com/add-to-cart', data);
+      const response = await axios.post('/add-to-cart', data);
       setCart(prevCart => prevCart + 1);
       toast.success('Item added to cart!');
       //  console.log("cart: ",response.data);
@@ -181,7 +181,7 @@ function Product() {
 
     };
     try {
-      const response = await axios.post('https://photo-frame-website.onrender.com/give-review', data);
+      const response = await axios.post('/give-review', data);
       if (response.status === 201) {
         toast.success(response.data.message);
       }
@@ -198,7 +198,7 @@ function Product() {
 
   const getReviewFunc = async () => {
     try {
-      const res = await fetch(`https://photo-frame-website.onrender.com/get-review/${encodeURIComponent(productId)}`, {
+      const res = await fetch(`/get-review/${encodeURIComponent(productId)}`, {
         method: 'GET',
         credentials: 'include',
       });

@@ -16,7 +16,7 @@ function Products() {
 
   const imageFunc = async (productId) => {
     try {
-      const res = await fetch(`https://photo-frame-website.onrender.com/product-image/${encodeURIComponent(productId)}`, {
+      const res = await fetch(`/product-image/${encodeURIComponent(productId)}`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -36,7 +36,7 @@ function Products() {
 
   const categoryFunc = async () => {
     try {
-      const res = await fetch('https://photo-frame-website.onrender.com/category', {
+      const res = await fetch('/category', {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -61,7 +61,7 @@ function Products() {
 
   const fetchProductsByCategory = async (categoryId) => {
     try {
-      const res = await fetch(`https://photo-frame-website.onrender.com/category-product/${categoryId}`, {
+      const res = await fetch(`/category-product/${categoryId}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

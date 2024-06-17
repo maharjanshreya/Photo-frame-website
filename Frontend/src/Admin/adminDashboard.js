@@ -114,7 +114,7 @@ function Dashboard() {
     console.log('The category name to be deleted is ' + _id);
     try {
       // Make an API call to delete the category
-      const response = await fetch(`https://photo-frame-website.onrender.com/deletecategory/${encodeURIComponent(_id)}`, {
+      const response = await fetch(`/deletecategory/${encodeURIComponent(_id)}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -148,7 +148,7 @@ function Dashboard() {
     console.log('The product name to be deleted is ' + _id);
     try {
       // Make an API call to delete the category
-      const response = await fetch(`https://photo-frame-website.onrender.com/deleteproduct/${encodeURIComponent(_id)}`, {
+      const response = await fetch(`/deleteproduct/${encodeURIComponent(_id)}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -182,7 +182,7 @@ function Dashboard() {
     console.log('The user id to be deleted is ' + _id);
     try {
       
-      const response = await fetch(`https://photo-frame-website.onrender.com/delete-user/${encodeURIComponent(_id)}`, {
+      const response = await fetch(`/delete-user/${encodeURIComponent(_id)}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -214,7 +214,7 @@ function Dashboard() {
   
   const productFunc = async () => {
     try {
-      const res = await fetch('https://photo-frame-website.onrender.com/products', {
+      const res = await fetch('/products', {
         method: 'GET',
         credentials: 'include',
       });
@@ -234,7 +234,7 @@ function Dashboard() {
   };
   const userFunc = async () => {
     try {
-      const res = await fetch('https://photo-frame-website.onrender.com/getUser', {
+      const res = await fetch('/getUser', {
         method: 'GET',
         credentials: 'include',
       });

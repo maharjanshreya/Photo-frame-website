@@ -51,7 +51,7 @@ function Wishlist() {
       ],
     };
     try {
-      const response = await axios.post('https://photo-frame-website.onrender.com/add-to-cart', data);
+      const response = await axios.post('/add-to-cart', data);
       setCart(prevCart => prevCart + 1);
       toast.success('Item added to cart!');
     } catch (error) {
@@ -63,7 +63,7 @@ function Wishlist() {
 
   const imageFunc = async (productId, index) => {
     try {
-      const res = await fetch(`https://photo-frame-website.onrender.com/product-image/${encodeURIComponent(productId)}`, {
+      const res = await fetch(`/product-image/${encodeURIComponent(productId)}`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -93,7 +93,7 @@ function Wishlist() {
       navigate('/login', { replace: true });
     }
     try {
-      const res = await fetch(`https://photo-frame-website.onrender.com/add-to-wishlist/${encodeURIComponent(userId)}`, {
+      const res = await fetch(`/add-to-wishlist/${encodeURIComponent(userId)}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

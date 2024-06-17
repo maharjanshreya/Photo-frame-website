@@ -13,7 +13,7 @@ function ImageGallery() {
     // Function to fetch image data from the backend
     const fetchImageData = async () => {
       try {
-        const response = await fetch('https://photo-frame-website.onrender.com/getImage-upload/66082a63045c214f731eb952');
+        const response = await fetch('/getImage-upload/66082a63045c214f731eb952');
         if (!response.ok) {
           throw new Error('Failed to fetch image data');
         }

@@ -8,7 +8,7 @@ function TopRated() {
     
     const getAllHighestRatedProduct = async () => {
         try {
-            const response = await fetch('https://photo-frame-website.onrender.com/all-highest-rate-product');
+            const response = await fetch('/all-highest-rate-product');
             if (!response.ok) {
                 throw new Error('Failed to fetch order data');
             }

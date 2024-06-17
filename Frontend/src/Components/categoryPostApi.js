@@ -1,6 +1,6 @@
 export const PostCategory = async (categoryName) => {
     try {
-      const res = await fetch("https://photo-frame-website.onrender.com/category", {
+      const res = await fetch("/category", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -45,7 +45,7 @@ function Homepage() {
 
   const productFunc = async () => {
     try {
-      const res = await fetch('https://photo-frame-website.onrender.com/products', {
+      const res = await fetch('/products', {
         method: 'GET',
         credentials: 'include',
       });
@@ -73,7 +73,7 @@ function Homepage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.get(`https://photo-frame-website.onrender.com/search/${values.keyword}`);
+      const { data } = await axios.get(`/search/${values.keyword}`);
       // console.log('API response:', data);
       setValues((prevValues) => ({
         ...prevValues,
@@ -90,7 +90,7 @@ function Homepage() {
   const wishlist = async (productId) => {
     try {
 
-      const res = await fetch('https://photo-frame-website.onrender.com/add-to-wishlist', {
+      const res = await fetch('/add-to-wishlist', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

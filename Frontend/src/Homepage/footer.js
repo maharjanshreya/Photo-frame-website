@@ -10,7 +10,7 @@ function Footer() {
   const [categoryData, setCategoryData] = useState([]);
   const categoryFunc = async () => {
     try {
-      const res = await fetch('https://photo-frame-website.onrender.com/category', {
+      const res = await fetch('/category', {
         method: 'GET',
         headers: {
           Accept: 'application/json',

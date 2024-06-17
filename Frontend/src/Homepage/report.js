@@ -40,7 +40,7 @@ function Report(){
     
         try {
             const{title,description,userId} =formData;
-          const response = await fetch('https://photo-frame-website.onrender.com/report', {
+          const response = await fetch('/report', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

@@ -54,7 +54,7 @@ function Anaylsis() {
 
   const fetchOrderData = async () => {
     try {
-      const response = await fetch('https://photo-frame-website.onrender.com/view-order');
+      const response = await fetch('/view-order');
       if (!response.ok) {
         throw new Error('Failed to fetch order data');
       }
@@ -69,7 +69,7 @@ function Anaylsis() {
 
   const getHighestRatedProduct = async () => {
     try {
-      const response = await fetch('https://photo-frame-website.onrender.com/highest-rate-product');
+      const response = await fetch('/highest-rate-product');
       if (!response.ok) {
         throw new Error('Failed to fetch order data');
       }
@@ -110,7 +110,7 @@ function Anaylsis() {
 
   const imageFunc = async () => {
     try {
-      const res = await fetch('https://photo-frame-website.onrender.com/highest-rate-product', {
+      const res = await fetch('/highest-rate-product', {
         method: 'GET',
         credentials: 'include',
       });
@@ -156,7 +156,7 @@ function Anaylsis() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { userId, message } = messages;
-    const res = await fetch("https://photo-frame-website.onrender.com/create-notification", {
+    const res = await fetch("/create-notification", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

@@ -85,7 +85,7 @@ function RoomView() {
         if (/^data:image\/(png|jpeg);base64,/.test(imageData)) {
           console.log('Image data:', imageData);
 
-          fetch('https://photo-frame-website.onrender.com/upload', {
+          fetch('/upload', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

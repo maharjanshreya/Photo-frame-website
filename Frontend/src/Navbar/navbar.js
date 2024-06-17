@@ -21,7 +21,7 @@ function NavbarC({ item }) {
     const cartItems = useSelector((state) => state.cart.items);
     const quantity = Object.values(cartItems).reduce((acc, count) => acc + count, 0);
     const [cartCount, setCartCount] = useState(0);
-    const [wishlist, setWishlist] = useState([]);
+    const [wishlist, setWishlist] = useState(0);
     //const [cart, setCart] = useState([]);
     const handleClose = () => setShow(false);
     const navigate = useNavigate();
@@ -32,7 +32,7 @@ function NavbarC({ item }) {
     const handleLogout = async () => {
         console.log('Logging out');
         try {
-            const response = await fetch('https://photo-frame-website.onrender.com/logout', {
+            const response = await fetch('/logout', {
                 method: 'GET',
                 headers: {
                     Accept: "application/json",
@@ -60,7 +60,7 @@ function NavbarC({ item }) {
     const getCart = async () => {
         const userIdl = localStorage.getItem('userId');
         try {
-            const res = await fetch(`https://photo-frame-website.onrender.com/add-to-cart/${encodeURIComponent(userIdl)}`, {
+            const res = await fetch(`/add-to-cart/${encodeURIComponent(userIdl)}`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -85,7 +85,7 @@ function NavbarC({ item }) {
     const getWishlist = async () => {
         const userIdl = localStorage.getItem('userId');
         try {
-            const res = await fetch(`https://photo-frame-website.onrender.com/add-to-wishlist/${encodeURIComponent(userIdl)}`, {
+            const res = await fetch(`/add-to-wishlist/${encodeURIComponent(userIdl)}`, {
                 method: 'GET',
                 credentials: 'include',
             });

@@ -37,7 +37,7 @@ function Register() {
             return;
         }
         const { firstname, lastname, username, email, password, contact } = user;
-        const res = await fetch("https://photo-frame-website.onrender.com/register", {
+        const res = await fetch("/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

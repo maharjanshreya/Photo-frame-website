@@ -14,7 +14,7 @@ function Review() {
     const itemsPerPage = 5; 
   const getReviewFunc = async () => {
     try {
-      const res = await fetch('https://photo-frame-website.onrender.com/get-all-review', {
+      const res = await fetch('/get-all-review', {
         method: 'GET',
         credentials: 'include',
       });

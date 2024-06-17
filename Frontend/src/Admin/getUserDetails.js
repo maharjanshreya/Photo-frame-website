@@ -3,7 +3,7 @@ function GetUserDetails(){
     const [userData, setUserData] = useState([]);
     const userFunc = async () => {
         try {
-          const res = await fetch('https://photo-frame-website.onrender.com/getUser',  {
+          const res = await fetch('/getUser',  {
           method: 'GET',
           headers: {
             Accept: 'application/json',

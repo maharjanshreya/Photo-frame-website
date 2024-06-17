@@ -30,7 +30,7 @@ function Reset(){
         setLoading(true);
         const{email} =user;
         console.log(email);
-        const res = await fetch("https://photo-frame-website.onrender.com/forgot-password", {
+        const res = await fetch("/forgot-password", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

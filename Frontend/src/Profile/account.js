@@ -24,7 +24,7 @@ function Account() {
 
   const callMyAccount = async () => {
     try {
-      const res = await fetch('https://photo-frame-website.onrender.com/account', {
+      const res = await fetch('/account', {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -54,7 +54,7 @@ function Account() {
   }, [userData]);
   const handleLogout = async () => {
     try {
-      const response = await fetch('https://photo-frame-website.onrender.com/logout', {
+      const response = await fetch('/logout', {
         method: 'GET',
         headers: {
           Accept: "application/json",
@@ -110,7 +110,7 @@ function Account() {
       updatedUpdates.contact = userData.contact || '';
     }
     try {
-      const response = await fetch(`https://photo-frame-website.onrender.com/user-update/${encodeURIComponent(userId)}`, {
+      const response = await fetch(`/user-update/${encodeURIComponent(userId)}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

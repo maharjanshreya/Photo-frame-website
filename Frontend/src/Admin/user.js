@@ -1,6 +1,6 @@
 const userFunc = async () => {
     try {
-      const res = await fetch('https://photo-frame-website.onrender.com/getUser', {
+      const res = await fetch('/getUser', {
         method: 'GET',
         credentials: 'include',
       });
