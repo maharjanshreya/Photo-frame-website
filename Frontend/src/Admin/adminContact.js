@@ -34,7 +34,7 @@ function Contact() {
     console.log("repl text in frontend: ",replyText);
     event.preventDefault();
     try {
-      const response = await fetch('/report/reply', {
+      const response = await fetch('https://photo-frame-website.onrender.com/report/reply', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

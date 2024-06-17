@@ -37,7 +37,7 @@ function Cart({ item }) {
   const fetchImageData = async (uploadId, productId) => {
     
     try {
-      const response = await fetch(`/getImage-upload/${encodeURIComponent(uploadId)}`);
+      const response = await fetch(`https://photo-frame-website.onrender.com/getImage-upload/${encodeURIComponent(uploadId)}`);
       if (!response.ok) {
        // throw new Error('Failed to fetch image data');
       }
@@ -75,7 +75,7 @@ function Cart({ item }) {
   const updateQuantity = async (productId, quantity) => {
     try {
         const userId = localStorage.getItem('userId');
-        const response = await fetch(`/add-to-cart/update/${encodeURIComponent(userId)}/${encodeURIComponent(productId)}`, {
+        const response = await fetch(`https://photo-frame-website.onrender.com/add-to-cart/update/${encodeURIComponent(userId)}/${encodeURIComponent(productId)}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ const handleMinus = async (productId) => {
         navigate('/login', { replace: true });
       }
 
-      const res = await fetch(`/add-to-cart/${encodeURIComponent(userId)}`, {
+      const res = await fetch(`https://photo-frame-website.onrender.com/add-to-cart/${encodeURIComponent(userId)}`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -160,7 +160,7 @@ const handleMinus = async (productId) => {
       if (datas.cart.items && datas.cart.items.length > 0) {
         const imagePromises = datas.cart.items.map(async (item) => {
           try {
-            const imageRes = await fetch(`/product-image/${encodeURIComponent(item.productId._id)}`, {
+            const imageRes = await fetch(`https://photo-frame-website.onrender.com/product-image/${encodeURIComponent(item.productId._id)}`, {
               method: 'GET',
               credentials: 'include',
             });
@@ -195,7 +195,7 @@ const handleMinus = async (productId) => {
   const handleRemoveCart = async (_id) => {
     // console.log('The product name to be deleted is ' + _id);
     try {
-      const response = await fetch(`/remove-item/${encodeURIComponent(userId)}/${encodeURIComponent(_id)}`, {
+      const response = await fetch(`https://photo-frame-website.onrender.com/remove-item/${encodeURIComponent(userId)}/${encodeURIComponent(_id)}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -204,7 +204,7 @@ const handleMinus = async (productId) => {
 
       if (response.ok) {
         try {
-          const updatedCart = await fetch(`/add-to-cart/${encodeURIComponent(userId)}`, {
+          const updatedCart = await fetch(`https://photo-frame-website.onrender.com/add-to-cart/${encodeURIComponent(userId)}`, {
             method: 'GET',
             credentials: 'include',
           });
@@ -251,7 +251,7 @@ const handleMinus = async (productId) => {
         'Content-Type': 'application/json',
       };
 
-      const response = await fetch('/create-checkout-session', {
+      const response = await fetch('https://photo-frame-website.onrender.com/create-checkout-session', {
         method: 'POST',
         body: JSON.stringify(body),
         headers: headers,

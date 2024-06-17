@@ -9,7 +9,7 @@ function OrderPage() {
 
     const getOrderFunc = async () => {
         try {
-            const res = await fetch(`/view-my-orders/${encodeURIComponent(userId)}`, {
+            const res = await fetch(`https://photo-frame-website.onrender.com/view-my-orders/${encodeURIComponent(userId)}`, {
                 method: 'GET',
                 credentials: 'include',
             });

@@ -22,7 +22,7 @@ function Notification() {
       }
 
       // Include user ID in request headers
-      const response = await fetch(`report/reply/${userId}`, {
+      const response = await fetch(`https://photo-frame-website.onrender.com/report/reply/${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ function Notification() {
   const [notifications, setNotifications] = useState([]);
   const fetchNotifications = async () => {
     try {
-      const response = await axios.get(`/notification/${encodeURIComponent(userId)}`);
+      const response = await axios.get(`https://photo-frame-website.onrender.com/notification/${encodeURIComponent(userId)}`);
       setNotifications(response.data);
       console.log('Notifications:', response.data);
     } catch (error) {

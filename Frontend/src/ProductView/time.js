@@ -7,7 +7,7 @@ const formatDateString = (dateString) => {
 
 const handleLogout = async (navigate) => {
   try {
-    const response = await fetch('/logout', {
+    const response = await fetch('https://photo-frame-website.onrender.com/logout', {
       method: 'GET',
       headers: {
         Accept: "application/json",

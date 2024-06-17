@@ -22,7 +22,7 @@ const UpdateCategory = ({ categoryName,categoryId, onClose, refreshCategoryList 
         event.preventDefault();
 
         try {
-            const response = await fetch(`/category/${encodeURIComponent(categoryId)}`, {
+            const response = await fetch(`https://photo-frame-website.onrender.com/category/${encodeURIComponent(categoryId)}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

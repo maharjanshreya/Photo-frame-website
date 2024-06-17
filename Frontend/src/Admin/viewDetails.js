@@ -6,7 +6,7 @@ const ViewDetails = ({ productId }) => {
     const [imageURL, setImageURL] = useState(null);
     const productFunc = async () => {
     try {
-      const res = await fetch(`/products/${encodeURIComponent(productId)}`  ,  {
+      const res = await fetch(`https://photo-frame-website.onrender.com/products/${encodeURIComponent(productId)}`  ,  {
       method: 'GET',
       credentials: 'include',
     });
@@ -26,7 +26,7 @@ const ViewDetails = ({ productId }) => {
     }; 
     const imageFunc = async () => {
         try {
-          const res = await fetch(`/product-image/${encodeURIComponent(productId)}`  ,  {
+          const res = await fetch(`https://photo-frame-website.onrender.com/product-image/${encodeURIComponent(productId)}`  ,  {
           method: 'GET',
           credentials: 'include',
         });

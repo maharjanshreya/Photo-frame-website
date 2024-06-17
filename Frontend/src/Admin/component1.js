@@ -27,7 +27,7 @@ function Component() {
       };
       const fetchOrderData = async () => {
         try {
-          const response = await fetch('/view-order');
+          const response = await fetch('https://photo-frame-website.onrender.com/view-order');
           if (!response.ok) {
             throw new Error('Failed to fetch order data');
           }
