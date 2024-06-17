@@ -66,7 +66,9 @@ router.post('/signin', async (req, res) => {
             token = await userLogin.generateAuthToken();
             res.cookie("jwtoken", token, {
 
-                httpOnly: true,                
+                httpOnly: true,
+            
+                
 
             });
             if (!isMatch) {
