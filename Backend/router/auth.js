@@ -67,7 +67,7 @@ router.post('/signin', async (req, res) => {
             res.cookie("jwtoken", token, {
 
                 httpOnly: true,
-                domain: '.vercel.app',
+                domain: 'https://samanphotoframe-git-main-shreeya-maharjans-projects.vercel.app',
                 path: '/',
                 secure:'true',
                 sameSite:'none',
