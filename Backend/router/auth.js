@@ -66,12 +66,7 @@ router.post('/signin', async (req, res) => {
             token = await userLogin.generateAuthToken();
             res.cookie("jwtoken", token, {
 
-                httpOnly: true,
-                domain: '.vercel.app',
-                path: '/',
-                secure:'true',
-                sameSite:'none',
-                
+                httpOnly: true,                
 
             });
             if (!isMatch) {
