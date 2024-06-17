@@ -11,6 +11,26 @@ dotenv.config({path:'./config.env'});
 const PORT = process.env.PORT;
 const productRoutes =require("./routes/productRoutes.js");
 require('./db/conn');
+
+// Enable CORS for all routes
+const corsOptions = {
+  origin: "https://samanphotoframe-git-main-shreeya-maharjans-projects.vercel.app",
+  credentials: true,
+  exposedHeaders: ['set-cookie']
+};
+
+// Use CORS middleware
+app.use(cors(corsOptions));
+
+// Handle preflight requests for all routes
+app.options('*', (req, res) => {
+  res.header("Access-Control-Allow-Origin", corsOptions.origin); // set correct origin
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.sendStatus(200);
+});
+
 app.use(cookieParser());
 //const User =  require('./model/userModel');
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -28,18 +48,6 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("Connected to MongoDB");
 });
-// Enable CORS for all routes
-const corsOptions = {
-  origin: "https://samanphotoframe-git-main-shreeya-maharjans-projects.vercel.app",
-  credentials: true,
-  exposedHeaders: ['set-cookie']
-};
-
-// Use CORS middleware
-app.use(cors(corsOptions));
-
-// Handle preflight requests for all routes
-app.options('*', cors(corsOptions));
 
 app.get('/', (req, res) => {
   res.send("Hellosss world from server app.js");
