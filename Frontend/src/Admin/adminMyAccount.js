@@ -31,7 +31,7 @@ function AdminAccount() {
       setUserData(data);
     } catch (err) {
       console.log('Error in fetching data', err);
-      navigate('https://photo-frame-website.onrender.com/login', { replace: true });
+      navigate('/login', { replace: true });
     }
   };
   useEffect(() => {
