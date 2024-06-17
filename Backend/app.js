@@ -29,18 +29,17 @@ db.once('open', function() {
   console.log("Connected to MongoDB");
 });
 // Enable CORS for all routes
-app.use(cors({
-  origin: ["https://samanphotoframe-git-main-shreeya-maharjans-projects.vercel.app"], 
+const corsOptions = {
+  origin: "https://samanphotoframe-git-main-shreeya-maharjans-projects.vercel.app",
   credentials: true,
-  exposedHeaders: ['set-cookie'],
-}));
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://samanphotoframe-git-main-shreeya-maharjans-projects.vercel.app");
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  next();
-});
+  exposedHeaders: ['set-cookie']
+};
+
+// Use CORS middleware
+app.use(cors(corsOptions));
+
+// Handle preflight requests for all routes
+app.options('*', cors(corsOptions));
 
 app.get('/', (req, res) => {
   res.send("Hellosss world from server app.js");
