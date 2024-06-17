@@ -30,7 +30,7 @@ db.once('open', function() {
 });
 // Enable CORS for all routes
 app.use(cors({
-  origin: ["https://samanphotoframe.vercel.app"], 
+  origin: ["https://samanphotoframe-5jnihq4ry-shreeya-maharjans-projects.vercel.app"], 
   credentials: true,
   exposedHeaders: ['set-cookie'],
 }));
