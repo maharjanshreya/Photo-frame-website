@@ -120,6 +120,7 @@ function Dashboard() {
           'Content-Type': 'application/json',
           // Add any other headers as needed (e.g., authentication token)
         },
+        credentials:'include',
       });
 
       if (response.ok) {
@@ -154,6 +155,7 @@ function Dashboard() {
           'Content-Type': 'application/x-www-form-urlencoded',
           // Add any other headers as needed (e.g., authentication token)
         },
+        credentials:'include',
       });
 
       if (response.ok) {
@@ -187,6 +189,7 @@ function Dashboard() {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
+        credentials:'include',
       });
 
       if (response.ok) {

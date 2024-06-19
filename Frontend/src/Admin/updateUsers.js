@@ -31,6 +31,7 @@ const UpdateUsers = ({ userId,firstname,lastname,email,contact, onClose, refresh
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(updates),
+                credentials:'include',
             });
 
             if (!response.ok) {

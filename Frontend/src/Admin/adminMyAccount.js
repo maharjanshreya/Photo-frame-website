@@ -61,6 +61,7 @@ function AdminAccount(){
             headers: {
               'Content-Type': 'application/json',
             },
+            credentials:'include',
             body: JSON.stringify(updatedUpdates),
           });
     

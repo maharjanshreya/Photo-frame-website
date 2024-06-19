@@ -43,6 +43,7 @@ function Order() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ status }),
+                credentials:'include',
             });
             if (!response.ok) {
                 throw new Error('Failed to update order status');
@@ -61,7 +62,11 @@ function Order() {
     let [filteredOrders, setFilteredOrders] = useState([]);
     const fetchOrders = async () => {
         try {
-            const response = await fetch('https://photo-frame-website.onrender.com/view-order');
+            const response = await fetch('https://photo-frame-website.onrender.com/view-order', {
+                method: 'GET', // Specify the HTTP method (GET, POST, PUT, DELETE, etc.)
+                credentials: 'include', // Include credentials in the request
+              });
+          
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }

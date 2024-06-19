@@ -23,7 +23,8 @@ function PostUsers({refreshUserList }) {
             },
             body: JSON.stringify({
                 firstname,lastname,username,email,password,cpassword,contact,role:"consumer"
-            })
+            }),
+            credentials:'include',
         });
         const data = await res.json();
         if(res.status=== 422 || !data){

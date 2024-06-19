@@ -95,9 +95,10 @@ const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
             for (const key in updates) {
                 formData.append(key, updates[key]);
             }
-            const response = await fetch(`/product-update/${encodeURIComponent(productId)}`, {
+            const response = await fetch(`https://photo-frame-website.onrender.com/product-update/${encodeURIComponent(productId)}`, {
                 method: 'PUT',
                 body: formData,
+                credentials:'include',
             });
     
             if (!response.ok) {

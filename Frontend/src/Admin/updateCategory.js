@@ -28,6 +28,7 @@ const UpdateCategory = ({ categoryName,categoryId, onClose, refreshCategoryList 
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(updates),
+                credentials:'include',
             });
 
             if (!response.ok) {
