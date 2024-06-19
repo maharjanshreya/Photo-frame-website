@@ -75,7 +75,7 @@ function Contact() {
 
       // Fetch user data for each user ID
       const userIds = data.map((report) => report.user);
-      Promise.all(userIds.map((userId) => fetch(`/account/${userId}`).then((response) => response.json())))
+      Promise.all(userIds.map((userId) => fetch(`https://photo-frame-website.onrender.com/account/${userId}`).then((response) => response.json())))
         .then((userData) => {
           setUserData(userData);
         })

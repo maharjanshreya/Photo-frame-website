@@ -22,7 +22,7 @@ function Notification() {
       }
 
       // Include user ID in request headers
-      const response = await fetch(`report/reply/${userId}`, {
+      const response = await fetch(`https://photo-frame-website.onrender.com/report/reply/${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 export const CategoryGetApi = async () => {
     try {
-        const res = await fetch('/category', {
+        const res = await fetch('https://photo-frame-website.onrender.com/category', {
             method: 'GET',
             headers: {
               Accept: 'application/json',

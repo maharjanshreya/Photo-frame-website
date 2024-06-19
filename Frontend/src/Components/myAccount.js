@@ -1,7 +1,7 @@
 
 export const MyAccount = async () => {
     try {
-        const res = await fetch('/account', {
+        const res = await fetch('https://photo-frame-website.onrender.com/account', {
           method: 'GET',
           headers: {
             Accept: 'application/json',

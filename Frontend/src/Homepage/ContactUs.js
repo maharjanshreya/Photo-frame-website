@@ -12,7 +12,7 @@ function Contact(){
 
     const userContact = async () => {
         try {
-           const res = await fetch('/getData', {
+           const res = await fetch('https://photo-frame-website.onrender.com/getData', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

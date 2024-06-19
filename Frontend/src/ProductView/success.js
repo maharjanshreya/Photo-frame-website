@@ -22,7 +22,7 @@ function Success() {
         // console.log('The product name to be deleted is ' + _id);
         try {
             // Make an API call to delete the categoryuserData.userId
-            const response = await fetch(`/remove-item/${encodeURIComponent(userId)}`, {
+            const response = await fetch(`https://photo-frame-website.onrender.com/remove-item/${encodeURIComponent(userId)}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ function Success() {
             const userId = localStorage.getItem('userId');
 
 
-            const res = await fetch(`/add-to-cart/${encodeURIComponent(userId)}`, {
+            const res = await fetch(`https://photo-frame-website.onrender.com/add-to-cart/${encodeURIComponent(userId)}`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -64,7 +64,7 @@ function Success() {
             const userId = localStorage.getItem('userId');
 
 
-            const res = await fetch(`/add-to-cart/${encodeURIComponent(userId)}`, {
+            const res = await fetch(`https://photo-frame-website.onrender.com/add-to-cart/${encodeURIComponent(userId)}`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -82,7 +82,7 @@ function Success() {
 
     const productFunc = async () => {
         try {
-          const res = await fetch('/products', {
+          const res = await fetch('https://photo-frame-website.onrender.com/products', {
             method: 'GET',
             credentials: 'include',
           });
@@ -104,7 +104,7 @@ function Success() {
     const fetchImageData = async (uploadId, productId) => {
         console.log("Fetched Upload ID", uploadId);
         try {
-            const response = await fetch(`/getImage-upload/${encodeURIComponent(uploadId)}`);
+            const response = await fetch(`https://photo-frame-website.onrender.com/getImage-upload/${encodeURIComponent(uploadId)}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch image data');
             }
@@ -143,7 +143,7 @@ function Success() {
             const sessionId = getSessionIdFromURL(); 
             console.log(sessionId);
             
-            const url = `/handle-success/${encodeURIComponent(sessionId)}`;
+            const url = `https://photo-frame-website.onrender.com/handle-success/${encodeURIComponent(sessionId)}`;
 
             // Make HTTP request to backend
             const response = await fetch(url, {
@@ -210,7 +210,7 @@ function Success() {
                     const newQuantity = Math.max(0, currentQuantity - purchasedQuantity);
                     console.log('New quantity:', newQuantity);
                     // Send a request to update the product with the new quantity
-                    const response = await fetch(`/category-product-quantity/${encodeURIComponent(productId)}`, {
+                    const response = await fetch(`https://photo-frame-website.onrender.com/category-product-quantity/${encodeURIComponent(productId)}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',

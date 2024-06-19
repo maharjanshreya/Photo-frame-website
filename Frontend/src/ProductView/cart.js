@@ -204,7 +204,7 @@ const handleMinus = async (productId) => {
 
       if (response.ok) {
         try {
-          const updatedCart = await fetch(`/add-to-cart/${encodeURIComponent(userId)}`, {
+          const updatedCart = await fetch(`https://photo-frame-website.onrender.com/add-to-cart/${encodeURIComponent(userId)}`, {
             method: 'GET',
             credentials: 'include',
           });

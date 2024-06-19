@@ -23,7 +23,7 @@ const UpdateProduct = ({ productId, onClose, refreshProductList }) => {
 
         const productFunc = async () => {
             try {
-              const res = await fetch(`/products/${encodeURIComponent(productId)}`,  {
+              const res = await fetch(`https://photo-frame-website.onrender.com/products/${encodeURIComponent(productId)}`,  {
               method: 'GET',
               credentials: 'include',
             });

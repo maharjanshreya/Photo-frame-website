@@ -56,7 +56,7 @@ function AdminAccount(){
           updatedUpdates.contact = userData.contact || '';
         }
         try {
-          const response = await fetch(`/user-update/${encodeURIComponent(userId)}`, {
+          const response = await fetch(`https://photo-frame-website.onrender.com/user-update/${encodeURIComponent(userId)}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',

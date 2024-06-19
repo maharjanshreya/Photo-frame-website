@@ -6,7 +6,7 @@ function PostProduct({ refreshProductList }) {
 
   const categoryFunc = async () => {
     try {
-      const res = await fetch('/category', {
+      const res = await fetch('https://photo-frame-website.onrender.com/category', {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -70,7 +70,7 @@ function PostProduct({ refreshProductList }) {
     formData.append("minDelivery", product.minDelivery);
     formData.append("maxDelivery", product.maxDelivery);
     try {
-      const res = await fetch("/products", {
+      const res = await fetch("https://photo-frame-website.onrender.com/products", {
         method: "POST",
         credentials: 'include',
         body: formData,

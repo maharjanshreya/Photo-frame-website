@@ -37,7 +37,7 @@ function Order() {
     const handleDelivery = async (orderId, status, color) => {
         setToggleColor({ ...toggleColor, [orderId]: color });
         try { 
-            const response = await fetch(`/update-order/${orderId}`, {
+            const response = await fetch(`https://photo-frame-website.onrender.com/update-order/${orderId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ function Order() {
     let [filteredOrders, setFilteredOrders] = useState([]);
     const fetchOrders = async () => {
         try {
-            const response = await fetch('/view-order');
+            const response = await fetch('https://photo-frame-website.onrender.com/view-order');
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
