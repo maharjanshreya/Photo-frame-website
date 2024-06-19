@@ -135,7 +135,7 @@ function Order() {
         console.log('The user id to be deleted is ' + _id);
         try {
           
-          const response = await fetch(`/delete-order/${encodeURIComponent(_id)}`, {
+          const response = await fetch(`https://photo-frame-website.onrender.com/delete-order/${encodeURIComponent(_id)}`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
@@ -166,7 +166,7 @@ function Order() {
       const fetchImageData = async (uploadId, productId) => {
         console.log("Fetched Upload ID", uploadId);
         try {
-            const response = await fetch(`/getImage-upload/${encodeURIComponent(uploadId)}`);
+            const response = await fetch(`https://photo-frame-website.onrender.com/getImage-upload/${encodeURIComponent(uploadId)}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch image data');
             }
@@ -196,7 +196,7 @@ function Order() {
     const [imageURL, setImageURL] = useState({});
     const fetchImage = async (productId) => {
         try {
-          const response = await fetch(`/product-image/${encodeURIComponent(productId)}`);
+          const response = await fetch(`https://photo-frame-website.onrender.com/product-image/${encodeURIComponent(productId)}`);
           if (!response.ok) {
             throw new Error('Failed to fetch image');
           }
