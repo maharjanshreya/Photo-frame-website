@@ -42,6 +42,7 @@ function Register() {
             headers: {
                 "Content-Type": "application/json"
             },
+            credentials: 'include',
             body: JSON.stringify({
                 firstname, lastname, username, email, password, contact, role: "consumer"
             })

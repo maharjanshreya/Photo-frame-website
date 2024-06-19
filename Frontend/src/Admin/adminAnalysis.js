@@ -54,7 +54,9 @@ function Anaylsis() {
 
   const fetchOrderData = async () => {
     try {
-      const response = await fetch('https://photo-frame-website.onrender.com/view-order');
+      const response = await fetch('https://photo-frame-website.onrender.com/view-order', {
+        credentials: 'include', // Include credentials in the request
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch order data');
       }
@@ -69,7 +71,9 @@ function Anaylsis() {
 
   const getHighestRatedProduct = async () => {
     try {
-      const response = await fetch('https://photo-frame-website.onrender.com/highest-rate-product');
+      const response = await fetch('https://photo-frame-website.onrender.com/highest-rate-product', {
+        credentials: 'include', // Include credentials in the request
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch order data');
       }
@@ -161,6 +165,7 @@ function Anaylsis() {
       headers: {
         "Content-Type": "application/json"
       },
+      credentials: 'include',
       body: JSON.stringify({
         userId, message
       })

@@ -37,7 +37,9 @@ function Cart({ item }) {
   const fetchImageData = async (uploadId, productId) => {
     
     try {
-      const response = await fetch(`https://photo-frame-website.onrender.com/getImage-upload/${encodeURIComponent(uploadId)}`);
+      const response = await fetch(`https://photo-frame-website.onrender.com/getImage-upload/${encodeURIComponent(uploadId)}`, {
+        credentials: 'include', // Include credentials in the request
+      });
       if (!response.ok) {
        // throw new Error('Failed to fetch image data');
       }

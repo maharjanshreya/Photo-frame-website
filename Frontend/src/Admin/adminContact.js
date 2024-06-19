@@ -66,7 +66,10 @@ function Contact() {
   };
   const fetchReportData = async () => {
     try {
-      const response = await fetch('https://photo-frame-website.onrender.com/report');
+      const response = await fetch('https://photo-frame-website.onrender.com/report', {
+        method: 'GET',
+        credentials: 'include', // Include credentials in the request
+      });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

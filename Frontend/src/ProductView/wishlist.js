@@ -51,7 +51,9 @@ function Wishlist() {
       ],
     };
     try {
-      const response = await axios.post('https://photo-frame-website.onrender.com/add-to-cart', data);
+      const response = await axios.post('https://photo-frame-website.onrender.com/add-to-cart', data, {
+        withCredentials: true, // Include credentials in the request
+      });
       setCart(prevCart => prevCart + 1);
       toast.success('Item added to cart!');
     } catch (error) {

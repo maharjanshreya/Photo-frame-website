@@ -27,6 +27,7 @@ function Notification() {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
       });
 
       if (!response.ok) {
@@ -90,7 +91,9 @@ function Notification() {
   const [notifications, setNotifications] = useState([]);
   const fetchNotifications = async () => {
     try {
-      const response = await axios.get(`https://photo-frame-website.onrender.com/notification/${encodeURIComponent(userId)}`);
+      const response = await axios.get(`https://photo-frame-website.onrender.com/notification/${encodeURIComponent(userId)}`,{
+        withCredentials: true, // Include credentials in the request
+      });
       setNotifications(response.data);
       console.log('Notifications:', response.data);
     } catch (error) {

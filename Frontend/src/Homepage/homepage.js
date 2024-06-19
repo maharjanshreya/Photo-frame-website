@@ -73,7 +73,9 @@ function Homepage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.get(`https://photo-frame-website.onrender.com/search/${values.keyword}`);
+      const { data } = await axios.get(`https://photo-frame-website.onrender.com/search/${values.keyword}`, {
+        credentials: 'include', // Include credentials in the request
+      });
       // console.log('API response:', data);
       setValues((prevValues) => ({
         ...prevValues,
@@ -322,7 +324,7 @@ function Homepage() {
                           <div key={row?._id} className="col">
                             <div className="card border-0">
                               <img
-                                src={`https://photo-frame-website.onrender.com/product-image//${row._id}`}
+                                src={`https://photo-frame-website.onrender.com/product-image/${row._id}`}
                                 alt="Product Image"
                                 style={{ height: '300px' }}
                                 onClick={() => productView(row?._id)}

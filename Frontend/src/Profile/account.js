@@ -116,6 +116,7 @@ function Account() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(updatedUpdates),
+        credentials: 'include',
       });
 
       if (!response.ok) {

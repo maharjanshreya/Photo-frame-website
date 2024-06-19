@@ -163,7 +163,9 @@ function Product() {
       ],
     };
     try {
-      const response = await axios.post('https://photo-frame-website.onrender.com/add-to-cart', data);
+      const response = await axios.post('https://photo-frame-website.onrender.com/add-to-cart', data, {
+        withCredentials: true, // Include credentials in the request
+      });
       setCart(prevCart => prevCart + 1);
       toast.success('Item added to cart!');
       //  console.log("cart: ",response.data);
@@ -181,7 +183,9 @@ function Product() {
 
     };
     try {
-      const response = await axios.post('https://photo-frame-website.onrender.com/give-review', data);
+      const response = await axios.post('https://photo-frame-website.onrender.com/give-review', data, {
+        withCredentials: true, // Include credentials in the request
+      });
       if (response.status === 201) {
         toast.success(response.data.message);
       }
