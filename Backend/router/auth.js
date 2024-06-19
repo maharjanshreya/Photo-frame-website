@@ -67,6 +67,9 @@ router.post('/signin', async (req, res) => {
             res.cookie("jwtoken", token, {
 
                 httpOnly: true,
+                path: '/',
+                secure:'true',
+                sameSite:'none',
             
                 
 

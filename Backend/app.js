@@ -12,6 +12,19 @@ const PORT = process.env.PORT;
 const productRoutes =require("./routes/productRoutes.js");
 require('./db/conn');
 app.use(cookieParser());
+
+// Enable CORS for all routes
+app.use(cors({
+  origin: 'https://samanphotoframe-git-main-shreeya-maharjans-projects.vercel.app',
+  credentials: true,
+  exposedHeaders: ['set-cookie'],
+}));
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "https://samanphotoframe-git-main-shreeya-maharjans-projects.vercel.app");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 //const User =  require('./model/userModel');
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({
@@ -28,12 +41,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("Connected to MongoDB");
 });
-// Enable CORS for all routes
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true,
-  exposedHeaders: ['set-cookie'],
-}));
+
 app.get('/', (req, res) => {
   res.send("Hellosss world from server app.js");
 });
