@@ -32,7 +32,7 @@ function NavbarC({ item }) {
     const handleLogout = async () => {
         console.log('Logging out');
         try {
-            const response = await fetch('/logout', {
+            const response = await fetch('https://photo-frame-website.onrender.com/logout', {
                 method: 'GET',
                 headers: {
                     Accept: "application/json",
@@ -60,7 +60,7 @@ function NavbarC({ item }) {
     const getCart = async () => {
         const userIdl = localStorage.getItem('userId');
         try {
-            const res = await fetch(`/add-to-cart/${encodeURIComponent(userIdl)}`, {
+            const res = await fetch(`https://photo-frame-website.onrender.com/add-to-cart/${encodeURIComponent(userIdl)}`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -85,7 +85,7 @@ function NavbarC({ item }) {
     const getWishlist = async () => {
         const userIdl = localStorage.getItem('userId');
         try {
-            const res = await fetch(`/add-to-wishlist/${encodeURIComponent(userIdl)}`, {
+            const res = await fetch(`https://photo-frame-website.onrender.com/add-to-wishlist/${encodeURIComponent(userIdl)}`, {
                 method: 'GET',
                 credentials: 'include',
             });
