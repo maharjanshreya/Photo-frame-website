@@ -128,7 +128,7 @@ function Product() {
       const base64Image = btoa(new Uint8Array(buffer).reduce((data, byte) => data + String.fromCharCode(byte), ''));
 
       // Set the base64 string as the image source
-      setImageURL(`https://photo-frame-website.onrender.com/data:image/png;base64,${base64Image}`);
+      setImageURL(`data:image/png;base64,${base64Image}`);
 
 
     } catch (err) {

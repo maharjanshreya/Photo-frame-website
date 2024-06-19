@@ -322,7 +322,7 @@ function Homepage() {
                           <div key={row?._id} className="col">
                             <div className="card border-0">
                               <img
-                                src={`/product-image//${row._id}`}
+                                src={`https://photo-frame-website.onrender.com/product-image//${row._id}`}
                                 alt="Product Image"
                                 style={{ height: '300px' }}
                                 onClick={() => productView(row?._id)}
