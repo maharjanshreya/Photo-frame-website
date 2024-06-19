@@ -80,6 +80,8 @@ function Cart({ item }) {
             headers: {
                 'Content-Type': 'application/json',
             },
+            
+          credentials: 'include',
             body: JSON.stringify({ quantity }),
         });
 
@@ -200,6 +202,7 @@ const handleMinus = async (productId) => {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
       });
 
       if (response.ok) {
