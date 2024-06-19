@@ -18,10 +18,16 @@ app.use(cors({
   origin: 'https://samanphotoframe-git-main-shreeya-maharjans-projects.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
   exposedHeaders: ['set-cookie'],
 }));
-
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "https://samanphotoframe-git-main-shreeya-maharjans-projects.vercel.app");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 //const User =  require('./model/userModel');
 app.use(bodyParser.json({ limit: '50mb' }));
