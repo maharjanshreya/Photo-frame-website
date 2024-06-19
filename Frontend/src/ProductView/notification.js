@@ -90,7 +90,7 @@ function Notification() {
   const [notifications, setNotifications] = useState([]);
   const fetchNotifications = async () => {
     try {
-      const response = await axios.get(`/notification/${encodeURIComponent(userId)}`);
+      const response = await axios.get(`https://photo-frame-website.onrender.com/notification/${encodeURIComponent(userId)}`);
       setNotifications(response.data);
       console.log('Notifications:', response.data);
     } catch (error) {
